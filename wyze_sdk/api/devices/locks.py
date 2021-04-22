@@ -1,5 +1,5 @@
 from abc import ABCMeta
-from datetime import date, datetime, timedelta
+from datetime import datetime
 from typing import Optional, Sequence
 
 from wyze_sdk.models.devices import DeviceModels, Lock, LockGateway

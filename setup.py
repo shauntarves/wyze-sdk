@@ -15,6 +15,7 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as readme:
 
 validate_dependencies = [
     "pytest>=5.4,<6",
+    "flake8>=3,<4",
 ]
 
 needs_pytest = {"pytest", "test", "ptr"}.intersection(sys.argv)
@@ -30,25 +31,28 @@ setup(
     author='Shaun Tarves',
     author_email='shaun@tarves.net',
     python_requires=">=3.9.0",
+    include_package_data=True,
     license="The Unlicense",
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Environment :: Console',
+        "Development Status :: 5 - Production/Stable",
+        "Topic :: Communications :: Chat",
         "License :: Public Domain",
+        "License :: Free for non-commercial use",
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Software Development :: Libraries :: Python Modules',
+        "Topic :: Home Automation",
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.9'
     ],
-    keywords="",
+    keywords=["wyze", "wyze-labs", "wyze-sdk", "wyze-api", "wyzeapy", "wyze-apy", "smart home", "home automation"],
     packages=find_packages(
         exclude=[
             "tests",
             "tests.*",
         ]
     ),
-    install_requires=[],
+    install_requires=["requests", "blackboxprotobuf"],
     setup_requires=pytest_runner,
     test_suite="tests",
     tests_require=validate_dependencies,
