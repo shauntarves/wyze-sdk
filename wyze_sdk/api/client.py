@@ -6,7 +6,7 @@ from wyze_sdk.api.devices import (BulbsClient, CamerasClient, LocksClient, Plugs
                                   ScalesClient, ContactSensorsClient, MotionSensorsClient, ThermostatsClient, VacuumsClient)
 from wyze_sdk.api.events import EventsClient
 from wyze_sdk.errors import WyzeClientConfigurationError
-from wyze_sdk.models.devices import Device
+from wyze_sdk.models.devices import Device, DeviceParser
 from wyze_sdk.service import (ApiServiceClient, AuthServiceClient,
                               PlatformServiceClient, WyzeResponse)
 
@@ -23,7 +23,7 @@ class Client(object):
 
     Attributes:
         bulbs (BulbsClient): A client that services Wyze bulbs/lights
-        contact_sensors (ContactSensorsClient): A client that services Wyze Sense contact sensors
+        entry_sensors (ContactSensorsClient): A client that services Wyze Sense entry sensors
         cameras (CamerasClient): A client that services Wyze cameras
         events (EventsClient): A client that manages Wyze events
         locks (LocksClient): A client that services Wyze locks
@@ -101,7 +101,7 @@ class Client(object):
         return PlugsClient(token=self._token, base_url=self._base_url)
 
     @property
-    def contact_sensors(self) -> ContactSensorsClient:
+    def entry_sensors(self) -> ContactSensorsClient:
         return ContactSensorsClient(token=self._token, base_url=self._base_url)
 
     @property
@@ -178,7 +178,7 @@ class Client(object):
     def devices_list(self, **kwargs) -> Sequence[Device]:
         """List the devices available to the current user
         """
-        return [Device(**device) for device in self._api_client().get_object_list()["data"]["device_list"]]
+        return [DeviceParser.parse(device) for device in self._api_client().get_object_list()["data"]["device_list"]]
 
     def user_get_profile(self) -> WyzeResponse:
         """Retrieve the current user's profile

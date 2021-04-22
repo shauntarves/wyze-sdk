@@ -99,64 +99,34 @@ class WyzeResponse:
         if (
             self.status_code == 200
             and self.data
-            and (isinstance(self.data, bytes) or int(self.data.get("code", 1)) == 1)
+            and isinstance(self.data, bytes)
         ):
             return self
 
-            # if 'code' in response_json:
-            #     response_code = response_json['code']
+        response_code = int(self.data.get("code", self.data.get("errorCode", 1))) if self.data else None
+        self._logger.debug(f"response code: {response_code}")
 
-            #     if isinstance(response_code, int):
-            #         response_code = str(response_code)
+        if response_code == 1:
+            return self
 
-            #     if response_code != '1' and 'msg' in response_json and response_json[
-            #             'msg'] == 'AccessTokenError':
-            #         self._logger.warning(
-            #             "The access token has expired. Please refresh the token and try again.")
-            #         raise ProviderConnectionException(
-            #             "Failed to login with response: {0}".format(response_json))
-            #     if response_code != '1' and 'msg' in response_json and response_json[
-            #             'msg'] == "UserIsLocked":
-            #         self._logger.warning(
-            #             "The user account is locked. Please resolve this issue and try again.")
-            #         raise ProviderConnectionException(
-            #             "Failed to login with response: {0}".format(response_json))
-            #     if response_code != '1' and 'msg' in response_json and response_json[
-            #             'msg'] == "UserNameOrPasswordError":
-            #         self._logger.warning(
-            #             "The username or password is incorrect. Please check your credentials and try again.")
-            #         raise ProviderConnectionException(
-            #             "Failed to login with response: {0}".format(response_json))
-            #     if response_code == '1001':
-            #         self._logger.error(
-            #             "Request to: {} does not respond to parameters in payload {} and gave a result of {}".format(
-            #                 request.url, request.body, response_json))
-            #         raise ProviderInternalException(
-            #             "Parameters passed to Wyze Service do not fit the endpoint")
-            #     if response_code == '1003':
-            #         # FIXME what do I mean?
-            #         self._logger.error(
-            #             "Request to: {} does not respond to parameters in payload {} and gave a result of {}".format(
-            #                 request.url, request.body, response_json))
-            #         raise ProviderInternalException(
-            #             "Parameters passed to Wyze Service do not fit the endpoint")
-            #     if response_code == '1004':
-            #         self._logger.error(
-            #             "Request to: {} does not have the correct signature2 of {} and gave a result of {}".format(
-            #                 request.url, request.headers.signature2, response_json))
-            #         raise ProviderInternalException(
-            #             "Parameters passed to Wyze Service do not fit the endpoint")
-            #     if response_code == '2001':
-            #            self._logger.warning(
-            #            "The access token has expired. Please refresh the token and try again.")
-            #         raise ProviderConnectionException(
-            #             "Failed to login with response: {0}".format(response_json))
-            #     if response_code != '1':
-            #         print(type(response_code))
-            #         self._logger.error(
-            #             "Request to: {} failed with payload: {} with result of {}".format(
-            #                 request.url, request.body, response_json))
-            #         raise ProviderInternalException(
-            #             "Failed to connect to the Wyze Service")
-        msg = "The request to the Wyze API failed."
-        raise e.WyzeApiError(message=msg, response=self)
+        msg = self.data.get("msg", self.data.get("description", ""))
+        self._logger.debug(f"msg: {msg}")
+        message = "The request to the Wyze API failed."
+
+        if response_code == 1000:
+            if "Too many failed attempts" in msg:
+                message = "The user account has too many failed login attempts. Please wait a bit and try again."
+            elif "Invalid User Name or Password" in msg:
+                message = "The username or password is incorrect. Please check your credentials and try again."
+        elif response_code in [1001, 1004]:
+            message = "Parameters passed to Wyze Service do not fit the endpoint"
+        elif response_code == [1003, 2001]:
+            message = "Unknown request error"  # FIXME what do I mean?
+        elif msg == 'AccessTokenError':
+            message = "The access token has expired. Please refresh the token and try again."
+        elif msg == 'UserIsLocked':
+            message = "The user account is locked. Please resolve this issue and try again."
+        elif msg == 'UserNameOrPasswordError':
+            message = "The username or password is incorrect. Please check your credentials and try again."
+
+        raise e.WyzeApiError(message, self.data)

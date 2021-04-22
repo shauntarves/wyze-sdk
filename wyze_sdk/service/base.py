@@ -4,6 +4,7 @@ import sys
 import time
 import uuid
 from abc import ABCMeta
+from contextlib import suppress
 from json import dumps
 from typing import Dict, Optional, Union
 from urllib.parse import urljoin
@@ -76,7 +77,7 @@ class BaseServiceClient(metaclass=ABCMeta):
             self,
             session: requests.Session,
             request: requests.Request) -> WyzeResponse:
-        try:
+        with suppress(requests.exceptions.HTTPError, requests.exceptions.RequestException, ValueError):
             self._logger.info(f"requesting {request.method} to {request.url}")
             self._logger.debug(f"headers: {request.headers}")
             self._logger.debug(f"body: {request.body}")
@@ -87,23 +88,15 @@ class BaseServiceClient(metaclass=ABCMeta):
 
             response = session.send(request, **settings)
 
-            response.raise_for_status()
-
-            # Code here will only run if the request is successful
-            response_json = response.json()
-
             return WyzeResponse(
                 client=self,
                 http_verb=request.method,
                 api_url=request.url,
                 req_args=request.body,
-                data=response_json,
+                data=response.json(),
                 headers=response.headers,
                 status_code=response.status_code,
             ).validate()
-        except (requests.exceptions.HTTPError, requests.exceptions.RequestException) as request_exception:
-            self._logger.exception(request_exception)
-            raise WyzeRequestError(request_exception)
 
     def do_post(self, url: str, headers: dict, payload: dict) -> WyzeResponse:
         with requests.Session() as client:
