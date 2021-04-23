@@ -1,5 +1,6 @@
 from typing import (Optional, Set, Union)
 
+from wyze_sdk.errors import WyzeFeatureNotSupportedError
 from wyze_sdk.models import (PropDef, show_unknown_key_warning)
 from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice, DeviceProp, DeviceProps, SwitchableMixin)
 
@@ -124,6 +125,10 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
             value = DeviceProp(definition=BulbProps.power_loss_recovery, value=value)
         self._power_loss_recovery = value
 
+    @property
+    def color(self) -> str:
+        raise WyzeFeatureNotSupportedError("color")
+
     @classmethod
     def parse(cls, device: Union[dict, "Bulb"]) -> Optional["Bulb"]:
         if device is None:
@@ -165,7 +170,7 @@ class MeshBulb(Bulb):
 
     @property
     def color(self) -> str:
-        return "" if self._color is None else self._color.value
+        return None if self._color is None else self._color.value
 
     @color.setter
     def color(self, value: Union[str, DeviceProp]):

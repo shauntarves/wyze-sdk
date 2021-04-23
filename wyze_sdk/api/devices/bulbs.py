@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Optional, Sequence, Union
 
 from wyze_sdk.errors import WyzeFeatureNotSupportedError
