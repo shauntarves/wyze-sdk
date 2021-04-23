@@ -95,11 +95,11 @@ try:
   print(f"online: {plug.is_online}")
 
   if plug.is_on:
-    client.plug.turn_off(device_mac=plug.mac, device_model=plug.product.model, after=timedelta(hours=3))
+    client.plugs.turn_off(device_mac=plug.mac, device_model=plug.product.model, after=timedelta(hours=3))
   else:
-    client.plug.turn_on(device_mac=plug.mac, device_model=plug.product.model)
+    client.plugs.turn_on(device_mac=plug.mac, device_model=plug.product.model)
 
-    plug = client.plug.info(device_mac=plug.mac)
+    plug = client.plugs.info(device_mac=plug.mac)
     assert plug.is_on is True
 except WyzeApiError as e:
     # You will get a WyzeApiError is the request failed

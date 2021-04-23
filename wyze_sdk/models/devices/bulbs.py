@@ -52,7 +52,7 @@ class BulbProps(object):
 
 class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
 
-    type = "Bulb"
+    type = "Light"
 
     @property
     def attributes(self) -> Set[str]:
@@ -126,22 +126,22 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
 
     @classmethod
     def parse(cls, device: Union[dict, "Bulb"]) -> Optional["Bulb"]:
-        if device is None:  # skipcq: PYL-R1705
+        if device is None:
             return None
         elif isinstance(device, Bulb):
             return device
         else:
             if "product_type" in device:
-                type = device["product_type"]  # skipcq: PYL-W0622
-                if type == Bulb.type:  # skipcq: PYL-R1705
+                type = device["product_type"]
+                if type == Bulb.type:
                     return Bulb(**device)
-                elif type == MeshBulb.type:  # skipcq: PYL-R1705
+                elif type == MeshBulb.type:
                     return MeshBulb(**device)
                 else:
-                    cls.logger.warning(f"Unknown bulb detected and skipped ({device})")
-                    return None
+                    cls.logger.warning(f"Unknown bulb type detected ({device})")
+                    return Bulb(**device)
             else:
-                cls.logger.warning(f"Unknown bulb detected and skipped ({device})")
+                cls.logger.warning(f"Unknown device detected and skipped ({device})")
                 return None
 
 

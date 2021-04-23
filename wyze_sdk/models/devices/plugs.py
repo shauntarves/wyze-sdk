@@ -83,10 +83,10 @@ class Plug(SwitchableMixin, AbstractWirelessNetworkedDevice):
                 elif type == OutdoorPlug.type:
                     return OutdoorPlug(**device)
                 else:
-                    cls.logger.warning(f"Unknown plug detected and skipped ({device})")
-                    return None
+                    cls.logger.warning(f"Unknown plug detected ({device})")
+                    return Plug(**device)
             else:
-                cls.logger.warning(f"Unknown plug detected and skipped ({device})")
+                cls.logger.warning(f"Unknown device detected and skipped ({device})")
                 return None
 
 

@@ -42,10 +42,10 @@ class DeviceParser(object):
                     return MeshBulb(**device)
                 elif type == MotionSensor.type:
                     return MotionSensor(**device)
-                elif type == Plug.type:
-                    return Plug(**device)
                 elif type == OutdoorPlug.type:
                     return OutdoorPlug(**device)
+                elif type == Plug.type:
+                    return Plug(**device)
                 elif type == Scale.type or type in DeviceModels.SCALE:
                     return Scale(**device)
                 elif type == Thermostat.type or type in DeviceModels.THERMOSTAT:
@@ -53,8 +53,8 @@ class DeviceParser(object):
                 elif type == Vacuum.type or type in DeviceModels.VACUUM:
                     return Vacuum(**device)
                 else:
-                    cls._logger.warning(f"Unknown device detected and skipped ({device})")
-                    return None
+                    cls._logger.warning(f"Unknown device type detected ({device})")
+                    return Device(**device)
             else:
                 cls._logger.warning(f"Unknown device detected and skipped ({device})")
                 return None

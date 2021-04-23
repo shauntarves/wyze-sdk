@@ -90,7 +90,7 @@ class BulbsClient(BaseClient):
             return super()._api_client().set_device_property(
                 mac=device_mac, model=device_model, pid=prop_def.pid, value=1)
 
-        return super()._api_client().set_device_timer(mac=device_mac, plan_execute_ts=datetime.now() + after, action_type=1, action_value=1)
+        return super()._api_client().set_device_timer(mac=device_mac, delay_time=after.seconds, action_type=1, action_value=1)
 
     def turn_off(self, *, device_mac: str, device_model: str, after: Optional[timedelta] = None, **kwargs) -> WyzeResponse:
         """Turns off a bulb.
@@ -117,7 +117,7 @@ class BulbsClient(BaseClient):
             return super()._api_client().set_device_property(
                 mac=device_mac, model=device_model, pid=prop_def.pid, value=0)
 
-        return super()._api_client().set_device_timer(mac=device_mac, plan_execute_ts=datetime.now() + after, action_type=1, action_value=0)
+        return super()._api_client().set_device_timer(mac=device_mac, delay_time=after.seconds, action_type=1, action_value=0)
 
     def set_brightness(self, *, device_mac: str, device_model: str, brightness: int, **kwargs) -> WyzeResponse:
         """Sets the brightness of a bulb.

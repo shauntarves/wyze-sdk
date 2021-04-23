@@ -88,7 +88,7 @@ class PlugsClient(BaseClient):
             return super()._api_client().set_device_property(
                 mac=device_mac, model=device_model, pid=prop_def.pid, value=0)
 
-        return super()._api_client().set_device_timer(mac=device_mac, plan_execute_ts=datetime.now() + after, action_type=1, action_value=0)
+        return super()._api_client().set_device_timer(mac=device_mac, delay_time=after.seconds, action_type=1, action_value=0)
 
     def clear_timer(self, *, device_mac: str, **kwargs) -> WyzeResponse:
         """Clears any existing power state timer on the plug.

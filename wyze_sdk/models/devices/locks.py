@@ -324,4 +324,5 @@ class LockGateway(AbstractWirelessNetworkedDevice):
 
     @locks.setter
     def locks(self, value: Sequence[dict]):
-        self._locks = [Lock(**lock) for lock in value]
+        if value is not None:
+            self._locks = [Lock(**lock) for lock in value]
