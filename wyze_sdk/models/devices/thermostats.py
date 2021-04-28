@@ -219,6 +219,8 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
 
     @fan_mode.setter
     def fan_mode(self, value: Union[str, DeviceProp]):
+        if value is None:
+            return
         if isinstance(value, str):
             value = DeviceProp(definition=ThermostatProps.fan_mode, value=value)
         self._fan_mode = ThermostatFanMode.parse(value.value)
@@ -229,6 +231,8 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
 
     @system_mode.setter
     def system_mode(self, value: Union[str, DeviceProp]):
+        if value is None:
+            return
         if isinstance(value, str):
             value = DeviceProp(definition=ThermostatProps.system_mode, value=value)
         self._system_mode = ThermostatSystemMode.parse(value.value)
@@ -239,6 +243,8 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
 
     @current_scenario.setter
     def current_scenario(self, value: Union[str, DeviceProp]):
+        if value is None:
+            return
         if isinstance(value, str):
             value = DeviceProp(definition=ThermostatProps.current_scenario, value=value)
         self._current_scenario = ThermostatScenarioType.parse(value.value)
