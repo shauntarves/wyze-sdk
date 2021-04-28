@@ -12,12 +12,12 @@ class LockProps(object):
     @classmethod
     @property
     def lock_state(cls) -> PropDef:
-        return PropDef("switch_state", bool, str)
+        return PropDef("switch_state", bool, int)
 
     @classmethod
     @property
     def open_close_state(cls) -> PropDef:
-        return PropDef("open_close_state", bool, str)
+        return PropDef("open_close_state", bool, int)
 
 
 class LockEventType(Enum):
@@ -275,6 +275,11 @@ class Lock(LockableMixin, ContactMixin, Device):
     @property
     def record_count(self) -> int:
         return self._record_count
+
+    @property
+    def is_locked(self) -> bool:
+        # locks use switch_state = 0 to indicate locked
+        return not self.lock_state
 
 
 class LockGateway(AbstractWirelessNetworkedDevice):

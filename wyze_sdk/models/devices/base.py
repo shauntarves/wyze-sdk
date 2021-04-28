@@ -327,6 +327,8 @@ class Device(JsonObject):
                 return self._extract_property(prop_def=prop_def, others=others['props'])
             if 'property_list' in others:
                 return self._extract_property(prop_def=prop_def, others=others['property_list'])
+            if 'device_params' in others:
+                return self._extract_property(prop_def=prop_def, others=others['device_params'])
             self.logger.debug(prop_def.pid)
             for key, value in others.items():
                 self.logger.debug(f"key: {key}, value: {value}")
