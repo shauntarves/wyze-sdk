@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import (Optional, Set, Union)
 
 from wyze_sdk.errors import WyzeFeatureNotSupportedError
@@ -11,42 +13,34 @@ class BulbProps(object):
     """
 
     @classmethod
-    @property
     def away_mode(cls) -> PropDef:
         return PropDef("P1506", bool, int, [0, 1])
 
     @classmethod
-    @property
     def power_loss_recovery(cls) -> PropDef:
         return PropDef("P1509", bool, int, [0, 1])
 
     @classmethod
-    @property
     def brightness(cls) -> PropDef:
         return PropDef("P1501", int, acceptable_values=range(0, 100 + 1))
 
     @classmethod
-    @property
     def color_temp(cls) -> PropDef:
         return PropDef("P1502", int, acceptable_values=range(2700, 6500 + 1))
 
     @classmethod
-    @property
     def color(cls) -> PropDef:
         return PropDef("P1507", str)
 
     @classmethod
-    @property
     def remaining_time(cls) -> PropDef:
         return PropDef("P1505", int)
 
     @classmethod
-    @property
     def control_light(cls) -> PropDef:
         return PropDef("P1508", bool, int, [0, 1])
 
     @classmethod
-    @property
     def delay_off(cls) -> PropDef:
         return PropDef("P1510", bool, int, [0, 1])
 
@@ -78,11 +72,11 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
         **others: dict,
     ):
         super().__init__(type=type, **others)
-        self.switch_state = self._extract_property(DeviceProps.power_state, others)
-        self.brightness = super()._extract_property(BulbProps.brightness, others)
-        self.color_temp = super()._extract_property(BulbProps.color_temp, others)
-        self.away_mode = super()._extract_property(BulbProps.away_mode, others)
-        self.power_loss_recovery = super()._extract_property(BulbProps.power_loss_recovery, others)
+        self.switch_state = self._extract_property(DeviceProps.power_state(), others)
+        self.brightness = super()._extract_property(BulbProps.brightness(), others)
+        self.color_temp = super()._extract_property(BulbProps.color_temp(), others)
+        self.away_mode = super()._extract_property(BulbProps.away_mode(), others)
+        self.power_loss_recovery = super()._extract_property(BulbProps.power_loss_recovery(), others)
         show_unknown_key_warning(self, others)
 
     @property
@@ -92,7 +86,7 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
     @brightness.setter
     def brightness(self, value: Union[int, DeviceProp]):
         if isinstance(value, int):
-            value = DeviceProp(definition=BulbProps.brightness, value=value)
+            value = DeviceProp(definition=BulbProps.brightness(), value=value)
         self._brightness = value
 
     @property
@@ -102,7 +96,7 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
     @color_temp.setter
     def color_temp(self, value: Union[int, DeviceProp]):
         if isinstance(value, int):
-            value = DeviceProp(definition=BulbProps.color_temp, value=value)
+            value = DeviceProp(definition=BulbProps.color_temp(), value=value)
         self._color_temp = value
 
     @property
@@ -112,7 +106,7 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
     @away_mode.setter
     def away_mode(self, value: Union[int, DeviceProp]):
         if isinstance(value, int):
-            value = DeviceProp(definition=BulbProps.away_mode, value=value)
+            value = DeviceProp(definition=BulbProps.away_mode(), value=value)
         self._away_mode = value
 
     @property
@@ -122,7 +116,7 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
     @power_loss_recovery.setter
     def power_loss_recovery(self, value: Union[int, DeviceProp]):
         if isinstance(value, int):
-            value = DeviceProp(definition=BulbProps.power_loss_recovery, value=value)
+            value = DeviceProp(definition=BulbProps.power_loss_recovery(), value=value)
         self._power_loss_recovery = value
 
     @property
@@ -165,7 +159,7 @@ class MeshBulb(Bulb):
         **others: dict,
     ):
         super().__init__(type=self.type, **others)
-        self.color = super()._extract_property(BulbProps.color, others)
+        self.color = super()._extract_property(BulbProps.color(), others)
         show_unknown_key_warning(self, others)
 
     @property
@@ -175,15 +169,15 @@ class MeshBulb(Bulb):
     @color.setter
     def color(self, value: Union[str, DeviceProp]):
         if isinstance(value, str):
-            value = DeviceProp(definition=BulbProps.color, value=value)
+            value = DeviceProp(definition=BulbProps.color(), value=value)
         self._color = value
 
     @classmethod
     def props(cls) -> dict[str, PropDef]:
         return {**Bulb.props(), **{
-            "color": BulbProps.color,
-            "remaining_time": BulbProps.remaining_time,
-            "control_light": BulbProps.control_light,
-            "power_loss_recovery": BulbProps.power_loss_recovery,  # remember_off
-            "delay_off": BulbProps.delay_off,
+            "color": BulbProps.color()(),
+            "remaining_time": BulbProps.remaining_time(),
+            "control_light": BulbProps.control_light(),
+            "power_loss_recovery": BulbProps.power_loss_recovery(),  # remember_off
+            "delay_off": BulbProps.delay_off(),
         }}

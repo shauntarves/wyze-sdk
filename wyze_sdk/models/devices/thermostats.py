@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from enum import Enum
 from typing import (Optional, Set, Union)
 
@@ -9,62 +11,50 @@ from .base import (AbstractWirelessNetworkedDevice, ClimateMixin, DeviceProp, Lo
 class ThermostatProps(object):
 
     @classmethod
-    @property
     def temperature(cls) -> PropDef:
         return PropDef("temperature", float)
 
     @classmethod
-    @property
     def time_to_temp(cls) -> PropDef:
         return PropDef("time2temp_val", int)  # in minutes
 
     @classmethod
-    @property
     def humidity(cls) -> PropDef:
         return PropDef("humidity", int)
 
     @classmethod
-    @property
     def fan_mode(cls) -> PropDef:
         return PropDef("fan_mode", str)
 
     @classmethod
-    @property
     def system_mode(cls) -> PropDef:
         return PropDef("mode_sys", str)
 
     @classmethod
-    @property
     def locked(cls) -> PropDef:
         return PropDef("kid_lock", bool, str, ['0', '1'])
 
     @classmethod
-    @property
     def heating_setpoint(cls) -> PropDef:
         return PropDef("heat_sp", int, str)
 
     @classmethod
-    @property
     def cooling_setpoint(cls) -> PropDef:
         return PropDef("cool_sp", int, str)
 
     @classmethod
-    @property
     def current_scenario(cls) -> PropDef:
         return PropDef("current_scenario", str)
 
     @classmethod
-    @property
     def working_state(cls) -> PropDef:
         return PropDef("working_state", str)
 
     @classmethod
-    @property
     def auto_switch(cls) -> PropDef:
         return PropDef("auto_switch_mode", int)
 
     @classmethod
-    @property
     def temperature_unit(cls) -> PropDef:
         return PropDef("temp_unit", str, acceptable_values=['F', 'C'])
 
@@ -151,22 +141,22 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
         return {
             "trigger_off_val": PropDef("trigger_off_val", int),
             "emheat": PropDef("emheat", int),
-            "temperature": ThermostatProps.temperature,
-            "humidity": ThermostatProps.humidity,
-            "time2temp_val": ThermostatProps.time_to_temp,
+            "temperature": ThermostatProps.temperature(),
+            "humidity": ThermostatProps.humidity(),
+            "time2temp_val": ThermostatProps.time_to_temp(),
             "protect_time": PropDef("protect_time", str),
-            "system_mode": ThermostatProps.system_mode,
-            "heating_setpoint": ThermostatProps.heating_setpoint,
-            "cooling_setpoint": ThermostatProps.cooling_setpoint,
-            "current_scenario": ThermostatProps.current_scenario,
+            "system_mode": ThermostatProps.system_mode(),
+            "heating_setpoint": ThermostatProps.heating_setpoint(),
+            "cooling_setpoint": ThermostatProps.cooling_setpoint(),
+            "current_scenario": ThermostatProps.current_scenario(),
             "config_scenario": PropDef("config_scenario", dict),
-            "temp_unit": ThermostatProps.temperature_unit,
-            "fan_mode": ThermostatProps.fan_mode,
+            "temp_unit": ThermostatProps.temperature_unit(),
+            "fan_mode": ThermostatProps.fan_mode(),
             "iot_state": PropDef("iot_state", str),
             "w_city_id": PropDef("w_city_id", int),
             "w_lat": PropDef("w_lat", int),
             "w_lon": PropDef("w_lon", int),
-            "working_state": ThermostatProps.working_state,
+            "working_state": ThermostatProps.working_state(),
             "device_hold": PropDef("dev_hold", int),
             "device_hold_time": PropDef("dev_holdtime", int),
             "asw_hold": PropDef("asw_hold", int),
@@ -174,7 +164,7 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
             "setup_state": PropDef("setup_state", int),
             "wiring_logic_id": PropDef("wiring_logic_id", int),
             "save_comfort_balance": PropDef("save_comfort_balance", int),
-            "locked": ThermostatProps.locked,
+            "locked": ThermostatProps.locked(),
             "calibrate_humidity": PropDef("calibrate_humidity", str),
             "calibrate_temperature": PropDef("calibrate_temperature", str),
             "fancirc_time": PropDef("fancirc_time", str),
@@ -184,7 +174,7 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
     @classmethod
     def device_info_props(cls) -> dict[str, PropDef]:
         return {
-            "auto_switch_mode": ThermostatProps.auto_switch,
+            "auto_switch_mode": ThermostatProps.auto_switch(),
             "setup_is_have_cadapter": PropDef("setup_is_have_cadapter", str),
             "setup_personalization_state": PropDef("setup_personalization_state", str),
             "setup_step": PropDef("setup_step", str),
@@ -196,17 +186,17 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
 
     def __init__(self, **others: dict):
         super().__init__(type=self.type, **others)
-        self._humidity = super()._extract_attribute(ThermostatProps.humidity.pid, others)
-        self._temperature = super()._extract_attribute(ThermostatProps.temperature.pid, others)
-        self._cooling_setpoint = super()._extract_attribute(ThermostatProps.cooling_setpoint.pid, others)
-        self._heating_setpoint = super()._extract_attribute(ThermostatProps.heating_setpoint.pid, others)
-        self.fan_mode = super()._extract_property(ThermostatProps.fan_mode, others)
-        self.system_mode = super()._extract_property(ThermostatProps.system_mode, others)
-        self.working_state = super()._extract_attribute(ThermostatProps.working_state.pid, others)
-        self.auto_switch_mode = super()._extract_attribute(ThermostatProps.auto_switch.pid, others)
-        self.lock_state = super()._extract_property(ThermostatProps.locked, others)
-        self._temperature_unit = super()._extract_attribute(ThermostatProps.temperature_unit.pid, others)
-        self.current_scenario = super()._extract_property(ThermostatProps.current_scenario, others)
+        self._humidity = super()._extract_attribute(ThermostatProps.humidity().pid, others)
+        self._temperature = super()._extract_attribute(ThermostatProps.temperature().pid, others)
+        self._cooling_setpoint = super()._extract_attribute(ThermostatProps.cooling_setpoint().pid, others)
+        self._heating_setpoint = super()._extract_attribute(ThermostatProps.heating_setpoint().pid, others)
+        self.fan_mode = super()._extract_property(ThermostatProps.fan_mode(), others)
+        self.system_mode = super()._extract_property(ThermostatProps.system_mode(), others)
+        self.working_state = super()._extract_attribute(ThermostatProps.working_state().pid, others)
+        self.auto_switch_mode = super()._extract_attribute(ThermostatProps.auto_switch().pid, others)
+        self.lock_state = super()._extract_property(ThermostatProps.locked(), others)
+        self._temperature_unit = super()._extract_attribute(ThermostatProps.temperature_unit().pid, others)
+        self.current_scenario = super()._extract_property(ThermostatProps.current_scenario(), others)
         show_unknown_key_warning(self, others)
 
     @property
@@ -222,7 +212,7 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
         if value is None:
             return
         if isinstance(value, str):
-            value = DeviceProp(definition=ThermostatProps.fan_mode, value=value)
+            value = DeviceProp(definition=ThermostatProps.fan_mode(), value=value)
         self._fan_mode = ThermostatFanMode.parse(value.value)
 
     @property
@@ -234,7 +224,7 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
         if value is None:
             return
         if isinstance(value, str):
-            value = DeviceProp(definition=ThermostatProps.system_mode, value=value)
+            value = DeviceProp(definition=ThermostatProps.system_mode(), value=value)
         self._system_mode = ThermostatSystemMode.parse(value.value)
 
     @property
@@ -246,7 +236,7 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
         if value is None:
             return
         if isinstance(value, str):
-            value = DeviceProp(definition=ThermostatProps.current_scenario, value=value)
+            value = DeviceProp(definition=ThermostatProps.current_scenario(), value=value)
         self._current_scenario = ThermostatScenarioType.parse(value.value)
 
     @property

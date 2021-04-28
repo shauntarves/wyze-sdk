@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 from enum import Enum
 import logging
@@ -11,27 +13,22 @@ from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice, DeviceProp
 class VacuumProps(object):
 
     @classmethod
-    @property
     def clean_level(cls) -> PropDef:
         return PropDef("cleanlevel", str)
 
     @classmethod
-    @property
     def sweep_record_clean_time(cls) -> PropDef:
         return PropDef("clean_time", int)
 
     @classmethod
-    @property
     def sweep_record_clean_size(cls) -> PropDef:
         return PropDef("clean_size", int)
 
     @classmethod
-    @property
     def mode(cls) -> PropDef:
         return PropDef("mode", int)
 
     @classmethod
-    @property
     def battery(cls) -> PropDef:
         return PropDef("battary", int)  # typo required
 
@@ -460,7 +457,7 @@ class VacuumSweepRecord(JsonObject):
     @clean_time.setter
     def clean_time(self, value: Union[int, DeviceProp]):
         if isinstance(value, int):
-            value = DeviceProp(definition=VacuumProps.sweep_record_clean_time, value=value)
+            value = DeviceProp(definition=VacuumProps.sweep_record_clean_time(), value=value)
         self._clean_time = value
 
     @property
@@ -477,7 +474,7 @@ class VacuumSweepRecord(JsonObject):
     @clean_size.setter
     def clean_size(self, value: Union[int, DeviceProp]):
         if isinstance(value, int):
-            value = DeviceProp(definition=VacuumProps.sweep_record_clean_size, value=value)
+            value = DeviceProp(definition=VacuumProps.sweep_record_clean_size(), value=value)
         self._clean_size = value
 
     @property
@@ -509,8 +506,8 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
     def props(cls) -> dict[str, PropDef]:
         return {
             "iot_state": PropDef("iot_state", str),
-            "battery": VacuumProps.battery,
-            "mode": VacuumProps.mode,
+            "battery": VacuumProps.battery(),
+            "mode": VacuumProps.mode(),
             "charge_state": PropDef("chargeState", int),
             "clean_size": PropDef("cleanSize", int),
             "clean_time": PropDef("cleanTime", int),
@@ -518,7 +515,7 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
             "fault_code": PropDef("fault_code", int),
             "current_map_id": PropDef("current_mapid", int),
             "count": PropDef("count", int),
-            "clean_level": VacuumProps.clean_level,
+            "clean_level": VacuumProps.clean_level(),
             "notice_save_map": PropDef("notice_save_map", bool),
             "memory_map_update_time": PropDef("memory_map_update_time", int),
         }
@@ -537,9 +534,9 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
         **others: dict,
     ):
         super().__init__(type=self.type, **others)
-        self.voltage = super()._extract_property(VacuumProps.battery, others)
-        self.mode = super()._extract_attribute('mode' if "mode" in others else VacuumProps.mode.pid, others)
-        self.clean_level = super()._extract_attribute('clean_level' if "clean_level" in others else VacuumProps.clean_level.pid, others)
+        self.voltage = super()._extract_property(VacuumProps.battery(), others)
+        self.mode = super()._extract_attribute('mode' if "mode" in others else VacuumProps.mode().pid, others)
+        self.clean_level = super()._extract_attribute('clean_level' if "clean_level" in others else VacuumProps.clean_level().pid, others)
         self._current_map = VacuumMap(**super()._extract_attribute('current_map', others)) if "current_map" in others else None
         self.current_position = super()._extract_attribute('current_position', others)
         show_unknown_key_warning(self, others)
@@ -575,7 +572,7 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
         if value is None:
             return
         if isinstance(value, int):
-            value = DeviceProp(definition=VacuumProps.mode, value=value)
+            value = DeviceProp(definition=VacuumProps.mode(), value=value)
         self._mode = VacuumMode.parse(code=value.value)
 
     @property
@@ -587,5 +584,5 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
         if value is None:
             return
         if isinstance(value, (str, int)):
-            value = DeviceProp(definition=VacuumProps.clean_level, value=value)
+            value = DeviceProp(definition=VacuumProps.clean_level(), value=value)
         self._clean_level = VacuumSuctionLevel.parse(code=value.value)

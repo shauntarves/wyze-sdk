@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "14381b2f1b76b1eed1b442911b4ff2a3965f39b8a4441eab75d041da9e865f97"
+            "sha256": "0b69dab2aa50897c3137af6645b90ea247234d76acd53dd164bc478c0e14d56b"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.9"
+            "python_version": "3.8"
         },
         "sources": [
             {
@@ -48,7 +48,7 @@
         },
         "iniconfig": {
             "path": ".",
-            "version": "==0.0.1"
+            "version": "==1.1.0"
         },
         "protobuf": {
             "hashes": [

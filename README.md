@@ -28,7 +28,7 @@ The **Python Wyze SDK** allows interaction with:
 
 ---
 
-This library requires Python 3.9 and above. If you're unsure how to check what version of Python you're on, you can check it using the following:
+This library requires Python 3.8 and above. If you're unsure how to check what version of Python you're on, you can check it using the following:
 
 > **Note:** You may need to use `python3` before your commands to ensure you use the correct Python path. e.g. `python3 --version`
 

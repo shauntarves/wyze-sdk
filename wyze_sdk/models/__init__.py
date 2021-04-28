@@ -1,5 +1,7 @@
 """Classes for constructing Wyze-specific data strtucture"""
 
+from __future__ import annotations
+
 import distutils.util
 import logging
 from abc import ABCMeta, abstractmethod

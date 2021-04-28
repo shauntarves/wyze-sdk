@@ -30,7 +30,7 @@ setup(
     url="https://github.com/shauntarves/wyze-sdk",
     author='Shaun Tarves',
     author_email='shaun@tarves.net',
-    python_requires=">=3.9.0",
+    python_requires=">=3.8.0",
     include_package_data=True,
     license="The Unlicense",
     classifiers=[
@@ -43,7 +43,8 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         "Topic :: Home Automation",
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.9'
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
     keywords=["wyze", "wyze-labs", "wyze-sdk", "wyze-api", "wyzeapy", "wyze-apy", "smart home", "home automation"],
     packages=find_packages(

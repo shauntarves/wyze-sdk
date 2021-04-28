@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import (Optional, Sequence, Set)
 
 from wyze_sdk.models import (PropDef, show_unknown_key_warning)
@@ -75,87 +77,70 @@ class CameraProps(object):
     """
 
     @classmethod
-    @property
     def event_switch(cls) -> PropDef:
         return PropDef("P4", int, [0, 1])
 
     @classmethod
-    @property
     def dongle_light_switch(cls) -> PropDef:
         return PropDef("P1021", int, [0, 1])
 
     @classmethod
-    @property
     def motion_alarm_enable(cls) -> PropDef:
         return PropDef("P1047", int, [0, 1])
 
     @classmethod
-    @property
     def sound_alarm_enable(cls) -> PropDef:
         return PropDef("P1048", int, [0, 1])
 
     @classmethod
-    @property
     def power_switch(cls) -> PropDef:
         return PropDef("power_switch", int, [0, 1])
 
     @classmethod
-    @property
     def temperature(cls) -> PropDef:
         return PropDef("temperature", float)
 
     @classmethod
-    @property
     def humidity(cls) -> PropDef:
         return PropDef("humidity", float)
 
     @classmethod
-    @property
     def comfort_standard_level(cls) -> PropDef:
         return PropDef("comfort_standard_level", int)
 
     @classmethod
-    @property
     def room_type(cls) -> PropDef:
         return PropDef("temp_humi_room_type", int)
 
     @classmethod
-    @property
     def supports_continuous_record(cls) -> PropDef:
         return PropDef("records_event_switch", bool, int, [0, 1])
 
     @classmethod
-    @property
     def suppprts_motion_alarm(cls) -> PropDef:
         return PropDef("motion_alarm_switch", bool, int, [0, 1])
 
     @classmethod
-    @property
     def suppprts_temperature_humidity(cls) -> PropDef:
         return PropDef("is_temperature_humidity", bool, int, [0, 1])
 
     @classmethod
-    @property
     def suppprts_audio_alarm(cls) -> PropDef:
         return PropDef("audio_alarm_switch", bool, int, [0, 1])
 
     @classmethod
-    @property
     def suppprts_smoke_alarm(cls) -> PropDef:
         return PropDef("smoke_alarm_switch", bool, int, [0, 1])
 
     @classmethod
-    @property
     def suppprts_co_alarm(cls) -> PropDef:
         return PropDef("co_alarm_switch", bool, int, [0, 1])
 
     @classmethod
-    @property
     def voltage(cls) -> PropDef:
         return PropDef("electricity", int)
 
     @classmethod
-    @property
     def battery_charging(cls) -> PropDef:
         return PropDef("battery_charging_status", int)
 
@@ -190,14 +175,14 @@ class Camera(ClimateMixin, MotionMixin, VoltageMixin, SwitchableMixin, AbstractW
         **others: dict
     ):
         super().__init__(type=self.type, **others)
-        self.switch_state = super()._extract_property(DeviceProps.power_state, others)
+        self.switch_state = super()._extract_property(DeviceProps.power_state(), others)
         self._temperature = super()._extract_attribute('temperature', others)
         self._humidity = super()._extract_attribute('humidity', others)
-        self._voltage = super()._extract_property(CameraProps.voltage, others)
-        self._supports_audio_alarm = super()._extract_property(CameraProps.suppprts_audio_alarm, others)
-        self._supports_co_alarm = super()._extract_property(CameraProps.suppprts_co_alarm, others)
-        self._supports_motion_alarm = super()._extract_property(CameraProps.suppprts_motion_alarm, others)
-        self._suppprts_smoke_alarm = super()._extract_property(CameraProps.suppprts_smoke_alarm, others)
+        self._voltage = super()._extract_property(CameraProps.voltage(), others)
+        self._supports_audio_alarm = super()._extract_property(CameraProps.suppprts_audio_alarm(), others)
+        self._supports_co_alarm = super()._extract_property(CameraProps.suppprts_co_alarm(), others)
+        self._supports_motion_alarm = super()._extract_property(CameraProps.suppprts_motion_alarm(), others)
+        self._suppprts_smoke_alarm = super()._extract_property(CameraProps.suppprts_smoke_alarm(), others)
         if event_list is not None:
             self.latest_events = event_list
         show_unknown_key_warning(self, others)

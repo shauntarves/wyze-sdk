@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 from typing import (Optional, Sequence, Set, Union)
 
@@ -8,7 +10,6 @@ from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice, DeviceProp
 class ScaleProps(object):
 
     @classmethod
-    @property
     def unit(cls) -> PropDef:
         return PropDef('unit', str, acceptable_values=['kg', 'lb'])
 
@@ -173,7 +174,7 @@ class Scale(AbstractWirelessNetworkedDevice):
         **others: dict,
     ):
         super().__init__(type=self.type, **others)
-        self.unit = unit if unit else super()._extract_property(ScaleProps.unit, others)
+        self.unit = unit if unit else super()._extract_property(ScaleProps.unit(), others)
         self._broadcast = super()._extract_attribute('broadcast', others)
         self.goal_weight = goal_weight
         latest_records = latest_records if latest_records is not None else super()._extract_attribute('latest_records', others)
@@ -189,7 +190,7 @@ class Scale(AbstractWirelessNetworkedDevice):
     @unit.setter
     def unit(self, value: Union[str, DeviceProp]):
         if isinstance(value, str):
-            value = DeviceProp(definition=ScaleProps.unit, value=value)
+            value = DeviceProp(definition=ScaleProps.unit(), value=value)
         self._unit = value
 
     @property

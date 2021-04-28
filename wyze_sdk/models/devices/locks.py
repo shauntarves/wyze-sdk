@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 from enum import Enum
 from typing import Optional, Sequence, Set, Tuple, Union
@@ -10,12 +12,10 @@ from .base import (AbstractWirelessNetworkedDevice, ContactMixin, Device, Device
 class LockProps(object):
 
     @classmethod
-    @property
     def lock_state(cls) -> PropDef:
         return PropDef("switch_state", bool, int)
 
     @classmethod
-    @property
     def open_close_state(cls) -> PropDef:
         return PropDef("open_close_state", bool, int)
 
@@ -251,7 +251,7 @@ class Lock(LockableMixin, ContactMixin, Device):
     def parse_uuid(cls, mac: str) -> str:
         for model in DeviceModels.LOCK:
             if model in mac:
-                return mac.removeprefix(model + '.')
+                return Lock.remove_model_prefix(mac, model + '.')
 
     def __init__(
         self,
@@ -262,8 +262,8 @@ class Lock(LockableMixin, ContactMixin, Device):
         super().__init__(type=self.type, **others)
         if self.mac is not None:
             self._uuid = Lock.parse_uuid(self.mac)
-        self.lock_state = super()._extract_property(LockProps.lock_state, others)
-        self.open_close_state = super()._extract_property(LockProps.open_close_state, others)
+        self.lock_state = super()._extract_property(LockProps.lock_state(), others)
+        self.open_close_state = super()._extract_property(LockProps.open_close_state(), others)
         self._parent = parent if parent is not None else super()._extract_attribute("parent", others)
         self._record_count = record_count if record_count is not None else super()._extract_attribute("record_count", others)
         show_unknown_key_warning(self, others)
@@ -297,7 +297,7 @@ class LockGateway(AbstractWirelessNetworkedDevice):
     def parse_uuid(cls, mac: str) -> str:
         for model in DeviceModels.LOCK_GATEWAY:
             if model in mac:
-                return mac.removeprefix(model + '.')
+                return LockGateway.remove_model_prefix(mac, model + '.')
 
     def __init__(
         self,
@@ -314,8 +314,7 @@ class LockGateway(AbstractWirelessNetworkedDevice):
                 ssid = super()._extract_attribute('ssid', connection)
         super().__init__(type=self.type, **others)
         if self.mac is not None:
-            for model in DeviceModels.LOCK_GATEWAY:
-                self._uuid = self.mac.removeprefix(model + '.')
+            self._uuid = LockGateway.parse_uuid(self.mac)
         self.locks = locks if locks is not None else super()._extract_attribute('locks', others)
         show_unknown_key_warning(self, others)
 

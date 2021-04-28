@@ -66,7 +66,7 @@ class PlugsClient(BaseClient):
             device_model (str): The device model. e.g. 'WLPP1'
             after (timedelta): The delay before performing the action.
         """
-        prop_def = DeviceProps.power_state
+        prop_def = DeviceProps.power_state()
 
         if after is None:
             return super()._api_client().set_device_property(
@@ -82,7 +82,7 @@ class PlugsClient(BaseClient):
             device_model (str): The device model. e.g. 'WLPP1'
             after (timedelta): The delay before performing the action.
         """
-        prop_def = DeviceProps.power_state
+        prop_def = DeviceProps.power_state()
 
         if after is None:
             return super()._api_client().set_device_property(
@@ -106,7 +106,7 @@ class PlugsClient(BaseClient):
             device_model (str): The device model. e.g. 'WLPP1'
             away_mode (bool): The new away mode. e.g. True
         """
-        prop_def = PlugProps.away_mode
+        prop_def = PlugProps.away_mode()
         if away_mode:
             return super()._api_client().run_action(
                 mac=device_mac,

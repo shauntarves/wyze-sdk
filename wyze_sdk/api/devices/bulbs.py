@@ -73,7 +73,7 @@ class BulbsClient(BaseClient):
             device_model (str): The device model. e.g. 'WLPA19'
             after (timedelta): The delay before performing the action.
         """
-        prop_def = DeviceProps.power_state
+        prop_def = DeviceProps.power_state()
 
         if device_model in DeviceModels.MESH_BULB:
             if after is not None:
@@ -100,7 +100,7 @@ class BulbsClient(BaseClient):
             device_model (str): The device model. e.g. 'WLPA19'
             after (timedelta): The delay before performing the action.
         """
-        prop_def = DeviceProps.power_state
+        prop_def = DeviceProps.power_state()
 
         if device_model in DeviceModels.MESH_BULB:
             if after is not None:
@@ -127,7 +127,7 @@ class BulbsClient(BaseClient):
             device_model (str): The device model. e.g. 'WLPA19'
             brightness (int): The new brightness. e.g. 45
         """
-        prop_def = BulbProps.brightness
+        prop_def = BulbProps.brightness()
         prop_def.validate(brightness)
 
         if device_model in DeviceModels.MESH_BULB:
@@ -150,7 +150,7 @@ class BulbsClient(BaseClient):
             device_model (str): The device model. e.g. 'WLPA19'
             color_temp (int): The new color temperature. e.g. 3400
         """
-        prop_def = BulbProps.color_temp
+        prop_def = BulbProps.color_temp()
         prop_def.validate(color_temp)
 
         if device_model in DeviceModels.MESH_BULB:
@@ -179,7 +179,7 @@ class BulbsClient(BaseClient):
         if device_model not in DeviceModels.MESH_BULB:
             raise WyzeFeatureNotSupportedError("set_color")
 
-        prop_def = BulbProps.color
+        prop_def = BulbProps.color()()
         prop_def.validate(color)
 
         return super()._api_client().run_action_list(

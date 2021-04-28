@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import distutils.util
 import logging
 from abc import ABCMeta
@@ -117,11 +119,11 @@ class DeviceProp(object):
             self._ts = ts
         elif ts is not None:
             self._ts = epoch_to_datetime(ts, ms=True)
-        if value is not None and not isinstance(value, definition.type):
+        if value is not None and not isinstance(value, self._definition.type):
             try:
-                value = bool(distutils.util.strtobool(str(value))) if definition.type == bool else definition._type(value)
+                value = bool(distutils.util.strtobool(str(value))) if self._definition.type == bool else self._definition._type(value)
             except ValueError:
-                self.logger.warning(f"could not cast value `{value}` into expected type {definition.type}")
+                self.logger.warning(f"could not cast value `{value}` into expected type {self._definition.type}")
         self._value = value
 
     @property
@@ -175,17 +177,14 @@ class DeviceProp(object):
 class DeviceProps(object):
 
     @classmethod
-    @property
     def push_notifications_enabled(cls) -> PropDef:
         return PropDef("P1", bool, int, [0, 1])
 
     @classmethod
-    @property
     def power_state(cls) -> PropDef:
         return PropDef("P3", bool, int, [0, 1])
 
     @classmethod
-    @property
     def online_state(cls) -> PropDef:
         return PropDef("P5", bool, int, [0, 1])
 
@@ -252,9 +251,9 @@ class Device(JsonObject):
         self._mac = mac
         self._nickname = nickname
         if conn_state is not None and conn_state_ts is not None:
-            self._is_online = DeviceProp(definition=DeviceProps.online_state, value=conn_state, ts=conn_state_ts)
+            self._is_online = DeviceProp(definition=DeviceProps.online_state(), value=conn_state, ts=conn_state_ts)
         else:
-            self._is_online = self._extract_property(DeviceProps.online_state, others)
+            self._is_online = self._extract_property(DeviceProps.online_state(), others)
         self._enr = enr
         self._push_switch = push_switch
         self._firmware_version = firmware_ver if firmware_ver is not None else self._extract_attribute('firmware_ver', others)
@@ -341,6 +340,12 @@ class Device(JsonObject):
                 if "pid" in value and prop_def.pid == value["pid"]:
                     self.logger.debug(f"returning new DeviceProp with {value}")
                     return DeviceProp(definition=prop_def, **value)
+
+    @classmethod
+    def remove_model_prefix(cls, text: str, model: str) -> str:
+        if text.startswith(model):
+            return text[len(model):]
+        return text
 
 
 class AbstractNetworkedDevice(Device, metaclass=ABCMeta):

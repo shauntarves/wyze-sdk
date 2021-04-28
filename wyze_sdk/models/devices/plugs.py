@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import (Optional, Set, Union)
 
 from wyze_sdk.models import (PropDef, show_unknown_key_warning)
@@ -7,22 +9,18 @@ from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice, DeviceProp
 class PlugProps(object):
 
     @classmethod
-    @property
     def status_light(cls) -> PropDef:
         return PropDef("P13", bool)
 
     @classmethod
-    @property
     def away_mode(cls) -> PropDef:
         return PropDef("P1614", bool)
 
     @classmethod
-    @property
     def rssi(cls) -> PropDef:
         return PropDef("P1612", int)
 
     @classmethod
-    @property
     def photosensitive_switch(cls) -> PropDef:
         return PropDef("photosensitive_switch", bool)
 
@@ -43,10 +41,10 @@ class Plug(SwitchableMixin, AbstractWirelessNetworkedDevice):
         **others: dict,
     ):
         super().__init__(type=type, **others)
-        self.switch_state = self._extract_property(DeviceProps.power_state, others)
+        self.switch_state = self._extract_property(DeviceProps.power_state(), others)
         self._switch_state_timer = super()._extract_attribute("switch_state_timer", others)
-        self.status_light = self._extract_property(PlugProps.status_light, others)
-        self.away_mode = self._extract_property(PlugProps.away_mode, others)
+        self.status_light = self._extract_property(PlugProps.status_light(), others)
+        self.away_mode = self._extract_property(PlugProps.away_mode(), others)
         show_unknown_key_warning(self, others)
 
     @property
@@ -56,7 +54,7 @@ class Plug(SwitchableMixin, AbstractWirelessNetworkedDevice):
     @away_mode.setter
     def away_mode(self, value: Union[int, DeviceProp]):
         if isinstance(value, int):
-            value = DeviceProp(definition=PlugProps.away_mode, value=value)
+            value = DeviceProp(definition=PlugProps.away_mode(), value=value)
         self._away_mode = value
 
     @property
@@ -66,7 +64,7 @@ class Plug(SwitchableMixin, AbstractWirelessNetworkedDevice):
     @status_light.setter
     def status_light(self, value: Union[int, DeviceProp]):
         if isinstance(value, int):
-            value = DeviceProp(definition=PlugProps.status_light, value=value)
+            value = DeviceProp(definition=PlugProps.status_light(), value=value)
         self._status_light = value
 
     @classmethod
@@ -105,7 +103,7 @@ class OutdoorPlug(Plug):
         **others: dict,
     ):
         super().__init__(type=self.type, **others)
-        self.photosensitive_switch = super()._extract_property(PlugProps.photosensitive_switch, others)
+        self.photosensitive_switch = super()._extract_property(PlugProps.photosensitive_switch(), others)
         show_unknown_key_warning(self, others)
 
     @property
@@ -119,5 +117,5 @@ class OutdoorPlug(Plug):
     @photosensitive_switch.setter
     def photosensitive_switch(self, value: Union[int, DeviceProp]):
         if isinstance(value, int):
-            value = DeviceProp(definition=PlugProps.photosensitive_switch, value=value)
+            value = DeviceProp(definition=PlugProps.photosensitive_switch(), value=value)
         self._photosensitive_switch = value

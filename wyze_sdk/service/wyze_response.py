@@ -1,4 +1,5 @@
 """A Python module for interacting and consuming responses from Wyze."""
+from __future__ import annotations
 
 import logging
 from typing import Union
