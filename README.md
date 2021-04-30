@@ -1,9 +1,10 @@
 # Python Wyze SDK
 A modern Python client for controlling Wyze devices.
 
-[![pypi package][pypi-image]][pypi-url]
-[![Build Status][build-image]][build-url]
+[![PyPI version][pypi-image]][pypi-url]
 [![Python Version][python-version]][pypi-url]
+[![Read the Docs][support-docs]][docs-url]
+
 
 Whether you're building a custom app, or integrating into a third-party service like Home Assistant, Wyze Developer Kit for Python allows you to leverage the flexibility of Python to get your project up and running as quickly as possible.
 
@@ -52,7 +53,7 @@ $ pip install wyze_sdk
 
 ---
 
-Wyze does not provide a Web API that gives you the ability to build applications that interact with Wyze devices. This Development Kit is a reverse-engineered, module-based wrapper that makes interaction with that API possible. We have a basic example here with some of the more common uses but you are encouraged to explore the full range of methods available to you.
+Wyze does not provide a Web API that gives you the ability to build applications that interact with Wyze devices. This Development Kit is a reverse-engineered, module-based wrapper that makes interaction with that API possible. We have a few basic examples here with some of the more common uses but you are encouraged to [explore the full range of methods](https://wyze-sdk.readthedocs.io/en/latest/wyze_sdk.api.devices.html) available to you.
 
 #### Listing devices in your Wyze account
 
@@ -196,3 +197,13 @@ except WyzeApiError as e:
     # You will get a WyzeApiError is the request failed
     print(f"Got an error: {e}")
 ```
+
+<!-- Markdown links -->
+
+[pypi-image]: https://badge.fury.io/py/wyze-sdk.svg
+[pypi-url]: https://pypi.org/project/wyze-sdk/
+[python-version]: https://img.shields.io/pypi/pyversions/wyze-sdk.svg
+[pypi]: https://pypi.org/
+[gh-issues]: https://github.com/shauntarves/wyze-sdk/issues
+[support-docs]: https://img.shields.io/badge/support-docs-brightgreen
+[docs-url]: https://wyze-sdk.readthedocs.io
