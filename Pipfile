@@ -11,6 +11,7 @@ blackboxprotobuf = "*"
 [dev-packages]
 flake8 = "*"
 isort = "*"
+sphinx = "*"
 
 [requires]
 python_version = "3.8"
