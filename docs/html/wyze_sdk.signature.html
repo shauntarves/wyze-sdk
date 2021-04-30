@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wyze_sdk.signature package &#8212; Wyze SDK 1.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="wyze_sdk.models.events package" href="wyze_sdk.models.events.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wyze_sdk.models.events.html" title="wyze_sdk.models.events package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wyze_sdk.signature package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="wyze-sdk-signature-package">
+<h1>wyze_sdk.signature package<a class="headerlink" href="#wyze-sdk-signature-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-wyze_sdk.signature">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-wyze_sdk.signature" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wyze_sdk.signature.Clock">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.signature.</span></code><code class="sig-name descname"><span class="pre">Clock</span></code><a class="headerlink" href="#wyze_sdk.signature.Clock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="wyze_sdk.signature.Clock.nonce">
+<code class="sig-name descname"><span class="pre">nonce</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.signature.Clock.nonce" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.signature.Clock.now">
+<code class="sig-name descname"><span class="pre">now</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">float</span><a class="headerlink" href="#wyze_sdk.signature.Clock.now" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wyze_sdk.signature.RequestVerifier">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.signature.</span></code><code class="sig-name descname"><span class="pre">RequestVerifier</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">signing_secret:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">access_token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">clock:</span> <span class="pre">wyze_sdk.signature.Clock</span> <span class="pre">=</span> <span class="pre">&lt;wyze_sdk.signature.Clock</span> <span class="pre">object&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.signature.RequestVerifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="wyze_sdk.signature.RequestVerifier.generate_dynamic_signature">
+<code class="sig-name descname"><span class="pre">generate_dynamic_signature</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.signature.RequestVerifier.generate_dynamic_signature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a dynamic signature</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.signature.RequestVerifier.generate_signature">
+<code class="sig-name descname"><span class="pre">generate_signature</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.signature.RequestVerifier.generate_signature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a signature</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.signature.RequestVerifier.md5_string">
+<code class="sig-name descname"><span class="pre">md5_string</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#wyze_sdk.signature.RequestVerifier.md5_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.signature.RequestVerifier.request_id">
+<code class="sig-name descname"><span class="pre">request_id</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.signature.RequestVerifier.request_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Wyze SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.api.devices.html">wyze_sdk.api.devices package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.devices.html">wyze_sdk.models.devices package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.events.html">wyze_sdk.models.events package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">wyze_sdk.signature package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-wyze_sdk.signature">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="wyze_sdk.models.events.html"
+                        title="previous chapter">wyze_sdk.models.events package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/wyze_sdk.signature.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wyze_sdk.models.events.html" title="wyze_sdk.models.events package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wyze_sdk.signature package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shaun Tarves.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+    </div>
+  </body>
+</html>

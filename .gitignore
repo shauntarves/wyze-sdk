@@ -45,6 +45,8 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+docs/**/_sources
+docs/**/doctrees
 downloads/
 eggs/
 .eggs/

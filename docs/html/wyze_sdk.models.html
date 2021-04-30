@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wyze_sdk.models package &#8212; Wyze SDK 1.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wyze_sdk.models package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="wyze-sdk-models-package">
+<h1>wyze_sdk.models package<a class="headerlink" href="#wyze-sdk-models-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.devices.html">wyze_sdk.models.devices package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices.base">wyze_sdk.models.devices.base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices.bulbs">wyze_sdk.models.devices.bulbs module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices.cameras">wyze_sdk.models.devices.cameras module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices.locks">wyze_sdk.models.devices.locks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices.plugs">wyze_sdk.models.devices.plugs module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices.scales">wyze_sdk.models.devices.scales module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices.sensors">wyze_sdk.models.devices.sensors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices.thermostats">wyze_sdk.models.devices.thermostats module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices.vacuums">wyze_sdk.models.devices.vacuums module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.devices.html#module-wyze_sdk.models.devices">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.events.html">wyze_sdk.models.events package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.models.events.html#module-wyze_sdk.models.events">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-wyze_sdk.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-wyze_sdk.models" title="Permalink to this headline">¶</a></h2>
+<p>Classes for constructing Wyze-specific data strtucture</p>
+<dl class="py class">
+<dt id="wyze_sdk.models.BaseObject">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.models.</span></code><code class="sig-name descname"><span class="pre">BaseObject</span></code><a class="headerlink" href="#wyze_sdk.models.BaseObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="wyze_sdk.models.EnumValidator">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.models.</span></code><code class="sig-name descname"><span class="pre">EnumValidator</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enum</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.models.EnumValidator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wyze_sdk.models.JsonValidator" title="wyze_sdk.models.JsonValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.models.JsonValidator</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="wyze_sdk.models.JsonObject">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.models.</span></code><code class="sig-name descname"><span class="pre">JsonObject</span></code><a class="headerlink" href="#wyze_sdk.models.JsonObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#wyze_sdk.models.BaseObject" title="wyze_sdk.models.BaseObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.models.BaseObject</span></code></a></p>
+<dl class="py method">
+<dt id="wyze_sdk.models.JsonObject.attributes">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">attributes</span></code><a class="headerlink" href="#wyze_sdk.models.JsonObject.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide a set of attributes of this object that will make up its JSON structure</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.models.JsonObject.get_non_null_attributes">
+<code class="sig-name descname"><span class="pre">get_non_null_attributes</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="headerlink" href="#wyze_sdk.models.JsonObject.get_non_null_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a dictionary out of non-null keys (from attributes property)
+present on this object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.models.JsonObject.to_dict">
+<code class="sig-name descname"><span class="pre">to_dict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="headerlink" href="#wyze_sdk.models.JsonObject.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract this object as a JSON-compatible, Wyze-API-valid dictionary.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p><a href="#id1"><span class="problematic" id="id2">*</span></a>args: Any specific formatting args (rare; generally not required)</p>
+</dd>
+<dt>Raises:</dt><dd><p>WyzeObjectFormationError if the object was not valid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.models.JsonObject.validate_json">
+<code class="sig-name descname"><span class="pre">validate_json</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#wyze_sdk.models.JsonObject.validate_json" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Raises:</dt><dd><p>WyzeObjectFormationError if the object was not valid</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="wyze_sdk.models.JsonValidator">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.models.</span></code><code class="sig-name descname"><span class="pre">JsonValidator</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.models.JsonValidator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="wyze_sdk.models.PropDef">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.models.</span></code><code class="sig-name descname"><span class="pre">PropDef</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptable_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.models.PropDef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The translation definition to convert between the API data properties and
+reasonable python equivalents.</p>
+<dl class="py method">
+<dt id="wyze_sdk.models.PropDef.api_type">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">api_type</span></code><a class="headerlink" href="#wyze_sdk.models.PropDef.api_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.models.PropDef.pid">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pid</span></code><a class="headerlink" href="#wyze_sdk.models.PropDef.pid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.models.PropDef.type">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">type</span></code><a class="headerlink" href="#wyze_sdk.models.PropDef.type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.models.PropDef.validate">
+<code class="sig-name descname"><span class="pre">validate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.models.PropDef.validate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="wyze_sdk.models.datetime_to_epoch">
+<code class="sig-prename descclassname"><span class="pre">wyze_sdk.models.</span></code><code class="sig-name descname"><span class="pre">datetime_to_epoch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#wyze_sdk.models.datetime_to_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a python datetime to number of (milli-) seconds since epoch.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wyze_sdk.models.epoch_to_datetime">
+<code class="sig-prename descclassname"><span class="pre">wyze_sdk.models.</span></code><code class="sig-name descname"><span class="pre">epoch_to_datetime</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">datetime.datetime</span><a class="headerlink" href="#wyze_sdk.models.epoch_to_datetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert number of (milli-) seconds since epoch to a python datetime.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="wyze_sdk.models.show_unknown_key_warning">
+<code class="sig-prename descclassname"><span class="pre">wyze_sdk.models.</span></code><code class="sig-name descname"><span class="pre">show_unknown_key_warning</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">others</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.models.show_unknown_key_warning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Wyze SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.api.devices.html">wyze_sdk.api.devices package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.devices.html">wyze_sdk.models.devices package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.events.html">wyze_sdk.models.events package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.signature.html">wyze_sdk.signature package</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/wyze_sdk.models.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">wyze_sdk.models package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shaun Tarves.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+    </div>
+  </body>
+</html>

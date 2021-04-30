@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wyze SDK &#8212; Wyze SDK 1.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="wyze_sdk.api.devices package" href="wyze_sdk.api.devices.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wyze_sdk.api.devices.html" title="wyze_sdk.api.devices package"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Wyze SDK 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wyze SDK</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="wyze-sdk">
+<h1>Wyze SDK<a class="headerlink" href="#wyze-sdk" title="Permalink to this headline">¶</a></h1>
+<p>A modern Python client for controlling Wyze devices.</p>
+<p>Whether you’re building a custom app, or integrating into a third-party service like Home Assistant, Wyze Developer Kit for Python allows you to leverage the flexibility of Python to get your project up and running as quickly as possible.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 58%" />
+<col style="width: 22%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Feature</p></td>
+<td><p>What its for</p></td>
+<td><p>Package</p></td>
+</tr>
+<tr class="row-even"><td><p>Web Client</p></td>
+<td><p>Send data to or query data from Wyze using a variety of device-specific sub-clients.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bulb Client</p></td>
+<td><p>Control Wyze Bulb and Wyze Bulb Color</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.bulbs</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Entry Sensor Client</p></td>
+<td><p>Interact with Wyze Sense Entry Sensors</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.entry_sensors</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Camera Client</p></td>
+<td><p>Control Wyze Cameras</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.cameras</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Event Client</p></td>
+<td><p>Manage Wyze alarm events</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.events</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Lock Client</p></td>
+<td><p>Control Wyze Lock</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.locks</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Motion Sensor Client</p></td>
+<td><p>Interact with Wyze Sense Motion Sensors</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.motion_sensors</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Plug Client</p></td>
+<td><p>Control Wyze Plug and Wyze Plug Outdoor</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.plugs</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Scale Client</p></td>
+<td><p>Control Wyze Scale</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.scales</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Thermostat Client</p></td>
+<td><p>Control Wyze Thermostat</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.thermostats</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Vacuum Client</p></td>
+<td><p>Control Wyze Robot Vacuum</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.client.vacuums</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Request Signature Verification</p></td>
+<td><p>Sign outgoing requests for the Wyze API servers.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.signature</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Models</p></td>
+<td><p>Pythonic class objects to model Wyze devices.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wyze_sdk.models</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disclaimer: This repository is for non-destructive use only. WyzeLabs is a wonderful company providing excellent devices at a reasonable price. I ask that you do no harm and be civilized.</strong></p>
+<p><strong>As this repository is entirely reverse-engineered, it may break at any time. If it does, I will fix it to the best of my ability.</strong></p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>This package supports Python 3.8 and higher. I recommend using <a class="reference external" href="https://pypi.python.org/pypi">PyPI</a> to install Wyze SDK</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install wyze_sdk
+</pre></div>
+</div>
+<p>Of course, you can always pull the source code directly into your project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/shauntarves/wyze-sdk.git
+</pre></div>
+</div>
+<p>And then, save a few lines of code as <code class="docutils literal notranslate"><span class="pre">./test.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># test.py</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1"># Load the local source directly</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;./wyze-sdk&quot;</span><span class="p">)</span>
+<span class="c1"># Enable debug logging</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="c1"># Verify it works</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">wyze_sdk</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;WYZE_EMAIL&#39;</span><span class="p">],</span> <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;WYZE_PASSWORD&#39;</span><span class="p">])</span>
+<span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">api_test</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can run the code this way.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python test.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-help">
+<h2>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h2>
+<p>If you get stuck, I’m here to help. The following are the best ways to get assistance working through your issue:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/shauntarves/wyze-sdk/issues">GitHub Issue Tracker</a> for questions, feature requests, bug reports and general discussion related to this package.</p></li>
+</ul>
+<div class="section" id="indices-and-tables">
+<h3>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="#">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wyze SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.api.devices.html">wyze_sdk.api.devices package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.devices.html">wyze_sdk.models.devices package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.events.html">wyze_sdk.models.events package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.signature.html">wyze_sdk.signature package</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wyze_sdk.api.devices.html"
+                        title="next chapter">wyze_sdk.api.devices package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="wyze_sdk.api.devices.html" title="wyze_sdk.api.devices package"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Wyze SDK 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Wyze SDK</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Shaun Tarves.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+    </div>
+  </body>
+</html>
