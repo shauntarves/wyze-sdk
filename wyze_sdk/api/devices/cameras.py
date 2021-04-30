@@ -32,7 +32,7 @@ class CamerasClient(BaseClient):
         """Retrieves details of a camera.
 
         Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
+            :param str device_mac: The device mac. e.g. 'ABCDEF1234567890'
 
         Returns:
             (Optional[Camera])
@@ -59,8 +59,8 @@ class CamerasClient(BaseClient):
         """Turns on a camera.
 
         Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
-            device_model (str): The device model. e.g. 'WYZEC1-JZ'
+            :param str device_mac: The device mac. e.g. 'ABCDEF1234567890'
+            :param str device_model: The device model. e.g. 'WYZEC1-JZ'
         """
         return super()._api_client().run_action(
             mac=device_mac, provider_key=device_model, action_key="power_on")
@@ -69,8 +69,8 @@ class CamerasClient(BaseClient):
         """Turns off a camera.
 
         Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
-            device_model (str): The device model. e.g. 'WYZEC1-JZ'
+            :param str device_mac: The device mac. e.g. 'ABCDEF1234567890'
+            :param str device_model: The device model. e.g. 'WYZEC1-JZ'
         """
         return super()._api_client().run_action(
             mac=device_mac, provider_key=device_model, action_key="power_off")

@@ -10,6 +10,9 @@ from .base import (AbstractWirelessNetworkedDevice, ClimateMixin, DeviceProp,
 
 
 class ThermostatProps(object):
+    """
+    :meta private:
+    """
 
     @classmethod
     def temperature(cls) -> PropDef:

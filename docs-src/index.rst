@@ -2,14 +2,14 @@
    :hidden:
 
    self
-   wyze_sdk.api.devices
-   wyze_sdk.models.devices
-   wyze_sdk.models.events
+   wyze_sdk.api
+   wyze_sdk.models
+   wyze_sdk.errors
    wyze_sdk.signature
+   wyze_sdk.logging
 
-==============================================
-Wyze SDK
-==============================================
+Getting Started with Wyze SDK
+*****************************
 
 A modern Python client for controlling Wyze devices.
 
@@ -50,7 +50,7 @@ Whether you're building a custom app, or integrating into a third-party service 
 **As this repository is entirely reverse-engineered, it may break at any time. If it does, I will fix it to the best of my ability.**
 
 Installation
-************
+============
 
 This package supports Python 3.8 and higher. I recommend using `PyPI <https://pypi.python.org/pypi>`_ to install Wyze SDK
 
@@ -88,7 +88,7 @@ You can run the code this way.
    python test.py
 
 Getting Help
-************
+============
 
 If you get stuck, I'm here to help. The following are the best ways to get assistance working through your issue:
 
@@ -96,9 +96,10 @@ If you get stuck, I'm here to help. The following are the best ways to get assis
 
 .. include:: metadata.rst
 
-Indices and tables
-==================
+.. only:: html 
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   Indices and Tables
+   ------------------
+
+   * :ref:`genindex`
+   * :ref:`search`

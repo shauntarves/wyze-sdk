@@ -13,6 +13,9 @@ from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
 
 
 class VacuumProps(object):
+    """
+    :meta private:
+    """
 
     @classmethod
     def clean_level(cls) -> PropDef:

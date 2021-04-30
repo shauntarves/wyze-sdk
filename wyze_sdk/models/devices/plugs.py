@@ -8,6 +8,9 @@ from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
 
 
 class PlugProps(object):
+    """
+    :meta private:
+    """
 
     @classmethod
     def status_light(cls) -> PropDef:

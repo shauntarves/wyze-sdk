@@ -5,5 +5,5 @@
 .. |github_username| replace:: shauntarves
 
 .. _Issue Tracker: http://github.com/shauntarves/wyze-sdk/issues
-.. _pull request: http://github.com/shauntarves/wyze-sdk/pulls
+.. _Pull Requests: http://github.com/shauntarves/wyze-sdk/pulls
 .. _License: https://github.com/shauntarves/wyze-sdk/blob/main/LICENSE

@@ -47,6 +47,8 @@ class SensorProps(object):
             # "": PropDef("P1327", ""), # not used
             # "": PropDef("P1328", ""), # not used
         }}
+
+    :meta private:
     """
 
     @classmethod
@@ -71,6 +73,9 @@ class SensorProps(object):
 
 
 class Sensor(VoltageMixin, SwitchableMixin, AbstractWirelessNetworkedDevice, metaclass=ABCMeta):
+    """
+    :meta private:
+    """
 
     @property
     def attributes(self) -> Set[str]:

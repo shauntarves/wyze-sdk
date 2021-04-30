@@ -1,8 +1,8 @@
-wyze\_sdk.errors package
-========================
+Errors
+******
 
-Module contents
----------------
+wyze\_sdk.errors
+----------------
 
 .. automodule:: wyze_sdk.errors
    :members:

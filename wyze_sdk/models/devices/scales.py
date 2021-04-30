@@ -9,6 +9,9 @@ from wyze_sdk.models.devices import AbstractWirelessNetworkedDevice, DeviceProp
 
 
 class ScaleProps(object):
+    """
+    :meta private:
+    """
 
     @classmethod
     def unit(cls) -> PropDef:

@@ -14,6 +14,7 @@ class Clock:
 
 
 class RequestVerifier:
+
     def __init__(self, signing_secret: str, access_token: Optional[str] = None, clock: Clock = Clock()):
         self.signing_secret = signing_secret
         self.access_token = access_token
@@ -33,7 +34,7 @@ class RequestVerifier:
     def generate_signature(
         self, *, timestamp: str, body: Union[str, bytes]
     ) -> Optional[str]:
-        """Generates a signature"""
+        """Generates a standard signature"""
         if timestamp is None:
             return None
         if body is None:

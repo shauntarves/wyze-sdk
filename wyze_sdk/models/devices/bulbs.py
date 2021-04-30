@@ -11,6 +11,8 @@ from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
 class BulbProps(object):
     """
     P1503, P1505 are not used
+
+    :meta private:
     """
 
     @classmethod

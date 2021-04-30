@@ -1,5 +1,5 @@
-wyze\_sdk.signature package
-===========================
+Request Signature Verification
+==============================
 
 Module contents
 ---------------

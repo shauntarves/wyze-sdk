@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>wyze_sdk.api package &#8212; Wyze SDK 1.1.0 documentation</title>
+    <title>Web Client &#8212; Wyze SDK 1.1.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -15,7 +15,9 @@
     <script src="_static/doctools.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="wyze_sdk.models.devices package" href="wyze_sdk.models.devices.html" />
+    <link rel="prev" title="Getting Started with Wyze SDK" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,8 +28,14 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="wyze_sdk.models.devices.html" title="wyze_sdk.models.devices package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Getting Started with Wyze SDK"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">wyze_sdk.api package</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Web Client</a></li> 
       </ul>
     </div>  
 
@@ -36,218 +44,1225 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="wyze-sdk-api-package">
-<h1>wyze_sdk.api package<a class="headerlink" href="#wyze-sdk-api-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.api.devices.html">wyze_sdk.api.devices package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#module-wyze_sdk.api.devices.bulbs">wyze_sdk.api.devices.bulbs module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#module-wyze_sdk.api.devices.cameras">wyze_sdk.api.devices.cameras module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#module-wyze_sdk.api.devices.locks">wyze_sdk.api.devices.locks module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#module-wyze_sdk.api.devices.plugs">wyze_sdk.api.devices.plugs module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#module-wyze_sdk.api.devices.scales">wyze_sdk.api.devices.scales module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#module-wyze_sdk.api.devices.sensors">wyze_sdk.api.devices.sensors module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#module-wyze_sdk.api.devices.thermostats">wyze_sdk.api.devices.thermostats module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#module-wyze_sdk.api.devices.vacuums">wyze_sdk.api.devices.vacuums module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="wyze_sdk.api.devices.html#module-wyze_sdk.api.devices">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-wyze_sdk.api.base">
-<span id="wyze-sdk-api-base-module"></span><h2>wyze_sdk.api.base module<a class="headerlink" href="#module-wyze_sdk.api.base" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="web-client">
+<h1>Web Client<a class="headerlink" href="#web-client" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="wyze_sdk.api.base.BaseClient">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.base.</span></code><code class="sig-name descname"><span class="pre">BaseClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.base.BaseClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-</div>
-<div class="section" id="module-wyze_sdk.api.client">
-<span id="wyze-sdk-api-client-module"></span><h2>wyze_sdk.api.client module<a class="headerlink" href="#module-wyze_sdk.api.client" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="wyze_sdk.api.client.Client">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.client.</span></code><code class="sig-name descname"><span class="pre">Client</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.client.Client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A Wyze Client is the wrapper on top of Wyze endpoints and allows apps
+<dt id="wyze_sdk.api.Client">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.</span></code><code class="sig-name descname"><span class="pre">Client</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Wyze Client is the wrapper on top of Wyze endpoints and allows apps
 to communicate with the various Wyze API platforms.</p>
 <p>The Wyze API is an interface for querying information from
 and enacting change on Wyze devices.</p>
 <p>This client handles constructing and sending HTTP requests to Wyze
-as well as parsing any responses received into a <cite>WyzeResponse</cite>.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><p>bulbs (BulbsClient): A client that services Wyze bulbs/lights
-entry_sensors (ContactSensorsClient): A client that services Wyze Sense entry sensors
-cameras (CamerasClient): A client that services Wyze cameras
-events (EventsClient): A client that manages Wyze events
-locks (LocksClient): A client that services Wyze locks
-motion_sensors (MotionSensorsClient): A client that services Wyze Sense motion sensors
-plugs (PlugsClient): A client that services Wyze plugs/outlets
-scales (ScalesClient): A client that services Wyze scales
-thermostats (ThermostatsClient): A client that services Wyze thermostats
-vacuums (VacuumsClient): A client that services Wyze vacuums</p>
-</dd>
-<dt>Methods:</dt><dd><p>login: Exchanges email and password for an access_token and refresh_token
-refresh_token: Updates access_token using refresh_token
-devices_list: List the devices available to the current user
-user_get_profile: Retrieve the current user’s profile</p>
-</dd>
-</dl>
-<p>Example of recommended usage:
-<a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python</p>
-<blockquote>
-<div><p>import os
-from wyze_sdk import Client
-client = Client(email=os.environ[‘WYZE_EMAIL’], password=os.environ[‘WYZE_PASSWORD’])
-response = client.bulbs.turn_on(</p>
-<blockquote>
-<div><p>device_mac=’ABCDEF1234567890’,
-device_model=’WLPA19C’)</p>
-</div></blockquote>
-<p>assert response[“ok”]</p>
-</div></blockquote>
-<p><a href="#id5"><span class="problematic" id="id6">``</span></a>`
-Note:</p>
-<blockquote>
-<div><p>Any attributes or methods prefixed with _underscores are
-intended to be “private” internal use only. They may be changed or
-removed at anytime.</p>
-</div></blockquote>
+as well as parsing any responses received into a WyzeResponse.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">wyze_sdk</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;WYZE_EMAIL&#39;</span><span class="p">],</span> <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;WYZE_PASSWORD&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">bulbs</span><span class="o">.</span><span class="n">turn_on</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">device_mac</span><span class="o">=</span><span class="s1">&#39;ABCDEF1234567890&#39;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">device_model</span><span class="o">=</span><span class="s1">&#39;WLPA19C&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Any attributes or methods prefixed with _underscores are intended to be “private” internal use only. They may be changed or removed at anytime.</p>
+</div>
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.api_test">
-<code class="sig-name descname"><span class="pre">api_test</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'api.test'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http_verb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'POST'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.client.Client.api_test" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.api_test">
+<code class="sig-name descname"><span class="pre">api_test</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'api.test'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http_verb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'POST'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.Client.api_test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks API calling code</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.bulbs">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">bulbs</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.bulbs" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.bulbs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">bulbs</span></code><a class="headerlink" href="#wyze_sdk.api.Client.bulbs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.cameras">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cameras</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.cameras" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.cameras">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cameras</span></code><a class="headerlink" href="#wyze_sdk.api.Client.cameras" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.devices_list">
-<code class="sig-name descname"><span class="pre">devices_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.base.Device" title="wyze_sdk.models.devices.base.Device"><span class="pre">wyze_sdk.models.devices.base.Device</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.client.Client.devices_list" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.devices_list">
+<code class="sig-name descname"><span class="pre">devices_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.base.Device" title="wyze_sdk.models.devices.base.Device"><span class="pre">wyze_sdk.models.devices.base.Device</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.Client.devices_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>List the devices available to the current user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.base.Device" title="wyze_sdk.models.devices.base.Device">Device</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.entry_sensors">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">entry_sensors</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.entry_sensors" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.entry_sensors">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">entry_sensors</span></code><a class="headerlink" href="#wyze_sdk.api.Client.entry_sensors" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.events">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">events</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.events" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.events">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">events</span></code><a class="headerlink" href="#wyze_sdk.api.Client.events" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.locks">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">locks</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.locks" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.locks">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">locks</span></code><a class="headerlink" href="#wyze_sdk.api.Client.locks" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.login">
-<code class="sig-name descname"><span class="pre">login</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.client.Client.login" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exchanges email and password for an <cite>access_token</cite> and a <cite>refresh_token</cite>, which
+<dt id="wyze_sdk.api.Client.login">
+<code class="sig-name descname"><span class="pre">login</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.Client.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exchanges email and password for an <code class="docutils literal notranslate"><span class="pre">access_token</span></code> and a <code class="docutils literal notranslate"><span class="pre">refresh_token</span></code>, which
 are stored in this client. The tokens will be used for all subsequent requests
-made by this <cite>Client</cite> unless <cite>refresh_token()</cite> is called.</p>
-<dl class="simple">
-<dt>Raises:</dt><dd><p>WyzeClientConfigurationError: If <cite>access_point</cite> is already set or both <cite>email</cite>
-and <cite>password</cite> are not set.</p>
+made by this <code class="docutils literal notranslate"><span class="pre">Client</span></code> unless <code class="docutils literal notranslate"><span class="pre">refresh_token()</span></code> is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.errors.html#wyze_sdk.errors.WyzeClientConfigurationError" title="wyze_sdk.errors.WyzeClientConfigurationError"><strong>WyzeClientConfigurationError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">access_point</span></code> is already set or both <code class="docutils literal notranslate"><span class="pre">email</span></code> and <code class="docutils literal notranslate"><span class="pre">password</span></code> are not set.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.motion_sensors">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">motion_sensors</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.motion_sensors" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.motion_sensors">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">motion_sensors</span></code><a class="headerlink" href="#wyze_sdk.api.Client.motion_sensors" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.plugs">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">plugs</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.plugs" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.plugs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">plugs</span></code><a class="headerlink" href="#wyze_sdk.api.Client.plugs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.refresh_token">
-<code class="sig-name descname"><span class="pre">refresh_token</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.client.Client.refresh_token" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates <cite>access_token</cite> using the previously set <cite>refresh_token</cite>.</p>
-<dl class="simple">
-<dt>Raises:</dt><dd><p>WyzeClientConfigurationError: If <cite>refresh_token</cite> is not already set.</p>
+<dt id="wyze_sdk.api.Client.refresh_token">
+<code class="sig-name descname"><span class="pre">refresh_token</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.Client.refresh_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates <code class="docutils literal notranslate"><span class="pre">access_token</span></code> using the previously set <code class="docutils literal notranslate"><span class="pre">refresh_token</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.errors.html#wyze_sdk.errors.WyzeClientConfigurationError" title="wyze_sdk.errors.WyzeClientConfigurationError"><strong>WyzeClientConfigurationError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">refresh_token</span></code> is not already set.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.scales">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">scales</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.scales" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.scales">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">scales</span></code><a class="headerlink" href="#wyze_sdk.api.Client.scales" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.thermostats">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">thermostats</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.thermostats" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.thermostats">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">thermostats</span></code><a class="headerlink" href="#wyze_sdk.api.Client.thermostats" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt id="wyze_sdk.api.client.Client.user_get_profile">
-<code class="sig-name descname"><span class="pre">user_get_profile</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.client.Client.user_get_profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve the current user’s profile</p>
+<dl class="py attribute">
+<dt id="wyze_sdk.api.Client.timeout">
+<code class="sig-name descname"><span class="pre">timeout</span></code><a class="headerlink" href="#wyze_sdk.api.Client.timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of seconds the client will wait to connect and receive a response from Wyze. Defaults to 30</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="wyze_sdk.api.client.Client.vacuums">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">vacuums</span></code><a class="headerlink" href="#wyze_sdk.api.client.Client.vacuums" title="Permalink to this definition">¶</a></dt>
+<dt id="wyze_sdk.api.Client.user_get_profile">
+<code class="sig-name descname"><span class="pre">user_get_profile</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.Client.user_get_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the current user’s profile</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.Client.vacuums">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">vacuums</span></code><a class="headerlink" href="#wyze_sdk.api.Client.vacuums" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<div class="section" id="bulbs">
+<h2>Bulbs<a class="headerlink" href="#bulbs" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.devices.bulbs.</span></code><code class="sig-name descname"><span class="pre">BulbsClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.base.BaseClient</span></code></p>
+<p>A Client that services Wyze bulbs/lights.</p>
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient.clear_timer">
+<code class="sig-name descname"><span class="pre">clear_timer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient.clear_timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears any existing power state timer on the bulb.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPA19</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient.info">
+<code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.bulbs.MeshBulb" title="wyze_sdk.models.devices.bulbs.MeshBulb"><span class="pre">wyze_sdk.models.devices.bulbs.MeshBulb</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.bulbs.Bulb" title="wyze_sdk.models.devices.bulbs.Bulb"><span class="pre">wyze_sdk.models.devices.bulbs.Bulb</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves details of a bulb.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[Union[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.bulbs.MeshBulb" title="wyze_sdk.models.devices.bulbs.MeshBulb">MeshBulb</a>, <a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.bulbs.Bulb" title="wyze_sdk.models.devices.bulbs.Bulb">Bulb</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient.list">
+<code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.bulbs.Bulb" title="wyze_sdk.models.devices.bulbs.Bulb"><span class="pre">wyze_sdk.models.devices.bulbs.Bulb</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all bulbs available to a Wyze account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.bulbs.Bulb" title="wyze_sdk.models.devices.bulbs.Bulb">Bulb</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient.set_away_mode">
+<code class="sig-name descname"><span class="pre">set_away_mode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">away_mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient.set_away_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets away/vacation mode for a bulb.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPA19</span></code></p></li>
+<li><p><strong>away_mode</strong> (<em>bool</em>) – The new away mode. e.g. <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient.set_brightness">
+<code class="sig-name descname"><span class="pre">set_brightness</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brightness</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient.set_brightness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the brightness of a bulb.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPA19</span></code></p></li>
+<li><p><strong>brightness</strong> (<em>int</em>) – The new brightness. e.g. <code class="docutils literal notranslate"><span class="pre">45</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="wyze_sdk.errors.html#wyze_sdk.errors.WyzeRequestError" title="wyze_sdk.errors.WyzeRequestError"><strong>WyzeRequestError</strong></a> – if the new brightness is not valid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient.set_color">
+<code class="sig-name descname"><span class="pre">set_color</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the color of a bulb.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">param str device_mac</dt>
+<dd class="field-odd"><p>The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">param str device_model</dt>
+<dd class="field-even"><p>The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPA19</span></code></p>
+</dd>
+<dt class="field-odd">param str color</dt>
+<dd class="field-odd"><p>The new color temperature. e.g. <code class="docutils literal notranslate"><span class="pre">ff0000</span></code></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.errors.html#wyze_sdk.errors.WyzeFeatureNotSupportedError" title="wyze_sdk.errors.WyzeFeatureNotSupportedError"><strong>WyzeFeatureNotSupportedError</strong></a> – If the bulb doesn’t support color</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient.set_color_temp">
+<code class="sig-name descname"><span class="pre">set_color_temp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_temp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient.set_color_temp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the color temperature of a bulb.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">param str device_mac</dt>
+<dd class="field-odd"><p>The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">param str device_model</dt>
+<dd class="field-even"><p>The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPA19</span></code></p>
+</dd>
+<dt class="field-odd">param int color_temp</dt>
+<dd class="field-odd"><p>The new color temperature. e.g. <code class="docutils literal notranslate"><span class="pre">3400</span></code></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.errors.html#wyze_sdk.errors.WyzeRequestError" title="wyze_sdk.errors.WyzeRequestError"><strong>WyzeRequestError</strong></a> – if the new color temperature is not valid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient.turn_off">
+<code class="sig-name descname"><span class="pre">turn_off</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient.turn_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns off a bulb.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPA19</span></code></p></li>
+<li><p><strong>after</strong> (<em>timedelta</em>) – The delay before performing the action.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.bulbs.BulbsClient.turn_on">
+<code class="sig-name descname"><span class="pre">turn_on</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.bulbs.BulbsClient.turn_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns on a bulb.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPA19</span></code></p></li>
+<li><p><strong>after</strong> (<em>Optional</em><em>[</em><em>timedelta</em><em>]</em>) – The delay before performing the action.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 </div>
-<div class="section" id="module-wyze_sdk.api.events">
-<span id="wyze-sdk-api-events-module"></span><h2>wyze_sdk.api.events module<a class="headerlink" href="#module-wyze_sdk.api.events" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cameras">
+<h2>Cameras<a class="headerlink" href="#cameras" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wyze_sdk.api.devices.cameras.CamerasClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.devices.cameras.</span></code><code class="sig-name descname"><span class="pre">CamerasClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.devices.cameras.CamerasClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.base.BaseClient</span></code></p>
+<p>A Client that services Wyze cameras.</p>
+<dl class="simple">
+<dt>Methods:</dt><dd><p>list: Lists all cameras available to a Wyze account
+info: Retrieves details of a camera
+turn_on: Turns on a camera
+turn_off: Turns off a camera</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.cameras.CamerasClient.info">
+<code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.cameras.Camera" title="wyze_sdk.models.devices.cameras.Camera"><span class="pre">wyze_sdk.models.devices.cameras.Camera</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.cameras.CamerasClient.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves details of a camera.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">param str device_mac</dt>
+<dd class="field-odd"><p>The device mac. e.g. ‘ABCDEF1234567890’</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>(Optional[Camera])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.cameras.CamerasClient.list">
+<code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.cameras.Camera" title="wyze_sdk.models.devices.cameras.Camera"><span class="pre">wyze_sdk.models.devices.cameras.Camera</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.cameras.CamerasClient.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all cameras available to a Wyze account.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>(Sequence[Camera])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.cameras.CamerasClient.turn_off">
+<code class="sig-name descname"><span class="pre">turn_off</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.cameras.CamerasClient.turn_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns off a camera.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">param str device_mac</dt>
+<dd class="field-odd"><p>The device mac. e.g. ‘ABCDEF1234567890’</p>
+</dd>
+<dt class="field-even">param str device_model</dt>
+<dd class="field-even"><p>The device model. e.g. ‘WYZEC1-JZ’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.cameras.CamerasClient.turn_on">
+<code class="sig-name descname"><span class="pre">turn_on</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.cameras.CamerasClient.turn_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns on a camera.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="field-list simple">
+<dt class="field-odd">param str device_mac</dt>
+<dd class="field-odd"><p>The device mac. e.g. ‘ABCDEF1234567890’</p>
+</dd>
+<dt class="field-even">param str device_model</dt>
+<dd class="field-even"><p>The device model. e.g. ‘WYZEC1-JZ’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="locks">
+<h2>Locks<a class="headerlink" href="#locks" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wyze_sdk.api.devices.locks.LocksClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.devices.locks.</span></code><code class="sig-name descname"><span class="pre">LocksClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.devices.locks.LocksClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.devices.locks.BaseLockClient</span></code></p>
+<p>A Client that services Wyze locks.</p>
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.locks.LocksClient.gateways">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">gateways</span></code><a class="headerlink" href="#wyze_sdk.api.devices.locks.LocksClient.gateways" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a lock gateway client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>LockGatewaysClient</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.locks.LocksClient.get_records">
+<code class="sig-name descname"><span class="pre">get_records</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">since</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">until</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.locks.LockRecord" title="wyze_sdk.models.devices.locks.LockRecord"><span class="pre">wyze_sdk.models.devices.locks.LockRecord</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.locks.LocksClient.get_records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves event history records for a lock.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The results are queried and returned in reverse-chronological order.</p>
+</div>
+<p>Args:
+:param str device_mac: The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code>
+:param datetime since: The starting datetime of the query i.e., the most recent datetime for returned records
+:param datetime until: The ending datetime of the query i.e., the oldest allowed datetime for returned records. This parameter is optional and defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>
+:param int limit: The maximum number of records to return. Defaults to <code class="docutils literal notranslate"><span class="pre">20</span></code>
+:param int offset: The number of records to skip when querying. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.locks.LockRecord" title="wyze_sdk.models.devices.locks.LockRecord">LockRecord</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.locks.LocksClient.info">
+<code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.locks.Lock" title="wyze_sdk.models.devices.locks.Lock"><span class="pre">wyze_sdk.models.devices.locks.Lock</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.locks.LocksClient.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves details of a lock.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.locks.Lock" title="wyze_sdk.models.devices.locks.Lock">Lock</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.locks.LocksClient.list">
+<code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.locks.Lock" title="wyze_sdk.models.devices.locks.Lock"><span class="pre">wyze_sdk.models.devices.locks.Lock</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.locks.LocksClient.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all locks available to a Wyze account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.locks.Lock" title="wyze_sdk.models.devices.locks.Lock">Lock</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.locks.LocksClient.lock">
+<code class="sig-name descname"><span class="pre">lock</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.locks.LocksClient.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Locks a lock.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.locks.LocksClient.unlock">
+<code class="sig-name descname"><span class="pre">unlock</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.locks.LocksClient.unlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlocks a lock.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="plugs">
+<h2>Plugs<a class="headerlink" href="#plugs" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wyze_sdk.api.devices.plugs.PlugsClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.devices.plugs.</span></code><code class="sig-name descname"><span class="pre">PlugsClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.devices.plugs.PlugsClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.base.BaseClient</span></code></p>
+<p>A Client that services Wyze plugs/outlets.</p>
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.plugs.PlugsClient.clear_timer">
+<code class="sig-name descname"><span class="pre">clear_timer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.plugs.PlugsClient.clear_timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears any existing power state timer on the plug.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.plugs.PlugsClient.info">
+<code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.plugs.Plug" title="wyze_sdk.models.devices.plugs.Plug"><span class="pre">wyze_sdk.models.devices.plugs.Plug</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.plugs.PlugsClient.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves details of a plug.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.plugs.Plug" title="wyze_sdk.models.devices.plugs.Plug">Plug</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.plugs.PlugsClient.list">
+<code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.plugs.Plug" title="wyze_sdk.models.devices.plugs.Plug"><span class="pre">wyze_sdk.models.devices.plugs.Plug</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.plugs.PlugsClient.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all plugs available to a Wyze account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.plugs.Plug" title="wyze_sdk.models.devices.plugs.Plug">Plug</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.plugs.PlugsClient.set_away_mode">
+<code class="sig-name descname"><span class="pre">set_away_mode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">away_mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.plugs.PlugsClient.set_away_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets away/vacation mode for a plug.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPP1</span></code></p></li>
+<li><p><strong>away_mode</strong> (<em>bool</em>) – The new away mode. e.g. <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.plugs.PlugsClient.turn_off">
+<code class="sig-name descname"><span class="pre">turn_off</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.plugs.PlugsClient.turn_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns off a plug.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPP1</span></code></p></li>
+<li><p><strong>after</strong> (<em>Optional</em><em>[</em><em>timedelta</em><em>]</em>) – The delay before performing the action.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.plugs.PlugsClient.turn_on">
+<code class="sig-name descname"><span class="pre">turn_on</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.plugs.PlugsClient.turn_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns on a plug.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">WLPP1</span></code></p></li>
+<li><p><strong>after</strong> (<em>Optional</em><em>[</em><em>timedelta</em><em>]</em>) – The delay before performing the action.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="scales">
+<h2>Scales<a class="headerlink" href="#scales" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wyze_sdk.api.devices.scales.ScalesClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.devices.scales.</span></code><code class="sig-name descname"><span class="pre">ScalesClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.devices.scales.ScalesClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.base.BaseClient</span></code></p>
+<p>A Client that services Wyze scales.</p>
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.scales.ScalesClient.add_weight_record">
+<code class="sig-name descname"><span class="pre">add_weight_record</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_ts</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.scales.ScalesClient.add_weight_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a standard weight event history record for a user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">JA.SC2.ABCDEF1234567890</span></code></p></li>
+<li><p><strong>mac</strong> (<em>str</em>) – The device mac, without the leading product model identifier. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p></li>
+<li><p><strong>user_id</strong> (<em>str</em>) – The user id. e.g. <code class="docutils literal notranslate"><span class="pre">abcdef1234567890abcdef1234567890</span></code></p></li>
+<li><p><strong>measure_ts</strong> (<em>datetime</em>) – The timestamp of the record.</p></li>
+<li><p><strong>measure_type</strong> (<em>int</em>) – The measurement type. e.g. <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><strong>weight</strong> (<em>float</em>) – The new weight in kg. e.g. <code class="docutils literal notranslate"><span class="pre">117.3</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.scales.ScalesClient.delete_goal_weight">
+<code class="sig-name descname"><span class="pre">delete_goal_weight</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.scales.ScalesClient.delete_goal_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a user’s goal weight, if one exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user_id</strong> (<em>str</em>) – The user id. e.g. <code class="docutils literal notranslate"><span class="pre">abcdef1234567890abcdef1234567890</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>, which assumes the current user.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.scales.ScalesClient.delete_record">
+<code class="sig-name descname"><span class="pre">delete_record</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">typing.Union[int,</span> <span class="pre">typing.Sequence[int]]</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.scales.ScalesClient.delete_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a scale event history record.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data_id</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>Sequence</em><em>[</em><em>int</em><em>]</em><em>]</em>) – The data ids. e.g. <code class="docutils literal notranslate"><span class="pre">1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.scales.ScalesClient.get_goal_weight">
+<code class="sig-name descname"><span class="pre">get_goal_weight</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.scales.ScalesClient.get_goal_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a user’s goal weight.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user_id</strong> (<em>str</em>) – The user id. e.g. <code class="docutils literal notranslate"><span class="pre">abcdef1234567890abcdef1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.scales.ScalesClient.get_records">
+<code class="sig-name descname"><span class="pre">get_records</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">datetime.datetime(2021,</span> <span class="pre">4,</span> <span class="pre">30,</span> <span class="pre">14,</span> <span class="pre">15,</span> <span class="pre">14,</span> <span class="pre">654726)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.scales.ScaleRecord" title="wyze_sdk.models.devices.scales.ScaleRecord"><span class="pre">wyze_sdk.models.devices.scales.ScaleRecord</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.scales.ScalesClient.get_records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a user’s scale event history records.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The results are queried and returned in reverse-chronological order</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> (<em>str</em>) – The user id. e.g. <code class="docutils literal notranslate"><span class="pre">abcdef1234567890abcdef1234567890</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>, which assumes the current user.</p></li>
+<li><p><strong>start_time</strong> (<em>datetime</em>) – The ending datetime of the query i.e., the oldest allowed datetime for returned records</p></li>
+<li><p><strong>end_time</strong> (<em>datetime</em>) – The starting datetime of the query i.e., the most recent datetime for returned records. This parameter is optional and defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.scales.ScaleRecord" title="wyze_sdk.models.devices.scales.ScaleRecord">ScaleRecord</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.scales.ScalesClient.info">
+<code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.scales.Scale" title="wyze_sdk.models.devices.scales.Scale"><span class="pre">wyze_sdk.models.devices.scales.Scale</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.scales.ScalesClient.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves details of a scale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.scales.Scale" title="wyze_sdk.models.devices.scales.Scale">Scale</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.scales.ScalesClient.list">
+<code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.scales.Scale" title="wyze_sdk.models.devices.scales.Scale"><span class="pre">wyze_sdk.models.devices.scales.Scale</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.scales.ScalesClient.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all scales available to a Wyze account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.scales.Scale" title="wyze_sdk.models.devices.scales.Scale">Scale</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.scales.ScalesClient.set_unit">
+<code class="sig-name descname"><span class="pre">set_unit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">firmware_ver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">broadcast</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.scales.ScalesClient.set_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the weight/mass unit for the scale.</p>
+<p>Args:
+:param str device_mac: The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">JA.SC2.ABCDEF1234567890</span></code>
+:param str mac: The device mac, without the leading product model identifier. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code>
+:param str device_model: The device model. e.g. <code class="docutils literal notranslate"><span class="pre">JA.SC2</span></code>
+:param str firmware_ver: The firmware version. e.g. ‘’
+:param str unit: The new unit. e.g. <code class="docutils literal notranslate"><span class="pre">kg</span></code>
+:param int broadcast: The broadcast. e.g. <code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="wyze_sdk.errors.html#wyze_sdk.errors.WyzeRequestError" title="wyze_sdk.errors.WyzeRequestError"><strong>WyzeRequestError</strong></a> – if the new unit is not <code class="docutils literal notranslate"><span class="pre">kg</span></code> or <code class="docutils literal notranslate"><span class="pre">lb</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sensors">
+<h2>Sensors<a class="headerlink" href="#sensors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="contact-sensors">
+<h3>Contact Sensors<a class="headerlink" href="#contact-sensors" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="wyze_sdk.api.devices.sensors.ContactSensorsClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.devices.sensors.</span></code><code class="sig-name descname"><span class="pre">ContactSensorsClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.devices.sensors.ContactSensorsClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.devices.sensors.SensorsClient</span></code></p>
+<p>A Client that services Wyze Sense contact sensors.</p>
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.sensors.ContactSensorsClient.info">
+<code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.sensors.ContactSensor" title="wyze_sdk.models.devices.sensors.ContactSensor"><span class="pre">wyze_sdk.models.devices.sensors.ContactSensor</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.sensors.ContactSensorsClient.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves details of a contact sensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.sensors.ContactSensor" title="wyze_sdk.models.devices.sensors.ContactSensor">ContactSensor</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.sensors.ContactSensorsClient.list">
+<code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.sensors.ContactSensor" title="wyze_sdk.models.devices.sensors.ContactSensor"><span class="pre">wyze_sdk.models.devices.sensors.ContactSensor</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.sensors.ContactSensorsClient.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all contact sensors available to a Wyze account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.sensors.ContactSensor" title="wyze_sdk.models.devices.sensors.ContactSensor">ContactSensor</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="entry-sensors">
+<h3>Entry Sensors<a class="headerlink" href="#entry-sensors" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="wyze_sdk.api.devices.sensors.MotionSensorsClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.devices.sensors.</span></code><code class="sig-name descname"><span class="pre">MotionSensorsClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.devices.sensors.MotionSensorsClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.devices.sensors.SensorsClient</span></code></p>
+<p>A Client that services Wyze Sense motion sensors.</p>
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.sensors.MotionSensorsClient.info">
+<code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.sensors.MotionSensor" title="wyze_sdk.models.devices.sensors.MotionSensor"><span class="pre">wyze_sdk.models.devices.sensors.MotionSensor</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.sensors.MotionSensorsClient.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves details of a motion sensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.sensors.MotionSensor" title="wyze_sdk.models.devices.sensors.MotionSensor">MotionSensor</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.sensors.MotionSensorsClient.list">
+<code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.sensors.MotionSensor" title="wyze_sdk.models.devices.sensors.MotionSensor"><span class="pre">wyze_sdk.models.devices.sensors.MotionSensor</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.sensors.MotionSensorsClient.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all motion sensors available to a Wyze account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.sensors.MotionSensor" title="wyze_sdk.models.devices.sensors.MotionSensor">MotionSensor</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="thermostats">
+<h2>Thermostats<a class="headerlink" href="#thermostats" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.devices.thermostats.</span></code><code class="sig-name descname"><span class="pre">ThermostatsClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.base.BaseClient</span></code></p>
+<p>A Client that services Wyze thermostats.</p>
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.clear_hold">
+<code class="sig-name descname"><span class="pre">clear_hold</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.clear_hold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears any existing hold on the thermostat and resumes “smart” operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.hold">
+<code class="sig-name descname"><span class="pre">hold</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">until</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.hold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the current thermostat settings until a certain date/time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>until</strong> (<em>datetime</em>) – The new end date/time of the hold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.info">
+<code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.Thermostat" title="wyze_sdk.models.devices.thermostats.Thermostat"><span class="pre">wyze_sdk.models.devices.thermostats.Thermostat</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves details of a thermostat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.Thermostat" title="wyze_sdk.models.devices.thermostats.Thermostat">Thermostat</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.list">
+<code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.Thermostat" title="wyze_sdk.models.devices.thermostats.Thermostat"><span class="pre">wyze_sdk.models.devices.thermostats.Thermostat</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all thermostats available to a Wyze account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.Thermostat" title="wyze_sdk.models.devices.thermostats.Thermostat">Thermostat</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.set_behavior">
+<code class="sig-name descname"><span class="pre">set_behavior</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">behavior</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.set_behavior" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the comfort balance behavior for a thermostat.</p>
+<p>This setting allows the user to toggle between preset behaviors for weighing cost savings vs.
+climate comfort. An update to this property will modify the device’s scenario setpoints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>behavior</strong> (<em>int</em>) – The new behavior. e.g. <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.set_cooling_setpoint">
+<code class="sig-name descname"><span class="pre">set_cooling_setpoint</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cooling_setpoint</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.set_cooling_setpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the cooling setpoint of the thermostat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>cooling_setpoint</strong> (<em>int</em>) – The new cooling setpoint. e.g. <code class="docutils literal notranslate"><span class="pre">72</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.set_current_scenario">
+<code class="sig-name descname"><span class="pre">set_current_scenario</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatScenarioType" title="wyze_sdk.models.devices.thermostats.ThermostatScenarioType"><span class="pre">wyze_sdk.models.devices.thermostats.ThermostatScenarioType</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.set_current_scenario" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the current scenario of the thermostat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>scenario</strong> (<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatScenarioType" title="wyze_sdk.models.devices.thermostats.ThermostatScenarioType"><em>ThermostatScenarioType</em></a>) – The new scenario. e.g. <code class="docutils literal notranslate"><span class="pre">ThermostatScenarioType.HOME</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.set_fan_mode">
+<code class="sig-name descname"><span class="pre">set_fan_mode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fan_mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatFanMode" title="wyze_sdk.models.devices.thermostats.ThermostatFanMode"><span class="pre">wyze_sdk.models.devices.thermostats.ThermostatFanMode</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.set_fan_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the fan mode of the thermostat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>fan_mode</strong> (<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatFanMode" title="wyze_sdk.models.devices.thermostats.ThermostatFanMode"><em>ThermostatFanMode</em></a>) – The new fan mode. e.g. <code class="docutils literal notranslate"><span class="pre">ThermostatFanMode.CYCLE</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.set_heating_setpoint">
+<code class="sig-name descname"><span class="pre">set_heating_setpoint</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heating_setpoint</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.set_heating_setpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the heating setpoint of the thermostat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>heating_setpoint</strong> (<em>int</em>) – The new heating setpoint. e.g. <code class="docutils literal notranslate"><span class="pre">68</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.set_lock">
+<code class="sig-name descname"><span class="pre">set_lock</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locked</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.set_lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the device lock for a thermostat.</p>
+<p>If set, the thermostat can only be updated via the app and not by using the physical controls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>locked</strong><strong> (</strong><strong>int</strong><strong>)</strong> (<em>int</em>) – The new locked state. e.g. <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.set_mode">
+<code class="sig-name descname"><span class="pre">set_mode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatSystemMode" title="wyze_sdk.models.devices.thermostats.ThermostatSystemMode"><span class="pre">wyze_sdk.models.devices.thermostats.ThermostatSystemMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fan_mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatFanMode" title="wyze_sdk.models.devices.thermostats.ThermostatFanMode"><span class="pre">wyze_sdk.models.devices.thermostats.ThermostatFanMode</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.set_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the system and fan modes of the thermostat.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Fan mode and system mode cannot be set independently via this method.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>system_mode</strong> (<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatSystemMode" title="wyze_sdk.models.devices.thermostats.ThermostatSystemMode"><em>ThermostatSystemMode</em></a>) – The new system mode. e.g. <code class="docutils literal notranslate"><span class="pre">ThermostatSystemMode.AUTO</span></code></p></li>
+<li><p><strong>fan_mode</strong> (<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatFanMode" title="wyze_sdk.models.devices.thermostats.ThermostatFanMode"><em>ThermostatFanMode</em></a>) – The new fan mode. e.g. <code class="docutils literal notranslate"><span class="pre">ThermostatFanMode.CYCLE</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.set_system_mode">
+<code class="sig-name descname"><span class="pre">set_system_mode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatSystemMode" title="wyze_sdk.models.devices.thermostats.ThermostatSystemMode"><span class="pre">wyze_sdk.models.devices.thermostats.ThermostatSystemMode</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.set_system_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the system mode of the thermostat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>system_mode</strong> (<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.thermostats.ThermostatSystemMode" title="wyze_sdk.models.devices.thermostats.ThermostatSystemMode"><em>ThermostatSystemMode</em></a>) – The new system mode. e.g. <code class="docutils literal notranslate"><span class="pre">ThermostatSystemMode.AUTO</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.thermostats.ThermostatsClient.set_temperature">
+<code class="sig-name descname"><span class="pre">set_temperature</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cooling_setpoint</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heating_setpoint</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.thermostats.ThermostatsClient.set_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the heating and cooling setpoints of the thermostat.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Heating and cooling setpoints cannot be set independently via this method.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">CO_EA1</span></code></p></li>
+<li><p><strong>cooling_setpoint</strong> (<em>int</em>) – The new cooling setpoint. e.g. <code class="docutils literal notranslate"><span class="pre">72</span></code></p></li>
+<li><p><strong>heating_setpoint</strong> (<em>int</em>) – The new heating setpoint. e.g. <code class="docutils literal notranslate"><span class="pre">68</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="vacuums">
+<h2>Vacuums<a class="headerlink" href="#vacuums" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="wyze_sdk.api.devices.vacuums.VacuumsClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.devices.vacuums.</span></code><code class="sig-name descname"><span class="pre">VacuumsClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.devices.vacuums.VacuumsClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.base.BaseClient</span></code></p>
+<p>A Client that services Wyze Robot Vacuums.</p>
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.vacuums.VacuumsClient.clean">
+<code class="sig-name descname"><span class="pre">clean</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.vacuums.VacuumsClient.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts cleaning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.vacuums.VacuumsClient.dock">
+<code class="sig-name descname"><span class="pre">dock</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.vacuums.VacuumsClient.dock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Docks the vacuum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.vacuums.VacuumsClient.get_sweep_records">
+<code class="sig-name descname"><span class="pre">get_sweep_records</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">since</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">datetime.datetime</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.vacuums.VacuumSweepRecord" title="wyze_sdk.models.devices.vacuums.VacuumSweepRecord"><span class="pre">wyze_sdk.models.devices.vacuums.VacuumSweepRecord</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.vacuums.VacuumsClient.get_sweep_records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves event history records for a vacuum.</p>
+<p>The results are queried and returned in reverse-chronological order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>limit</strong> (<em>int</em>) – The maximum number of records to return. Defaults to <code class="docutils literal notranslate"><span class="pre">20</span></code></p></li>
+<li><p><strong>since</strong> (<em>datetime</em>) – The starting datetime of the query i.e., the most recent datetime for returned records. This parameter is optional and defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.vacuums.VacuumSweepRecord" title="wyze_sdk.models.devices.vacuums.VacuumSweepRecord">VacuumSweepRecord</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.vacuums.VacuumsClient.info">
+<code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.vacuums.Vacuum" title="wyze_sdk.models.devices.vacuums.Vacuum"><span class="pre">wyze_sdk.models.devices.vacuums.Vacuum</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.vacuums.VacuumsClient.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves details of a vacuum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2_ABCDEF1234567890</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.vacuums.Vacuum" title="wyze_sdk.models.devices.vacuums.Vacuum">Vacuum</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.vacuums.VacuumsClient.list">
+<code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.vacuums.Vacuum" title="wyze_sdk.models.devices.vacuums.Vacuum"><span class="pre">wyze_sdk.models.devices.vacuums.Vacuum</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.devices.vacuums.VacuumsClient.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all vacuums available to a Wyze account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.vacuums.Vacuum" title="wyze_sdk.models.devices.vacuums.Vacuum">Vacuum</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.vacuums.VacuumsClient.pause">
+<code class="sig-name descname"><span class="pre">pause</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.vacuums.VacuumsClient.pause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pauses cleaning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.vacuums.VacuumsClient.set_suction_level">
+<code class="sig-name descname"><span class="pre">set_suction_level</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suction_level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.vacuums.VacuumSuctionLevel" title="wyze_sdk.models.devices.vacuums.VacuumSuctionLevel"><span class="pre">wyze_sdk.models.devices.vacuums.VacuumSuctionLevel</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.vacuums.VacuumsClient.set_suction_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the suction level of a vacuum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>device_model</strong> (<em>str</em>) – The device model. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2</span></code></p></li>
+<li><p><strong>suction_level</strong> (<a class="reference internal" href="wyze_sdk.models.devices.html#wyze_sdk.models.devices.vacuums.VacuumSuctionLevel" title="wyze_sdk.models.devices.vacuums.VacuumSuctionLevel"><em>VacuumSuctionLevel</em></a>) – The new suction level. e.g. <code class="docutils literal notranslate"><span class="pre">VacuumSuctionLevel.QUIET</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="wyze_sdk.api.devices.vacuums.VacuumsClient.sweep_rooms">
+<code class="sig-name descname"><span class="pre">sweep_rooms</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_mac</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">room_ids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.devices.vacuums.VacuumsClient.sweep_rooms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts cleaning specific map rooms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_mac</strong> (<em>str</em>) – The device mac. e.g. <code class="docutils literal notranslate"><span class="pre">JA_RO2_ABCDEF1234567890</span></code></p></li>
+<li><p><strong>room_ids</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>Sequence</em><em>[</em><em>int</em><em>]</em><em>]</em>) – The room ids to clean. e.g. <code class="docutils literal notranslate"><span class="pre">[11,</span> <span class="pre">14]</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="wyze_sdk.api.events.EventsClient">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.api.events.</span></code><code class="sig-name descname"><span class="pre">EventsClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">token:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">user_id:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">base_url:</span> <span class="pre">Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">wyze_sdk.api.base</span> <span class="pre">(WARNING)&gt;</span></em>, <em class="sig-param"><span class="pre">**kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.api.events.EventsClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#wyze_sdk.api.base.BaseClient" title="wyze_sdk.api.base.BaseClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.base.BaseClient</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.api.base.BaseClient</span></code></p>
 <p>A Client that manages Wyze events.</p>
-<dl class="simple">
-<dt>Methods:</dt><dd><p>list: Lists &amp; filters events
-mark_read: Marks events as read
-mark_unread: Marks events as unread</p>
-</dd>
-</dl>
 <dl class="py method">
 <dt id="wyze_sdk.api.events.EventsClient.list">
 <code class="sig-name descname"><span class="pre">list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event"><span class="pre">wyze_sdk.models.events.Event</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.api.events.EventsClient.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lists &amp; filters events.</p>
-<dl>
-<dt>Args:</dt><dd><p>device_ids (Sequence[str]): The device mac(s) for filtering events. e.g. [‘ABCDEF1234567890’, ‘ABCDEF1234567891’]
-event_values (Union[EventAlarmType, Sequence[EventAlarmType]]): The alarm types to incude. e.g. [EventAlarmType.MOTION, EventAlarmType.SOUND]
-begin: (datetime): The start of the event filter date/time range.</p>
-<blockquote>
-<div><p>Defaults to 24 hours before now</p>
-</div></blockquote>
-<dl class="simple">
-<dt>end: (datetime): The end of the event filter date/time range.</dt><dd><p>Defaults to now</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_ids</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – The device mac(s) for filtering events. e.g. <code class="docutils literal notranslate"><span class="pre">['ABCDEF1234567890',</span> <span class="pre">'ABCDEF1234567891']</span></code></p></li>
+<li><p><strong>event_values</strong> (<em>Union</em><em>[</em><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.EventAlarmType" title="wyze_sdk.models.events.EventAlarmType"><em>EventAlarmType</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.EventAlarmType" title="wyze_sdk.models.events.EventAlarmType"><em>EventAlarmType</em></a><em>]</em><em>]</em>) – The alarm types to incude. e.g. <code class="docutils literal notranslate"><span class="pre">[EventAlarmType.MOTION,</span> <span class="pre">EventAlarmType.SOUND]</span></code></p></li>
+<li><p><strong>begin</strong> (<em>datetime</em>) – The start of the event filter date/time range. Defaults to 24 hours before now</p></li>
+<li><p><strong>end</strong> (<em>datetime</em>) – The end of the event filter date/time range. Defaults to now</p></li>
+<li><p><strong>limit</strong> (<em>int</em>) – The number of event records to return. Defaults to, and cannot exceed, 20</p></li>
+<li><p><strong>order_by</strong> (<em>int</em>) – The order ([<code class="docutils literal notranslate"><span class="pre">1</span></code>] chronological or [<code class="docutils literal notranslate"><span class="pre">2</span></code>] reverse-chronological) of the record query. Defaults to <code class="docutils literal notranslate"><span class="pre">2</span></code> (reverse chronological)</p></li>
+</ul>
 </dd>
-<dt>limit: (int): The number of event records to return.</dt><dd><p>Defaults to, and cannot exceed, 20</p>
-</dd>
-<dt>order_by: (int): The order ([1] chronological or [2] reverse-chronological) of the record query.</dt><dd><p>Defaults to 2 (reverse chronological)</p>
-</dd>
-</dl>
-</dd>
-<dt>Returns:</dt><dd><p>(Sequence[Event])</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Sequence[<a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event">Event</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -256,8 +1271,12 @@ begin: (datetime): The start of the event filter date/time range.</p>
 <dt id="wyze_sdk.api.events.EventsClient.mark_read">
 <code class="sig-name descname"><span class="pre">mark_read</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event"><span class="pre">wyze_sdk.models.events.Event</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event"><span class="pre">wyze_sdk.models.events.Event</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.events.EventsClient.mark_read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Marks events as read.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>events (Union[Event, Sequence[Event]]): The events to mark read.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>events</strong> (<em>Union</em><em>[</em><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event"><em>Event</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event"><em>Event</em></a><em>]</em><em>]</em>) – The events to mark read.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -266,17 +1285,18 @@ begin: (datetime): The start of the event filter date/time range.</p>
 <dt id="wyze_sdk.api.events.EventsClient.mark_unread">
 <code class="sig-name descname"><span class="pre">mark_unread</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event"><span class="pre">wyze_sdk.models.events.Event</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event"><span class="pre">wyze_sdk.models.events.Event</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse"><span class="pre">wyze_sdk.service.wyze_response.WyzeResponse</span></a><a class="headerlink" href="#wyze_sdk.api.events.EventsClient.mark_unread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Marks events as unread.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>events (Union[Event, Sequence[Event]]): The events to mark unread.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>events</strong> (<em>Union</em><em>[</em><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event"><em>Event</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference internal" href="wyze_sdk.models.events.html#wyze_sdk.models.events.Event" title="wyze_sdk.models.events.Event"><em>Event</em></a><em>]</em><em>]</em>) – The events to mark unread.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="wyze_sdk.service.html#wyze_sdk.service.wyze_response.WyzeResponse" title="wyze_sdk.service.wyze_response.WyzeResponse">WyzeResponse</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-wyze_sdk.api">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-wyze_sdk.api" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -288,14 +1308,35 @@ begin: (datetime): The start of the event filter date/time range.</p>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="index.html">Table of Contents</a></h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Wyze SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.api.devices.html">wyze_sdk.api.devices package</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting Started with Wyze SDK</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Web Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bulbs">Bulbs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cameras">Cameras</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#locks">Locks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plugs">Plugs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scales">Scales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sensors">Sensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#contact-sensors">Contact Sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#entry-sensors">Entry Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#thermostats">Thermostats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vacuums">Vacuums</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#events">Events</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.devices.html">wyze_sdk.models.devices package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.events.html">wyze_sdk.models.events package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wyze_sdk.signature.html">wyze_sdk.signature package</a></li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Getting Started with Wyze SDK</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wyze_sdk.models.devices.html"
+                        title="next chapter">wyze_sdk.models.devices package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -326,8 +1367,14 @@ begin: (datetime): The start of the event filter date/time range.</p>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="wyze_sdk.models.devices.html" title="wyze_sdk.models.devices package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Getting Started with Wyze SDK"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">wyze_sdk.api package</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Web Client</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>wyze_sdk.signature package &#8212; Wyze SDK 1.1.0 documentation</title>
+    <title>Request Signature Verification &#8212; Wyze SDK 1.1.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     
@@ -16,7 +16,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="wyze_sdk.models.events package" href="wyze_sdk.models.events.html" /> 
+    <link rel="next" title="Logging" href="wyze_sdk.logging.html" />
+    <link rel="prev" title="Errors" href="wyze_sdk.errors.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,10 +29,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="wyze_sdk.models.events.html" title="wyze_sdk.models.events package"
+          <a href="wyze_sdk.logging.html" title="Logging"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="wyze_sdk.errors.html" title="Errors"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">wyze_sdk.signature package</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Request Signature Verification</a></li> 
       </ul>
     </div>  
 
@@ -40,8 +44,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="wyze-sdk-signature-package">
-<h1>wyze_sdk.signature package<a class="headerlink" href="#wyze-sdk-signature-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="request-signature-verification">
+<h1>Request Signature Verification<a class="headerlink" href="#request-signature-verification" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-wyze_sdk.signature">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-wyze_sdk.signature" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
@@ -73,7 +77,7 @@
 <dl class="py method">
 <dt id="wyze_sdk.signature.RequestVerifier.generate_signature">
 <code class="sig-name descname"><span class="pre">generate_signature</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#wyze_sdk.signature.RequestVerifier.generate_signature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a signature</p>
+<dd><p>Generates a standard signature</p>
 </dd></dl>
 
 <dl class="py method">
@@ -100,19 +104,23 @@
         <div class="sphinxsidebarwrapper">
 <h3><a href="index.html">Table of Contents</a></h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="index.html">Wyze SDK</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.api.devices.html">wyze_sdk.api.devices package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.devices.html">wyze_sdk.models.devices package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.events.html">wyze_sdk.models.events package</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">wyze_sdk.signature package</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting Started with Wyze SDK</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.api.html">Web Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.models.html">Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.errors.html">Errors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Request Signature Verification</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-wyze_sdk.signature">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.logging.html">Logging</a></li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="wyze_sdk.models.events.html"
-                        title="previous chapter">wyze_sdk.models.events package</a></p>
+  <p class="topless"><a href="wyze_sdk.errors.html"
+                        title="previous chapter">Errors</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wyze_sdk.logging.html"
+                        title="next chapter">Logging</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -144,10 +152,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="wyze_sdk.models.events.html" title="wyze_sdk.models.events package"
+          <a href="wyze_sdk.logging.html" title="Logging"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="wyze_sdk.errors.html" title="Errors"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">wyze_sdk.signature package</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Request Signature Verification</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

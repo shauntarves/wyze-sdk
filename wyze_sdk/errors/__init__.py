@@ -15,16 +15,16 @@ class WyzeFeatureNotSupportedError(WyzeRequestError):
 
 class WyzeApiError(WyzeClientError):
     """Error raised when Wyze does not send the expected response.
-    Attributes:
-        response (WyzeResponse): The WyzeResponse object containing all of the data sent back from the API.
-    Note:
+
+    .. note ::
         The message (str) passed into the exception is used when
         a user converts the exception to a str.
-        i.e. str(WyzeApiError("This text will be sent as a string."))
+        i.e. ``str(WyzeApiError("This text will be sent as a string."))``
     """
 
     def __init__(self, message, response):
         msg = f"{message}\nThe server responded with: {response}"
+        #: The WyzeResponse object containing all of the data sent back from the API
         self.response = response
         super(WyzeApiError, self).__init__(msg)
 

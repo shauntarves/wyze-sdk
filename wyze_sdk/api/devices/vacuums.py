@@ -8,24 +8,13 @@ from wyze_sdk.service import VenusServiceClient, WyzeResponse
 
 
 class VacuumsClient(BaseClient):
-    """A Client that services Wyze vacuums.
-
-    Methods:
-        list: Lists all vacuums available to a Wyze account
-        info: Retrieves details of a vacuum
-        clean: Starts cleaning
-        pause: Pauses cleaning
-        dock: Docks the vacuum
-        get_sweep_records: Retrieves event history records for a vacuum
-        set_suction_level: Sets the suction level of a vacuum
-        sweep_rooms: Starts cleaning specific map rooms
+    """A Client that services Wyze Robot Vacuums.
     """
 
     def list(self, **kwargs) -> Sequence[Vacuum]:
         """Lists all vacuums available to a Wyze account.
 
-        Returns:
-            (Sequence[Vacuum])
+        :rtype: Sequence[Vacuum]
         """
         return [Vacuum(**device) for device in self._list_vacuums()]
 
@@ -36,11 +25,9 @@ class VacuumsClient(BaseClient):
     def info(self, *, device_mac: str, **kwargs) -> Optional[Vacuum]:
         """Retrieves details of a vacuum.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'JA_RO2_ABCDEF1234567890'
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
 
-        Returns:
-            (Optional[Vacuum])
+        :rtype: Optional[Vacuum]
         """
         vacuums = [_vacuum for _vacuum in self._list_vacuums()
                    if _vacuum['mac'] == device_mac]
@@ -70,9 +57,10 @@ class VacuumsClient(BaseClient):
     def clean(self, *, device_mac: str, device_model: str, **kwargs) -> WyzeResponse:
         """Starts cleaning.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'JA_RO2_ABCDEF1234567890'
-            device_model (str): The device model. e.g. 'JA_RO2'
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+        :param str device_model: The device model. e.g. ``JA_RO2``
+
+        :rtype: WyzeResponse
         """
         response = self._set_vacuum_mode(device_mac, device_model, 0, 1)
         self._create_user_vacuum_event(event_id='WRV_CLEAN', event_type=1)
@@ -81,9 +69,10 @@ class VacuumsClient(BaseClient):
     def pause(self, *, device_mac: str, device_model: str, **kwargs) -> WyzeResponse:
         """Pauses cleaning.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'JA_RO2_ABCDEF1234567890'
-            device_model (str): The device model. e.g. 'JA_RO2'
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+        :param str device_model: The device model. e.g. ``JA_RO2``
+
+        :rtype: WyzeResponse
         """
         response = self._set_vacuum_mode(device_mac, device_model, 0, 2)
         self._create_user_vacuum_event(event_id='WRV_PAUSE', event_type=1)
@@ -92,9 +81,10 @@ class VacuumsClient(BaseClient):
     def dock(self, *, device_mac: str, device_model: str, **kwargs) -> WyzeResponse:
         """Docks the vacuum.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'JA_RO2_ABCDEF1234567890'
-            device_model (str): The device model. e.g. 'JA_RO2'
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+        :param str device_model: The device model. e.g. ``JA_RO2``
+
+        :rtype: WyzeResponse
         """
         response = self._set_vacuum_mode(device_mac, device_model, 3, 1)
         # yes, when canceling cleaning, the event is still WRV_CLEAN
@@ -106,25 +96,22 @@ class VacuumsClient(BaseClient):
 
         The results are queried and returned in reverse-chronological order.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'JA_RO2_ABCDEF1234567890'
-            since (datetime): The starting datetime of the query i.e., the most recent datetime for returned records
-                This parameter is optional and defaults to None
-            limit (int): The maximum number of records to return.
-                Defaults to 20
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+        :param int limit: The maximum number of records to return. Defaults to ``20``
+        :param datetime since: The starting datetime of the query i.e., the most recent datetime for returned records. This parameter is optional and defaults to ``None``
 
-        Returns:
-            (Sequence[VacuumSweepRecord])
+        :rtype: Sequence[VacuumSweepRecord]
         """
         return [VacuumSweepRecord(**record) for record in super()._venus_client().get_sweep_records(did=device_mac, keys=[], limit=limit, since=since)["data"]["data"]]
 
     def set_suction_level(self, *, device_mac: str, device_model: str, suction_level: VacuumSuctionLevel, **kwargs) -> WyzeResponse:
         """Sets the suction level of a vacuum.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
-            device_model (str): The device model. e.g. 'WLPA19'
-            suction_level (VacuumSuctionLevel): The new suction level. e.g. VacuumSuctionLevel.QUIET
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+        :param str device_model: The device model. e.g. ``JA_RO2``
+        :param VacuumSuctionLevel suction_level: The new suction level. e.g. ``VacuumSuctionLevel.QUIET``
+
+        :rtype: WyzeResponse
         """
         response = self._set_vacuum_preference(device_mac, device_model, 1, suction_level.code)
         self._create_user_vacuum_event(event_id='WRV_SETTINGS_SUCTION', event_type=1)
@@ -138,9 +125,11 @@ class VacuumsClient(BaseClient):
     def sweep_rooms(self, *, device_mac: str, room_ids: Union[int, Sequence[int]]) -> WyzeResponse:
         """Starts cleaning specific map rooms.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'JA_RO2_ABCDEF1234567890'
-            room_ids (Union[int, Sequence[int]]): The room ids to clean. e.g. [11, 14]
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+        :param room_ids: The room ids to clean. e.g. ``[11, 14]``
+        :type room_ids: Union[int, Sequence[int]]
+
+        :rtype: WyzeResponse
         """
         return super()._venus_client().sweep_rooms(did=device_mac, rooms=room_ids)
 

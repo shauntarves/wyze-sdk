@@ -12,6 +12,9 @@ from .base import (AbstractWirelessNetworkedDevice, ContactMixin, Device,
 
 
 class LockProps(object):
+    """
+    :meta private:
+    """
 
     @classmethod
     def lock_state(cls) -> PropDef:

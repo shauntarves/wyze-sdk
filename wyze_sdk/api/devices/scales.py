@@ -2,22 +2,13 @@ from datetime import datetime
 from typing import Optional, Sequence, Union
 
 from wyze_sdk.api.base import BaseClient
+from wyze_sdk.errors import WyzeRequestError
 from wyze_sdk.models.devices import DeviceModels, Scale, ScaleRecord
 from wyze_sdk.service import WyzeResponse
 
 
 class ScalesClient(BaseClient):
     """A Client that services Wyze scales.
-
-    Methods:
-        list: Lists all scales available to a Wyze account
-        info: Retrieves details of a scale
-        get_records: Retrieves a user's scale event history record
-        get_goal_weight: Retrieves a user's goal weight
-        delete_goal_weight: Deletes a user's goal weight
-        delete_record: Deletes a scale event history record
-        add_weight_record: Creates a standard weight event history record for a user
-        set_unit: Sets the weight/mass unit for the scale
     """
 
     def _list_scales(self, **kwargs) -> Sequence[dict]:
@@ -27,19 +18,16 @@ class ScalesClient(BaseClient):
     def list(self, **kwargs) -> Sequence[Scale]:
         """Lists all scales available to a Wyze account.
 
-        Returns:
-            (Sequence[Scale])
+        :rtype: Sequence[Scale]
         """
         return [Scale(**device) for device in self._list_scales()]
 
     def info(self, *, device_mac: str, **kwargs) -> Optional[Scale]:
         """Retrieves details of a scale.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
 
-        Returns:
-            (Optional[Scale])
+        :rtype: Optional[Scale]
         """
         scales = [_scale for _scale in self._list_scales() if _scale['mac'] == device_mac]
         if len(scales) == 0:
@@ -86,25 +74,22 @@ class ScalesClient(BaseClient):
     def get_records(self, *, user_id: Optional[str] = None, start_time: datetime, end_time: Optional[datetime] = datetime.now(), **kwargs) -> Sequence[ScaleRecord]:
         """Retrieves a user's scale event history records.
 
-        The results are queried and returned in reverse-chronological order
+        .. note:: The results are queried and returned in reverse-chronological order
 
-        Args:
-            user_id (str): The user id. e.g. 'abcdef1234567890abcdef1234567890'
-                Defaults to None, which assumes the current user.
-            start_time (datetime): The ending datetime of the query i.e., the oldest allowed datetime for returned records
-            end_time (datetime): The starting datetime of the query i.e., the most recent datetime for returned records
-                This parameter is optional and defaults to None
+        :param str user_id: The user id. e.g. ``abcdef1234567890abcdef1234567890``. Defaults to ``None``, which assumes the current user.
+        :param datetime start_time: The ending datetime of the query i.e., the oldest allowed datetime for returned records
+        :param datetime end_time: The starting datetime of the query i.e., the most recent datetime for returned records. This parameter is optional and defaults to ``None``
 
-        Returns:
-            (Sequence[ScaleRecord])
+        :rtype: Sequence[ScaleRecord]
         """
         return [ScaleRecord(**record) for record in super()._scale_client().get_records(user_id=user_id, start_time=start_time, end_time=end_time)["data"]]
 
     def get_goal_weight(self, *, user_id: str, **kwargs) -> WyzeResponse:
         """Retrieves a user's goal weight.
 
-        Args:
-            user_id (str): The user id. e.g. 'abcdef1234567890abcdef1234567890'
+        :param str user_id: The user id. e.g. ``abcdef1234567890abcdef1234567890``
+
+        :rtype: WyzeResponse
         """
         response = super()._scale_client().get_goal_weight(user_id=user_id)
         return response
@@ -112,9 +97,9 @@ class ScalesClient(BaseClient):
     def delete_goal_weight(self, *, user_id: Optional[str] = None, **kwargs) -> WyzeResponse:
         """Deletes a user's goal weight, if one exists.
 
-        Args:
-            user_id (str): The user id. e.g. 'abcdef1234567890abcdef1234567890'
-                Defaults to None, which assumes the current user.
+        :param str user_id: The user id. e.g. ``abcdef1234567890abcdef1234567890``. Defaults to ``None``, which assumes the current user.
+
+        :rtype: WyzeResponse
         """
         response = super()._scale_client().delete_goal_weight(user_id=user_id)
         return response
@@ -122,8 +107,10 @@ class ScalesClient(BaseClient):
     def delete_record(self, *, data_id=Union[int, Sequence[int]], **kwargs) -> WyzeResponse:
         """Deletes a scale event history record.
 
-        Args:
-            data_id (Union[int, Sequence[int]]): The data ids. e.g. '1234567890'
+        :param data_id: The data ids. e.g. ``1234567890``
+        :type data_id: Union[int, Sequence[int]]
+
+        :rtype: WyzeResponse
         """
         response = super()._scale_client().delete_record(data_id=data_id)
         return response
@@ -131,13 +118,14 @@ class ScalesClient(BaseClient):
     def add_weight_record(self, *, device_mac: str, mac: str, user_id: str, measure_ts: datetime, measure_type: int = 1, weight: float, **kwargs) -> WyzeResponse:
         """Creates a standard weight event history record for a user.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'JA.SC2.ABCDEF1234567890'
-            mac (str): The device mac, without the leading product model identifier. e.g. 'ABCDEF1234567890'
-            user_id (str): The user id. e.g. 'abcdef1234567890abcdef1234567890'
-            measure_ts (datetime): The timestamp of the record.
-            measure_type (int): The measurement type. e.g. 1
-            weight (float): The new weight in kg. e.g. 117.3
+        :param str device_mac: The device mac. e.g. ``JA.SC2.ABCDEF1234567890``
+        :param str mac: The device mac, without the leading product model identifier. e.g. ``ABCDEF1234567890``
+        :param str user_id: The user id. e.g. ``abcdef1234567890abcdef1234567890``
+        :param datetime measure_ts: The timestamp of the record.
+        :param int measure_type: The measurement type. e.g. ``1``
+        :param float weight: The new weight in kg. e.g. ``117.3``
+
+        :rtype: WyzeResponse
         """
         response = super()._scale_client().add_weight_record(did=device_mac, mac=mac, user_id=user_id, measure_ts=measure_ts.timestamp(), measure_type=measure_type, weight=weight)
         return response
@@ -156,13 +144,21 @@ class ScalesClient(BaseClient):
         """Sets the weight/mass unit for the scale.
 
         Args:
-            device_mac (str): The device mac. e.g. 'JA.SC2.ABCDEF1234567890'
-            device_model (str): The device model. e.g. ''
-            firmware_ver (str): The firmware version. e.g. ''
-            mac (str): The device mac, without the leading product model identifier. e.g. 'ABCDEF1234567890'
-            unit (str): The new unit. e.g. 'kg'
-            broadcast (int): The broadcast. e.g. 1
+        :param str device_mac: The device mac. e.g. ``JA.SC2.ABCDEF1234567890``
+        :param str mac: The device mac, without the leading product model identifier. e.g. ``ABCDEF1234567890``
+        :param str device_model: The device model. e.g. ``JA.SC2``
+        :param str firmware_ver: The firmware version. e.g. ''
+        :param str unit: The new unit. e.g. ``kg``
+        :param int broadcast: The broadcast. e.g. ``1``
+
+        :raises WyzeRequestError: if the new unit is not ``kg`` or ``lb``
+
+        :rtype: WyzeResponse
         """
+
+        if unit not in ['kg', 'lb']:
+            raise WyzeRequestError(f"{unit} must be one of {['kg', 'lb']}")
+
         response = self._set_scale_setting(device_mac, device_model, firmware_ver, mac, unit, broadcast)
         return response
 

@@ -34,10 +34,6 @@ class SensorsClient(BaseClient, metaclass=ABCMeta):
 
 class ContactSensorsClient(SensorsClient):
     """A Client that services Wyze Sense contact sensors.
-
-    Methods:
-        list: Lists all contact sensors available to a Wyze account
-        info: Retrieves details of a contact sensor
     """
 
     def _list_contact_sensors(self) -> Sequence[dict]:
@@ -46,19 +42,16 @@ class ContactSensorsClient(SensorsClient):
     def list(self) -> Sequence[ContactSensor]:
         """Lists all contact sensors available to a Wyze account.
 
-        Returns:
-            (Sequence[ContactSensor])
+        :rtype: Sequence[ContactSensor]
         """
         return [ContactSensor(**device) for device in self._list_contact_sensors()]
 
     def info(self, *, device_mac: str, **kwargs) -> Optional[ContactSensor]:
         """Retrieves details of a contact sensor.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
 
-        Returns:
-            (Optional[ContactSensor])
+        :rtype: Optional[ContactSensor]
         """
         contact_sensor = self._get_sensor(device_mac, self._list_contact_sensors())
         if contact_sensor is not None:
@@ -67,10 +60,6 @@ class ContactSensorsClient(SensorsClient):
 
 class MotionSensorsClient(SensorsClient):
     """A Client that services Wyze Sense motion sensors.
-
-    Methods:
-        list: Lists all motion sensors available to a Wyze account
-        info: Retrieves details of a motion sensor
     """
 
     def _list_motion_sensors(self) -> Sequence[dict]:
@@ -79,19 +68,16 @@ class MotionSensorsClient(SensorsClient):
     def list(self) -> Sequence[MotionSensor]:
         """Lists all motion sensors available to a Wyze account.
 
-        Returns:
-            (Sequence[MotionSensor])
+        :rtype: Sequence[MotionSensor]
         """
         return [MotionSensor(**device) for device in self._list_motion_sensors()]
 
     def info(self, *, device_mac: str, **kwargs) -> Optional[MotionSensor]:
         """Retrieves details of a motion sensor.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
 
-        Returns:
-            (Optional[MotionSensor])
+        :rtype: Optional[MotionSensor]
         """
         motion_sensor = self._get_sensor(device_mac, self._list_motion_sensors())
         if motion_sensor is not None:

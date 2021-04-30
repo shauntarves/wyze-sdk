@@ -76,6 +76,8 @@ class CameraProps(object):
 
     See: com.hualai.plugin.camera.activity.WyzeDeviceProperty
          com.hualai.plugin.camera_v3.activity.WyzeDeviceProperty
+
+    :meta private:
     """
 
     @classmethod

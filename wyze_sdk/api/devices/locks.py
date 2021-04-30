@@ -28,10 +28,20 @@ class BaseLockClient(BaseClient, metaclass=ABCMeta):
 class LockGatewaysClient(BaseLockClient):
 
     def list(self, **kwargs) -> Sequence[LockGateway]:
+        """Lists all lock gateway available to a Wyze account.
+
+        :rtype: Sequence[LockGateway]
+        """
         gateways = [LockGateway(**device) for device in self._list_lock_gateways()]
         return gateways
 
     def info(self, device_mac: str, **kwargs) -> Optional[LockGateway]:
+        """Retrieves details of a lock gateway.
+
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+
+        :rtype: Optional[LockGateway]
+        """
         gateways = [_gateway for _gateway in self._list_lock_gateways() if _gateway['mac'] == device_mac]
         if len(gateways) == 0:
             return None
@@ -62,20 +72,12 @@ class LockGatewaysClient(BaseLockClient):
 
 class LocksClient(BaseLockClient):
     """A Client that services Wyze locks.
-
-    Methods:
-        list: Lists all locks available to a Wyze account
-        info: Retrieves details of a lock
-        lock: Locks a lock
-        unlock: Unlocks a lock
-        get_records: Retrieves event history records for a lock
     """
 
     def list(self, **kwargs) -> Sequence[Lock]:
         """Lists all locks available to a Wyze account.
 
-        Returns:
-            (Sequence[Lock])
+        :rtype: Sequence[Lock]
         """
         return [Lock(**device) for device in self._list_locks()]
 
@@ -86,47 +88,43 @@ class LocksClient(BaseLockClient):
     def lock(self, device_mac: str, **kwargs) -> WyzeResponse:
         """Locks a lock.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+
+        :rtype: WyzeResponse
         """
         return self._control_lock(device_mac=device_mac, action="remoteLock")
 
     def unlock(self, device_mac: str, **kwargs) -> WyzeResponse:
         """Unlocks a lock.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+
+        :rtype: WyzeResponse
         """
         return self._control_lock(device_mac=device_mac, action="remoteUnlock")
 
     def get_records(self, *, device_mac: str, limit: int = 20, since: datetime, until: Optional[datetime] = None, offset: int = 0, **kwargs) -> Sequence[LockRecord]:
         """Retrieves event history records for a lock.
 
-        The results are queried and returned in reverse-chronological order.
+        .. note:: The results are queried and returned in reverse-chronological order.
 
         Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
-            since (datetime): The starting datetime of the query i.e., the most recent datetime for returned records
-            until (datetime): The ending datetime of the query i.e., the oldest allowed datetime for returned records
-                This parameter is optional and defaults to None
-            limit (int): The maximum number of records to return.
-                Defaults to 20
-            offset (int): The number of records to skip when querying.
-                Defaults to 0
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+        :param datetime since: The starting datetime of the query i.e., the most recent datetime for returned records
+        :param datetime until: The ending datetime of the query i.e., the oldest allowed datetime for returned records. This parameter is optional and defaults to ``None``
+        :param int limit: The maximum number of records to return. Defaults to ``20``
+        :param int offset: The number of records to skip when querying. Defaults to ``0``
 
-        Returns:
-            (Sequence[LockRecord])
+        :rtype: Sequence[LockRecord]
         """
         return [LockRecord(**record) for record in super()._ford_client().get_family_record(uuid=Lock.parse_uuid(mac=device_mac), begin=since, end=until, limit=limit, offset=offset)["family_record"]]
 
     def info(self, *, device_mac: str, **kwargs) -> Optional[Lock]:
         """Retrieves details of a lock.
 
-        Args:
-            device_mac (str): The device mac. e.g. 'ABCDEF1234567890'
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
 
-        Returns:
-            (Optional[Lock])
+        :rtype: Optional[Lock]
         """
         locks = [_lock for _lock in self._list_locks() if _lock['mac'] == device_mac]
         if len(locks) == 0:
@@ -154,4 +152,8 @@ class LocksClient(BaseLockClient):
 
     @property
     def gateways(self) -> LockGatewaysClient:
+        """Returns a lock gateway client.
+
+        :rtype: LockGatewaysClient
+        """
         return LockGatewaysClient(token=self._token, base_url=self._base_url, logger=self._logger)

@@ -56,7 +56,10 @@ class JsonObject(BaseObject, metaclass=ABCMeta):
     @property
     @abstractmethod
     def attributes(self) -> Set[str]:
-        """Provide a set of attributes of this object that will make up its JSON structure"""
+        """Provide a set of attributes of this object that will make up its JSON structure
+
+        :meta: private
+        """
         return set()
 
     def _extract_attribute(self, name: str, others: dict) -> Any:
@@ -80,8 +83,9 @@ class JsonObject(BaseObject, metaclass=ABCMeta):
 
     def validate_json(self) -> None:
         """
-        Raises:
-          WyzeObjectFormationError if the object was not valid
+        :raises WyzeObjectFormationError: if the object was not valid
+
+        :meta: private
         """
         for attribute in (func for func in dir(self) if not func.startswith("__")):
             method = getattr(self, attribute, None)
@@ -92,6 +96,8 @@ class JsonObject(BaseObject, metaclass=ABCMeta):
         """
         Construct a dictionary out of non-null keys (from attributes property)
         present on this object.
+
+        :meta: private
         """
         def to_dict_compatible(
             value: Union[dict, list, object]
@@ -127,10 +133,11 @@ class JsonObject(BaseObject, metaclass=ABCMeta):
         """
         Extract this object as a JSON-compatible, Wyze-API-valid dictionary.
 
-        Args:
-          *args: Any specific formatting args (rare; generally not required)
-        Raises:
-          WyzeObjectFormationError if the object was not valid
+        :param args: Any specific formatting args (rare; generally not required)
+
+        :raises WyzeObjectFormationError: if the object was not valid
+
+        :meta: private
         """
         self.validate_json()
         return self.get_non_null_attributes()
