@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+import logging
 from datetime import datetime
 from enum import Enum
-import logging
 from typing import Any, Optional, Sequence, Set, Tuple, Union
 
 from wyze_sdk.errors import WyzeObjectFormationError
-from wyze_sdk.models import (JsonObject, PropDef, epoch_to_datetime, show_unknown_key_warning)
-from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice, DeviceProp, VoltageMixin)
+from wyze_sdk.models import (JsonObject, PropDef, epoch_to_datetime,
+                             show_unknown_key_warning)
+from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
+                                     DeviceProp, VoltageMixin)
 
 
 class VacuumProps(object):

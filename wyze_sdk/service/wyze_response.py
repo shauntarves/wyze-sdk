@@ -9,18 +9,20 @@ import wyze_sdk.errors as e
 
 class WyzeResponse:
     """A container of response data.
+
     Attributes:
         data (dict): The json-encoded content of the response. Along
             with the headers and status code information.
+
     Methods:
         validate: Check if the response from Wyze was successful.
         get: Retrieves any key from the response data.
+
     Note:
         Any attributes or methods prefixed with _underscores are
         intended to be "private" internal use only. They may be changed or
         removed at any time.
     """
-
     def __init__(
         self,
         *,
@@ -53,10 +55,12 @@ class WyzeResponse:
 
     def __getitem__(self, key):
         """Retrieves any key from the data store.
+
         Note:
             This is implemented so users can reference the
             WyzeResponse object like a dictionary.
             e.g. response["ok"]
+
         Returns:
             The value from data or None.
         """
@@ -68,10 +72,12 @@ class WyzeResponse:
 
     def get(self, key, default=None):
         """Retrieves any key from the response data.
+
         Note:
             This is implemented so users can reference the
             WyzeResponse object like a dictionary.
             e.g. response.get("ok", False)
+
         Returns:
             The value from data or the specified default.
         """
@@ -83,9 +89,11 @@ class WyzeResponse:
 
     def validate(self):
         """Check if the response from Wyze was successful.
+
         Returns:
             (WyzeResponse)
                 This method returns it's own object. e.g. 'self'
+
         Raises:
             WyzeApiError: The request to the Wyze API failed.
         """

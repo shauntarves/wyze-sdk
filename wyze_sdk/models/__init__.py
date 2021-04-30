@@ -7,7 +7,7 @@ import logging
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from functools import wraps
-from typing import (Any, Callable, Iterable, Optional, Sequence, Set, Union)
+from typing import Any, Callable, Iterable, Optional, Sequence, Set, Union
 
 from wyze_sdk.errors import WyzeObjectFormationError, WyzeRequestError
 

@@ -6,7 +6,7 @@ from abc import ABCMeta
 from datetime import datetime
 from typing import Any, Optional, Sequence, Set, Union
 
-from wyze_sdk.models import (JsonObject, PropDef, epoch_to_datetime)
+from wyze_sdk.models import JsonObject, PropDef, epoch_to_datetime
 
 # -------------------------------------------------
 # Base Classes

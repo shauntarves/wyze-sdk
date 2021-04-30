@@ -1,9 +1,9 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Optional, Sequence
 
+from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import DeviceModels, DeviceProps, Plug, PlugProps
 from wyze_sdk.service import WyzeResponse, api_service
-from wyze_sdk.api.base import BaseClient
 
 
 class PlugsClient(BaseClient):

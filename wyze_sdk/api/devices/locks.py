@@ -2,10 +2,10 @@ from abc import ABCMeta
 from datetime import datetime
 from typing import Optional, Sequence
 
+from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import DeviceModels, Lock, LockGateway
 from wyze_sdk.models.devices.locks import LockRecord
 from wyze_sdk.service import FordServiceClient, WyzeResponse
-from wyze_sdk.api.base import BaseClient
 
 
 class BaseLockClient(BaseClient, metaclass=ABCMeta):

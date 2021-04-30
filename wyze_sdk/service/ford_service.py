@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime
 import logging
 import urllib
+from datetime import datetime
 from typing import Dict, Optional, Union
 
-from wyze_sdk.signature import RequestVerifier
 import wyze_sdk.errors as e
 from wyze_sdk.models import datetime_to_epoch
+from wyze_sdk.signature import RequestVerifier
 
 from .base import BaseServiceClient, WyzeResponse
 
@@ -44,7 +44,6 @@ class FordServiceClient(BaseServiceClient):
     """
     Ford service client is the wrapper on the requests to https://yd-saas-toc.wyzecam.com
     """
-
     WYZE_API_URL = "https://yd-saas-toc.wyzecam.com"
     WYZE_FORD_APP_KEY = "275965684684dbdaf29a0ed9"
     WYZE_FORD_APP_SECRET = "4deekof1ba311c5c33a9cb8e12787e8c"

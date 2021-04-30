@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import (Optional, Set, Union)
+from typing import Optional, Set, Union
 
-from wyze_sdk.models import (PropDef, show_unknown_key_warning)
+from wyze_sdk.models import PropDef, show_unknown_key_warning
 
-from .base import (AbstractWirelessNetworkedDevice, ClimateMixin, DeviceProp, LockableMixin)
+from .base import (AbstractWirelessNetworkedDevice, ClimateMixin, DeviceProp,
+                   LockableMixin)
 
 
 class ThermostatProps(object):

@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import Optional, Sequence, Union
 
+from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import DeviceModels, Vacuum, VacuumSuctionLevel
 from wyze_sdk.models.devices.vacuums import VacuumSweepRecord
 from wyze_sdk.service import VenusServiceClient, WyzeResponse
-from wyze_sdk.api.base import BaseClient
 
 
 class VacuumsClient(BaseClient):

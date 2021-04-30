@@ -12,7 +12,6 @@ class VenusServiceClient(ExServiceClient):
     """
     Venus service client is the wrapper on the requests to https://wyze-venus-service-vn.wyzecam.com
     """
-
     WYZE_API_URL = "https://wyze-venus-service-vn.wyzecam.com"
     WYZE_APP_ID = "venp_4c30f812828de875"
 

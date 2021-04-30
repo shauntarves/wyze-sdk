@@ -4,9 +4,11 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional, Sequence, Set, Tuple, Union
 
-from wyze_sdk.models import (JsonObject, PropDef, epoch_to_datetime, show_unknown_key_warning)
+from wyze_sdk.models import (JsonObject, PropDef, epoch_to_datetime,
+                             show_unknown_key_warning)
 
-from .base import (AbstractWirelessNetworkedDevice, ContactMixin, Device, DeviceModels, LockableMixin)
+from .base import (AbstractWirelessNetworkedDevice, ContactMixin, Device,
+                   DeviceModels, LockableMixin)
 
 
 class LockProps(object):

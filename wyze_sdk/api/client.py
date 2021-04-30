@@ -2,8 +2,11 @@ import logging
 from typing import Optional, Sequence
 
 from wyze_sdk.api.base import BaseClient
-from wyze_sdk.api.devices import (BulbsClient, CamerasClient, LocksClient, PlugsClient,
-                                  ScalesClient, ContactSensorsClient, MotionSensorsClient, ThermostatsClient, VacuumsClient)
+from wyze_sdk.api.devices import (BulbsClient, CamerasClient,
+                                  ContactSensorsClient, LocksClient,
+                                  MotionSensorsClient, PlugsClient,
+                                  ScalesClient, ThermostatsClient,
+                                  VacuumsClient)
 from wyze_sdk.api.events import EventsClient
 from wyze_sdk.errors import WyzeClientConfigurationError
 from wyze_sdk.models.devices import Device, DeviceParser

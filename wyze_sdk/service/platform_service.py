@@ -9,7 +9,6 @@ class PlatformServiceClient(ExServiceClient):
     """
     Wyze api client is the wrapper on the requests to https://wyze-platform-service.wyzecam.com
     """
-
     WYZE_API_URL = "https://wyze-platform-service.wyzecam.com"
 
     def __init__(

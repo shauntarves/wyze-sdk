@@ -9,7 +9,6 @@ class EarthServiceClient(ExServiceClient):
     """
     Earth service client is the wrapper on the requests to https://wyze-earth-service.wyzecam.com
     """
-
     WYZE_API_URL = "https://wyze-earth-service.wyzecam.com"
     WYZE_APP_ID = "earp_9b66f89647d35e43"
 

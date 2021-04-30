@@ -233,7 +233,6 @@ class BaseServiceClient(metaclass=ABCMeta):
                     'User-Agent': 'Python/3.6.8 wyzeclient/2.1.0 Darwin/17.7.0'
                 }
         """
-
         final_headers = {
             # "Content-Type": "application/json;charset=utf-8",
             'Accept-Encoding': 'gzip',
@@ -268,7 +267,6 @@ class WpkNetServiceClient(BaseServiceClient, metaclass=ABCMeta):
     """
     wpk net service client is the wrapper to newer Wyze services like WpkWyzeSignatureService and WpkWyzeExService.
     """
-
     WYZE_APP_NAME = "com.hualai"
     WYZE_SALTS = {
         "9319141212m2ik": "wyze_app_secret_key_132",
@@ -353,7 +351,6 @@ class ExServiceClient(WpkNetServiceClient, metaclass=ABCMeta):
     """
     ex service client is the wrapper for WpkWyzeExService.
     """
-
     def _get_headers(
         self,
         *,

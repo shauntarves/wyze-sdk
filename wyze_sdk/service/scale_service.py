@@ -12,7 +12,6 @@ class ScaleServiceClient(ExServiceClient):
     """
     Scale service client is the wrapper on the requests to https://wyze-scale-service.wyzecam.com
     """
-
     WYZE_API_URL = "https://wyze-scale-service.wyzecam.com"
     WYZE_APP_ID = "scap_41183d5d0bac498d"
 

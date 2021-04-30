@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import (Optional, Sequence, Set, Union)
+from typing import Optional, Sequence, Set, Union
 
-from wyze_sdk.models import (JsonObject, PropDef, epoch_to_datetime, show_unknown_key_warning)
-from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice, DeviceProp)
+from wyze_sdk.models import (JsonObject, PropDef, epoch_to_datetime,
+                             show_unknown_key_warning)
+from wyze_sdk.models.devices import AbstractWirelessNetworkedDevice, DeviceProp
 
 
 class ScaleProps(object):

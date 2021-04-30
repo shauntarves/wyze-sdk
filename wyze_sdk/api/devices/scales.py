@@ -1,9 +1,9 @@
 from datetime import datetime
 from typing import Optional, Sequence, Union
 
+from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import DeviceModels, Scale, ScaleRecord
 from wyze_sdk.service import WyzeResponse
-from wyze_sdk.api.base import BaseClient
 
 
 class ScalesClient(BaseClient):

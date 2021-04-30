@@ -1,16 +1,15 @@
 from __future__ import annotations
 
 import logging
-
 from datetime import datetime, timedelta
-from time import strftime, gmtime
+from time import gmtime, strftime
 from typing import Any, Dict, Optional, Sequence, Tuple, Union
-from wyze_sdk.models.events import EventAlarmType
-from wyze_sdk.signature import RequestVerifier
 
 from wyze_sdk.errors import WyzeRequestError
 from wyze_sdk.models import datetime_to_epoch
 from wyze_sdk.models.devices import DeviceProp
+from wyze_sdk.models.events import EventAlarmType
+from wyze_sdk.signature import RequestVerifier
 
 from .base import BaseServiceClient, WyzeResponse
 
@@ -19,7 +18,6 @@ class ApiServiceClient(BaseServiceClient):
     """
     Wyze api client is the wrapper on the requests to https://api.wyzecam.com
     """
-
     SC = "a626948714654991afd3c0dbd7cdb901"
     WYZE_API_URL = "https://api.wyzecam.com/"
     WYZE_APP_NAME = "com.hualai"

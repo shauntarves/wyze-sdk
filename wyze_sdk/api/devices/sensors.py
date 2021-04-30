@@ -1,9 +1,9 @@
 from abc import ABCMeta
 from typing import Optional, Sequence, Union
 
+from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import (ContactSensor, DeviceModels, MotionSensor,
                                      Sensor)
-from wyze_sdk.api.base import BaseClient
 
 
 class SensorsClient(BaseClient, metaclass=ABCMeta):

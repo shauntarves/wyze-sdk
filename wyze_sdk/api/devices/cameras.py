@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 from typing import Optional, Sequence
 
+from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import Camera, DeviceModels
 from wyze_sdk.service import WyzeResponse
-from wyze_sdk.api.base import BaseClient
 
 
 class CamerasClient(BaseClient):

@@ -1,11 +1,11 @@
 from datetime import timedelta
 from typing import Optional, Sequence, Union
 
-from wyze_sdk.errors import WyzeFeatureNotSupportedError
-from wyze_sdk.models.devices import (Bulb, BulbProps, DeviceModels, DeviceProp, DeviceProps, MeshBulb,
-                                     PropDef)
-from wyze_sdk.service import WyzeResponse, api_service
 from wyze_sdk.api.base import BaseClient
+from wyze_sdk.errors import WyzeFeatureNotSupportedError
+from wyze_sdk.models.devices import (Bulb, BulbProps, DeviceModels, DeviceProp,
+                                     DeviceProps, MeshBulb, PropDef)
+from wyze_sdk.service import WyzeResponse, api_service
 
 
 class BulbsClient(BaseClient):

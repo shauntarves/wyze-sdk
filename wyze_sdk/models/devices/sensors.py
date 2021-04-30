@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from abc import ABCMeta
-from typing import (Set)
+from typing import Set
 
-from wyze_sdk.models import (PropDef, show_unknown_key_warning)
-from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice, ContactMixin, DeviceProps, MotionMixin, SwitchableMixin, VoltageMixin)
+from wyze_sdk.models import PropDef, show_unknown_key_warning
+from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
+                                     ContactMixin, DeviceProps, MotionMixin,
+                                     SwitchableMixin, VoltageMixin)
 
 
 class SensorProps(object):

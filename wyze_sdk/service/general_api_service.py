@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from typing import Dict, Optional
 
-from .base import BaseServiceClient, WyzeResponse
 from wyze_sdk.signature import RequestVerifier
+
+from .base import BaseServiceClient, WyzeResponse
 
 
 class GeneralApiServiceClient(BaseServiceClient):
     """
     Wyze api client is the wrapper on the requests to https://wyze-general-api.wyzecam.com
     """
-
     WYZE_API_KEY = ""
     WYZE_API_URL = "https://wyze-general-api.wyzecam.com"
     WYZE_SDK_TYPE = "100"

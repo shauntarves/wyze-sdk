@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import logging
 from datetime import datetime
 from enum import Enum
-import logging
-from typing import (Optional, Sequence, Set, Tuple, Union)
+from typing import Optional, Sequence, Set, Tuple, Union
 
-from wyze_sdk.models import (JsonObject, epoch_to_datetime, show_unknown_key_warning)
+from wyze_sdk.models import (JsonObject, epoch_to_datetime,
+                             show_unknown_key_warning)
 
 
 class EventAlarmType(Enum):

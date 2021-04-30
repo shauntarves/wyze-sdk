@@ -1,12 +1,12 @@
 from datetime import datetime
 from typing import Optional, Sequence, Tuple, Union
 
+from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import DeviceModels, DeviceProp, Thermostat
 from wyze_sdk.models.devices.thermostats import (ThermostatFanMode,
                                                  ThermostatScenarioType,
                                                  ThermostatSystemMode)
 from wyze_sdk.service import WyzeResponse
-from wyze_sdk.api.base import BaseClient
 
 
 class ThermostatsClient(BaseClient):

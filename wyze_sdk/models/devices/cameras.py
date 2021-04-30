@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from typing import (Optional, Sequence, Set)
+from typing import Optional, Sequence, Set
 
-from wyze_sdk.models import (PropDef, show_unknown_key_warning)
-from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice, ClimateMixin, DeviceProps, MotionMixin, SwitchableMixin, VoltageMixin)
+from wyze_sdk.models import PropDef, show_unknown_key_warning
+from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
+                                     ClimateMixin, DeviceProps, MotionMixin,
+                                     SwitchableMixin, VoltageMixin)
 from wyze_sdk.models.events import Event
 
 

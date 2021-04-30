@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Dict, Optional
+
 from wyze_sdk.signature import RequestVerifier
 
 from .base import ExServiceClient, WyzeResponse
@@ -10,7 +11,6 @@ class AuthServiceClient(ExServiceClient):
     """
     Auth service client is the wrapper on the requests to https://auth-prod.api.wyze.com'
     """
-
     WYZE_API_KEY = 'RckMFKbsds5p6QY3COEXc2ABwNTYY0q18ziEiSEm'
     WYZE_API_URL = "https://auth-prod.api.wyze.com"
 

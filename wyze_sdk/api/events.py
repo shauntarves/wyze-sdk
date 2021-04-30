@@ -1,8 +1,8 @@
 from itertools import groupby
 from typing import Sequence, Tuple, Union
 
-from wyze_sdk.models.events import (Event)
 from wyze_sdk.api.base import BaseClient, WyzeResponse
+from wyze_sdk.models.events import Event
 
 
 class EventsClient(BaseClient):
