@@ -158,7 +158,7 @@ class UserGoalWeight(JsonObject):
 
 class Scale(AbstractWirelessNetworkedDevice):
 
-    type = "Scale"
+    type = "WyzeScale"
 
     @property
     def attributes(self) -> Set[str]:

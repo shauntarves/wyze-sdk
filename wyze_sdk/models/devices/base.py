@@ -119,6 +119,8 @@ class DeviceProp(object):
             self._ts = ts
         elif ts is not None:
             self._ts = epoch_to_datetime(ts, ms=True)
+        else:
+            self._ts = None
         if value is not None and not isinstance(value, self._definition.type):
             try:
                 value = bool(distutils.util.strtobool(str(value))) if self._definition.type == bool else self._definition._type(value)
@@ -321,20 +323,25 @@ class Device(JsonObject):
 
         if isinstance(others, dict):
             if 'data' in others and 'property_list' in others['data']:
+                self.logger.debug("found non-empty data property_list")
                 return self._extract_property(prop_def=prop_def, others=others['data'])
-            if 'props' in others:
+            if 'props' in others and others['props']:
+                self.logger.debug("found non-empty props")
                 return self._extract_property(prop_def=prop_def, others=others['props'])
-            if 'property_list' in others:
+            if 'property_list' in others and others['property_list']:
+                self.logger.debug("found non-empty property_list")
                 return self._extract_property(prop_def=prop_def, others=others['property_list'])
-            if 'device_params' in others:
+            if 'device_params' in others and others['device_params']:
+                self.logger.debug("found non-empty device_params")
                 return self._extract_property(prop_def=prop_def, others=others['device_params'])
-            self.logger.debug(prop_def.pid)
+            self.logger.debug(f"extracting property {prop_def.pid} from dict {others}")
             for key, value in others.items():
                 self.logger.debug(f"key: {key}, value: {value}")
                 if key == prop_def.pid:
                     self.logger.debug(f"returning new DeviceProp with value {value}")
                     return DeviceProp(definition=prop_def, value=value)
         else:
+            self.logger.debug(f"extracting property {prop_def.pid} from {others.__class__} {others}")
             for value in others:
                 self.logger.debug(f"value {value}")
                 if "pid" in value and prop_def.pid == value["pid"]:
@@ -365,6 +372,8 @@ class AbstractNetworkedDevice(Device, metaclass=ABCMeta):
     ):
         super().__init__(type=type, **others)
         self._ip = ip if ip else super()._extract_attribute('ip', others)
+        if not self._ip:
+            super()._extract_attribute('ipaddr', others)
 
     @property
     def ip(self) -> str:

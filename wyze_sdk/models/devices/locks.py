@@ -8,7 +8,7 @@ from wyze_sdk.models import (JsonObject, PropDef, epoch_to_datetime,
                              show_unknown_key_warning)
 
 from .base import (AbstractWirelessNetworkedDevice, ContactMixin, Device,
-                   DeviceModels, LockableMixin)
+                   DeviceModels, DeviceProp, LockableMixin, VoltageMixin)
 
 
 class LockProps(object):
@@ -17,12 +17,24 @@ class LockProps(object):
     """
 
     @classmethod
+    def locker_lock_state(cls) -> PropDef:
+        return PropDef("hardlock", bool, int)
+
+    @classmethod
+    def locker_open_close_state(cls) -> PropDef:
+        return PropDef("door", bool, int)
+
+    @classmethod
     def lock_state(cls) -> PropDef:
         return PropDef("switch_state", bool, int)
 
     @classmethod
     def open_close_state(cls) -> PropDef:
         return PropDef("open_close_state", bool, int)
+
+    @classmethod
+    def voltage(cls) -> PropDef:
+        return PropDef("power", int)
 
 
 class LockEventType(Enum):
@@ -237,7 +249,7 @@ class LockRecord(JsonObject):
         self._type = value
 
 
-class Lock(LockableMixin, ContactMixin, Device):
+class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
 
     type = "Lock"
 
@@ -267,11 +279,37 @@ class Lock(LockableMixin, ContactMixin, Device):
         super().__init__(type=self.type, **others)
         if self.mac is not None:
             self._uuid = Lock.parse_uuid(self.mac)
-        self.lock_state = super()._extract_property(LockProps.lock_state(), others)
-        self.open_close_state = super()._extract_property(LockProps.open_close_state(), others)
+        self.lock_state = self._extract_lock_state(others)
+        self.open_close_state = self._extract_open_close_state(others)
+        self.voltage = self._extract_property(prop_def=LockProps.voltage(), others=others)
         self._parent = parent if parent is not None else super()._extract_attribute("parent", others)
         self._record_count = record_count if record_count is not None else super()._extract_attribute("record_count", others)
         show_unknown_key_warning(self, others)
+
+    def _extract_lock_state(self, others: Union[dict, Sequence[dict]]) -> DeviceProp:
+        if "device_params" in others and "locker_status" in others["device_params"]:
+            self.logger.debug("found non-empty locker_status")
+            prop_def = LockProps.locker_lock_state()
+            value = super()._extract_property(prop_def=prop_def, others=others["device_params"]["locker_status"])
+            ts = super()._extract_attribute(name=prop_def.pid + "_refreshtime", others=others["device_params"]["locker_status"])
+            self.logger.debug(f"returning new DeviceProp with {value}")
+            return DeviceProp(definition=prop_def, ts=ts, value=value.value)
+        # if switch_state == 1, device is UNlocked so we have to flip the bit
+        prop = super()._extract_property(prop_def=LockProps.lock_state(), others=others)
+        return DeviceProp(definition=prop.definition, ts=prop.ts, value=not prop.value)
+
+    def _extract_open_close_state(self, others: Union[dict, Sequence[dict]]) -> DeviceProp:
+        if "device_params" in others and "locker_status" in others["device_params"]:
+            self.logger.debug("found non-empty locker_status")
+            prop_def = LockProps.locker_open_close_state()
+            value = super()._extract_property(prop_def=prop_def, others=others["device_params"]["locker_status"])
+            ts = super()._extract_attribute(name=prop_def.pid + "_refreshtime", others=others["device_params"]["locker_status"])
+            self.logger.debug(f"returning new DeviceProp with {value}")
+            # door: 1 = open, 2 = closed, 255 = some unknown value
+            return DeviceProp(definition=prop_def, ts=ts, value=value == 1)
+        # open_close_state: 1 = closed 0 = open
+        prop = super()._extract_property(prop_def=LockProps.open_close_state(), others=others)
+        return DeviceProp(definition=prop.definition, ts=prop.ts, value=not prop.value)
 
     @property
     def parent(self) -> str:
@@ -280,11 +318,6 @@ class Lock(LockableMixin, ContactMixin, Device):
     @property
     def record_count(self) -> int:
         return self._record_count
-
-    @property
-    def is_locked(self) -> bool:
-        # locks use switch_state = 0 to indicate locked
-        return not self.lock_state
 
 
 class LockGateway(AbstractWirelessNetworkedDevice):
