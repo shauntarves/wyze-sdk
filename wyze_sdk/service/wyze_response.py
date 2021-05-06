@@ -98,11 +98,12 @@ class WyzeResponse:
             WyzeApiError: The request to the Wyze API failed.
         """
         if self._logger.level <= logging.DEBUG:
-            body = self.data if isinstance(self.data, dict) else "(binary)"
+            import json
+            body = json.dumps(self.data) if isinstance(self.data, dict) else "(binary)"
             self._logger.debug(
                 "Received the following response - "
                 f"status: {self.status_code}\n"
-                f"headers: {dict(self.headers)}\n"
+                f"headers: {json.dumps(dict(self.headers))}\n"
                 f"body: {body}"
             )
         if (
