@@ -56,7 +56,7 @@ class ThermostatsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
-        return self._set_thermostat_property(device_mac, device_model, DeviceProp(definition=Thermostat.props()["system_mode"], value=system_mode.codes))
+        return self._set_thermostat_properties(device_mac, device_model, DeviceProp(definition=Thermostat.props()["system_mode"], value=system_mode.codes))
 
     def set_fan_mode(self, *, device_mac: str, device_model: str, fan_mode: ThermostatFanMode, **kwargs) -> WyzeResponse:
         """Sets the fan mode of the thermostat.
@@ -67,7 +67,7 @@ class ThermostatsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
-        return self._set_thermostat_property(device_mac, device_model, DeviceProp(definition=Thermostat.props()["fan_mode"], value=fan_mode.codes))
+        return self._set_thermostat_properties(device_mac, device_model, DeviceProp(definition=Thermostat.props()["fan_mode"], value=fan_mode.codes))
 
     def set_mode(self, *, device_mac: str, device_model: str, system_mode: ThermostatSystemMode, fan_mode: ThermostatFanMode, **kwargs) -> WyzeResponse:
         """Sets the system and fan modes of the thermostat.
@@ -106,7 +106,7 @@ class ThermostatsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
-        return self._set_thermostat_property(device_mac, device_model, DeviceProp(definition=Thermostat.props()["heating_setpoint"], value=heating_setpoint))
+        return self._set_thermostat_properties(device_mac, device_model, DeviceProp(definition=Thermostat.props()["heating_setpoint"], value=heating_setpoint))
 
     def set_cooling_setpoint(self, *, device_mac: str, device_model: str, cooling_setpoint: int, **kwargs) -> WyzeResponse:
         """Sets the cooling setpoint of the thermostat.
@@ -117,7 +117,7 @@ class ThermostatsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
-        return self._set_thermostat_property(device_mac, device_model, DeviceProp(definition=Thermostat.props()["cooling_setpoint"], value=cooling_setpoint))
+        return self._set_thermostat_properties(device_mac, device_model, DeviceProp(definition=Thermostat.props()["cooling_setpoint"], value=cooling_setpoint))
 
     def set_temperature(self, *, device_mac: str, device_model: str, cooling_setpoint: int, heating_setpoint: int, **kwargs) -> WyzeResponse:
         """Sets the heating and cooling setpoints of the thermostat.
@@ -187,7 +187,7 @@ class ThermostatsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
-        return self._set_thermostat_property(device_mac, device_model, DeviceProp(definition=Thermostat.props()["locked"], value=locked))
+        return self._set_thermostat_properties(device_mac, device_model, DeviceProp(definition=Thermostat.props()["locked"], value=locked))
 
     def set_behavior(self, *, device_mac: str, device_model: str, behavior: int, **kwargs) -> WyzeResponse:
         """Sets the comfort balance behavior for a thermostat.
@@ -201,4 +201,4 @@ class ThermostatsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
-        return self._set_thermostat_property(device_mac, device_model, DeviceProp(definition=Thermostat.props()["save_comfort_balance"], value=behavior))
+        return self._set_thermostat_properties(device_mac, device_model, DeviceProp(definition=Thermostat.props()["save_comfort_balance"], value=behavior))
