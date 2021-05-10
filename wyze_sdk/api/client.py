@@ -151,6 +151,14 @@ class Client(object):
         self._update_session(access_token=response["access_token"], refresh_token=response["refresh_token"])
         return response
 
+    def user_get_info(self) -> WyzeResponse:
+        """
+        Retrieves the current user's info.
+
+        :rtype: WyzeResponse
+        """
+        return self._api_client().get_user_info()
+
     def devices_list(self, **kwargs) -> Sequence[Device]:
         """List the devices available to the current user
 

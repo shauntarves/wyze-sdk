@@ -98,6 +98,18 @@ class ApiServiceClient(BaseServiceClient):
         kwargs.update({"device_mac": mac, "sv": SV_GET_DEVICE_INFO})
         return self.api_call('/app/device/get_device_info', json=kwargs)
 
+    def get_user_info(self, **kwargs) -> WyzeResponse:
+        SV_GET_USER_INFO = '6e054e04b7144c90af3b1281b6533492'
+
+        kwargs.update({"sv": SV_GET_USER_INFO})
+        return self.api_call('/app/user/get_user_info', json=kwargs)
+
+    def logout(self, **kwargs) -> WyzeResponse:
+        SV_LOGOUT = '759245b61abd49128585e95f30e61add'
+
+        kwargs.update({"sv": SV_LOGOUT})
+        return self.api_call('/app/user/logout', json=kwargs)
+
     def get_device_info(self, *, mac: str, model: str, **kwargs) -> WyzeResponse:
         SV_GET_DEVICE_INFO = '81d1abc794ba45a39fdd21233d621e84'
 
