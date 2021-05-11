@@ -56,6 +56,8 @@ class EarthServiceClient(ExServiceClient):
         return self.api_call('/plugin/earth/get_iot_prop', http_verb="GET", params=kwargs)
 
     def set_iot_prop(self, *, did: str, model: str, key: str, value: str, is_sub_device: bool = False, **kwargs) -> WyzeResponse:
+        # This method is only used for updating the schedule and the resetting the filter(s) - basically
+        # anything that doesn't need to talk to the physical unit
         kwargs.update({
             'did': did,
             'model': model,
