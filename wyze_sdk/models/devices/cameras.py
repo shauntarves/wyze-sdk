@@ -4,7 +4,7 @@ from typing import Optional, Sequence, Set
 
 from wyze_sdk.models import PropDef, show_unknown_key_warning
 from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
-                                     ClimateMixin, DeviceProps, MotionMixin,
+                                     ClimateMixin, DeviceProp, DeviceProps, MotionMixin,
                                      SwitchableMixin, VoltageMixin)
 from wyze_sdk.models.events import Event
 
@@ -149,7 +149,7 @@ class CameraProps(object):
         return PropDef("battery_charging_status", int)
 
 
-class Camera(ClimateMixin, MotionMixin, VoltageMixin, SwitchableMixin, AbstractWirelessNetworkedDevice):
+class Camera(ClimateMixin, MotionMixin, VoltageMixin, SwitchableMixin, AbstractWirelessNetworkedDevice):  # TODO: Only outdoor cam has battery
 
     type = "Camera"
 
@@ -180,6 +180,7 @@ class Camera(ClimateMixin, MotionMixin, VoltageMixin, SwitchableMixin, AbstractW
     ):
         super().__init__(type=self.type, **others)
         self.switch_state = super()._extract_property(DeviceProps.power_state(), others)
+        self.motion_state = DeviceProp(definition=PropDef("", bool, bool), value=False)  # TODO: add support for parsing recent events to see if there's current motion
         self._temperature = super()._extract_attribute('temperature', others)
         self._humidity = super()._extract_attribute('humidity', others)
         self._voltage = super()._extract_property(CameraProps.voltage(), others)
