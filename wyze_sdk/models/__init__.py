@@ -67,7 +67,8 @@ class JsonObject(BaseObject, metaclass=ABCMeta):
         Extracts a single value by name from a variety of locations in an object.
         """
         if name in others:
-            return others.pop(name)
+            value = others.pop(name)
+            return value if value is not None and value != "" else None
 
         if 'property_list' in others:
             for property in others['property_list']:

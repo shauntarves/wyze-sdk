@@ -123,10 +123,16 @@ class DeviceProp(object):
         else:
             self._ts = None
         if value is not None and not isinstance(value, self._definition.type):
-            try:
-                value = bool(distutils.util.strtobool(str(value))) if self._definition.type == bool else self._definition._type(value)
-            except ValueError:
-                self.logger.warning(f"could not cast value `{value}` into expected type {self._definition.type}")
+            if value == "":
+                value = None
+            else:
+                try:
+                    value = bool(distutils.util.strtobool(str(value))) if self._definition.type == bool else self._definition._type(value)
+                except ValueError:
+                    self.logger.warning(f"def {self._definition.pid}")
+                    self.logger.warning(f"could not cast value `{value}` into expected type {self._definition.type}")
+        if value == "":
+            value = None
         self._value = value
 
     @property
