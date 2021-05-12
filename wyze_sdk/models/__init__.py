@@ -68,17 +68,21 @@ class JsonObject(BaseObject, metaclass=ABCMeta):
         """
         if name in others:
             return others.pop(name)
-        elif 'property_list' in others:
+
+        if 'property_list' in others:
             for property in others['property_list']:
                 if (name == property['pid']):
                     return property['value']
-        elif 'data' in others and 'property_list' in others['data']:
+
+        if 'data' in others and 'property_list' in others['data']:
             for property in others['data']['property_list']:
                 if (name == property['pid']):
                     return property['value']
-        elif 'device_params' in others and name in others['device_params']:
+
+        if 'device_params' in others and name in others['device_params']:
             return self._extract_attribute(name, others['device_params'])
-        elif 'device_setting' in others and name in others['device_setting']:
+
+        if 'device_setting' in others and name in others['device_setting']:
             return self._extract_attribute(name, others['device_setting'])
 
     def validate_json(self) -> None:

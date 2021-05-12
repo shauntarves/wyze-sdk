@@ -399,8 +399,8 @@ class AbstractWirelessNetworkedDevice(AbstractNetworkedDevice, metaclass=ABCMeta
         **others: dict,
     ):
         super().__init__(type=type, **others)
-        self._rssi = rssi if rssi else super()._extract_attribute('rssi', others)
-        self._ssid = ssid if ssid else super()._extract_attribute('ssid', others)
+        self._rssi = rssi if rssi is not None else super()._extract_attribute('rssi', others)
+        self._ssid = ssid if ssid is not None else super()._extract_attribute('ssid', others)
 
     @property
     def rssi(self) -> str:
