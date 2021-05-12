@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional, Sequence, Set
 
 from wyze_sdk.models import PropDef, show_unknown_key_warning
-from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
+from wyze_sdk.models.devices import (AbstractNetworkedDevice, AbstractWirelessNetworkedDevice,
                                      ClimateMixin, DeviceProp, DeviceProps, MotionMixin,
                                      SwitchableMixin, VoltageMixin)
 from wyze_sdk.models.events import Event
@@ -215,3 +215,15 @@ class Camera(ClimateMixin, MotionMixin, VoltageMixin, SwitchableMixin, AbstractW
     @property
     def is_smoke_alarm(self) -> bool:
         return self._suppprts_smoke_alarm if self._suppprts_smoke_alarm is not None else False
+
+
+class BaseStation(AbstractNetworkedDevice):
+
+    type = "BaseStation"
+
+    def __init__(
+        self,
+        **others: dict
+    ):
+        super().__init__(type=self.type, **others)
+        show_unknown_key_warning(self, others)

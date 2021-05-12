@@ -1,12 +1,12 @@
 """Classes for constructing Wyze-specific data strtucture"""
 from __future__ import annotations
 
-from .base import (AbstractWirelessNetworkedDevice, ClimateMixin,  # noqa
-                   ContactMixin, Device, DeviceModels, DeviceProp, DeviceProps,
-                   LockableMixin, MotionMixin, PropDef, SwitchableMixin,
-                   VoltageMixin)
+from .base import (AbstractNetworkedDevice, AbstractWirelessNetworkedDevice,  # noqa
+                   ClimateMixin, ContactMixin, Device, DeviceModels,
+                   DeviceProp, DeviceProps, LockableMixin, MotionMixin,
+                   PropDef, SwitchableMixin, VoltageMixin)
 from .bulbs import Bulb, BulbProps, MeshBulb  # noqa
-from .cameras import Camera, CameraProps  # noqa
+from .cameras import BaseStation, Camera, CameraProps  # noqa
 from .locks import (Lock, LockEventType, LockGateway, LockProps,  # noqa
                     LockRecord, LockRecordDetail)
 from .plugs import OutdoorPlug, Plug, PlugProps  # noqa
@@ -35,7 +35,9 @@ class DeviceParser(object):
         else:
             if "product_type" in device:
                 type = device["product_type"]
-                if type == Bulb.type:
+                if type == BaseStation.type:
+                    return BaseStation(**device)
+                elif type == Bulb.type:
                     return Bulb(**device)
                 elif type == Camera.type:
                     return Camera(**device)
