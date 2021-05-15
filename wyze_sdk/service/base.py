@@ -100,7 +100,7 @@ class BaseServiceClient(metaclass=ABCMeta):
                 status_code=response.status_code,
             ).validate()
 
-    def do_post(self, url: str, headers: dict, payload: dict, params: Optional[dict]) -> WyzeResponse:
+    def do_post(self, url: str, headers: dict, payload: dict, params: Optional[dict] = None) -> WyzeResponse:
         with requests.Session() as client:
             if headers is not None:
                 # add the request-specific headers
