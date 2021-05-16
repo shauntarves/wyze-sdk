@@ -145,10 +145,11 @@ class BulbsClient(BaseClient):
 
         :raises WyzeRequestError: if the new color temperature is not valid
         """
-        prop_def = BulbProps.color_temp()
-        prop_def.validate(color_temp)
 
         if device_model in DeviceModels.MESH_BULB:
+            prop_def = BulbProps.color_temp_mesh()
+            prop_def.validate(color_temp)
+
             return super()._api_client().run_action_list(
                 actions={
                     "key": "set_mesh_property",
@@ -157,6 +158,10 @@ class BulbsClient(BaseClient):
                     "provider_key": device_model,
                 }
             )
+
+        prop_def = BulbProps.color_temp()
+        prop_def.validate(color_temp)
+
         return super()._api_client().set_device_property(
             mac=device_mac, model=device_model, pid=prop_def.pid, value=color_temp)
 
