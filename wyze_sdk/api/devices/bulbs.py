@@ -175,7 +175,7 @@ class BulbsClient(BaseClient):
         if device_model not in DeviceModels.MESH_BULB:
             raise WyzeFeatureNotSupportedError("set_color")
 
-        prop_def = BulbProps.color()()
+        prop_def = BulbProps.color()
         prop_def.validate(color)
 
         return super()._api_client().run_action_list(
