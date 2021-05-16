@@ -29,7 +29,7 @@ class BulbProps(object):
 
     @classmethod
     def color_temp(cls) -> PropDef:
-        return PropDef("P1502", int, acceptable_values=range(2700, 6500 + 1))
+        return PropDef("P1502", int, acceptable_values=range(1800, 6500 + 1))
 
     @classmethod
     def color(cls) -> PropDef:

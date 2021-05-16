@@ -230,4 +230,4 @@ class PropDef(object):
             logging.debug(f"value {value} found in acceptable_values, passing")
             return
 
-        raise WyzeRequestError(f"{value} must be one of {self.acceptable_values}")
+        raise WyzeRequestError(f"{value} must be one of {self._acceptable_values}")
