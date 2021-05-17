@@ -182,7 +182,7 @@ class MeshBulb(Bulb):
     @classmethod
     def props(cls) -> dict[str, PropDef]:
         return {**Bulb.props(), **{
-            "color": BulbProps.color()(),
+            "color": BulbProps.color(),
             "remaining_time": BulbProps.remaining_time(),
             "control_light": BulbProps.control_light(),
             "power_loss_recovery": BulbProps.power_loss_recovery(),  # remember_off
