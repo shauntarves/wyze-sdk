@@ -82,7 +82,7 @@ class AuthServiceClient(ExServiceClient):
             if totp_key:
                 verification_code = totp(totp_key)
             else:
-                verification_code = input('Enter 2FA Verification Code: ')
+                verification_code = input('Enter Wyze 2FA Verification Code: ')
             verification_id = response['mfa_details']['totp_apps'][0]['app_id']
         else:
             # SMS 2FA
@@ -95,7 +95,7 @@ class AuthServiceClient(ExServiceClient):
             payload = {}
             response = self.api_call('/user/login/sendSmsCode', params=params, json=payload)
             verification_id = response['session_id']
-            verification_code = input('Enter SMS 2FA Verification Code: ')
+            verification_code = input('Enter Wyze SMS 2FA Verification Code: ')
         payload = {
             'email': email,
             'password': password,
