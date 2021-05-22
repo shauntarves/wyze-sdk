@@ -7,6 +7,7 @@ name = "pypi"
 wyze-sdk = {path = "."}
 requests = "*"
 blackboxprotobuf = "*"
+mintotp = "*"
 
 [dev-packages]
 flake8 = "*"

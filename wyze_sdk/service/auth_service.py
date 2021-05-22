@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Dict, Optional
 
+from mintotp import totp
 from wyze_sdk.signature import RequestVerifier
 
 from .base import ExServiceClient, WyzeResponse
@@ -61,11 +62,45 @@ class AuthServiceClient(ExServiceClient):
             nonce=nonce,
         )
 
-    def user_login(self, *, email: str, password: str, **kwargs) -> WyzeResponse:
+    def user_login(self, *, email: str, password: str, totp_key: Optional[str] = None, **kwargs) -> WyzeResponse:
         nonce = self.request_verifier.clock.nonce()
+        password = self.request_verifier.md5_string(
+            self.request_verifier.md5_string(self.request_verifier.md5_string(password))
+        )
         kwargs.update({
             'nonce': str(nonce),
             'email': email,
-            'password': self.request_verifier.md5_string(self.request_verifier.md5_string(self.request_verifier.md5_string(password)))
+            'password': password
         })
-        return self.api_call('/user/login', json=kwargs, nonce=nonce)
+        response = self.api_call('/user/login', json=kwargs, nonce=nonce)
+        if response['access_token']:
+            return response
+
+        if 'TotpVerificationCode' in response.get('mfa_options'):
+            # TOTP 2FA
+            mfa_type = 'TotpVerificationCode'
+            if totp_key:
+                verification_code = totp(totp_key)
+            else:
+                verification_code = input('Enter Wyze 2FA Verification Code: ')
+            verification_id = response['mfa_details']['totp_apps'][0]['app_id']
+        else:
+            # SMS 2FA
+            mfa_type = 'PrimaryPhone'
+            params = {
+                'mfaPhoneType': 'Primary',
+                'sessionId': response['sms_session_id'],
+                'userId': response['user_id']
+            }
+            payload = {}
+            response = self.api_call('/user/login/sendSmsCode', params=params, json=payload)
+            verification_id = response['session_id']
+            verification_code = input('Enter Wyze SMS 2FA Verification Code: ')
+        payload = {
+            'email': email,
+            'password': password,
+            'mfa_type': mfa_type,
+            'verification_id': verification_id,
+            'verification_code': verification_code
+        }
+        return self.api_call('/user/login', json=payload, nonce=self.request_verifier.clock.nonce())

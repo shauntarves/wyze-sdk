@@ -41,6 +41,7 @@ class Client(object):
         self,
         email: Optional[str] = None,
         password: Optional[str] = None,
+        totp_key: Optional[str] = None,
         base_url: Optional[str] = None,
         timeout: int = 30,
     ):
@@ -48,6 +49,8 @@ class Client(object):
         self._email = email
         #: An unencrypted string specifying the account password.
         self._password = password
+        #: An unencrypted string specifying the TOTP Key for automatic TOTP 2FA verification code generation.
+        self._totp_key = totp_key
         #: An optional string representing the API base URL. **This should not be used except for when running tests.**
         self._base_url = base_url
         #: The maximum number of seconds the client will wait to connect and receive a response from Wyze. Defaults to 30
@@ -133,7 +136,7 @@ class Client(object):
         if self._email is None or self._password is None:
             raise WyzeClientConfigurationError("must provide email and password")
         self._logger.debug(f"access token not provided, attempting to login as {self._email}")
-        response = self._auth_client().user_login(email=self._email, password=self._password)
+        response = self._auth_client().user_login(email=self._email, password=self._password, totp_key=self._totp_key)
         self._update_session(access_token=response["access_token"], refresh_token=response["refresh_token"], user_id=response["user_id"])
         return response
 

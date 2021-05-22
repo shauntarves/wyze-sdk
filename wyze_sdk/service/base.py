@@ -100,7 +100,7 @@ class BaseServiceClient(metaclass=ABCMeta):
                 status_code=response.status_code,
             ).validate()
 
-    def do_post(self, url: str, headers: dict, payload: dict) -> WyzeResponse:
+    def do_post(self, url: str, headers: dict, payload: dict, params: Optional[dict] = None) -> WyzeResponse:
         with requests.Session() as client:
             if headers is not None:
                 # add the request-specific headers
@@ -110,7 +110,7 @@ class BaseServiceClient(metaclass=ABCMeta):
             # we have to use a prepared request because the requests module
             # doesn't allow us to specify the separators in our json dumping
             # and the server expects no extra whitespace
-            req = client.prepare_request(requests.Request('POST', url, json=payload))
+            req = client.prepare_request(requests.Request('POST', url, json=payload, params=params))
 
             self._logger.debug('unmodified prepared request')
             self._logger.debug(req)
@@ -193,7 +193,7 @@ class BaseServiceClient(metaclass=ABCMeta):
         headers.update(self.headers)
 
         if http_verb == "POST":
-            return self.do_post(url=api_url, headers=headers, payload=json)
+            return self.do_post(url=api_url, headers=headers, payload=json, params=params)
         elif http_verb == "GET":
             return self.do_get(url=api_url, headers=headers, payload=params)
 
