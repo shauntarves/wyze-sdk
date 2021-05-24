@@ -17,6 +17,10 @@ class ScaleProps(object):
     def unit(cls) -> PropDef:
         return PropDef('unit', str, acceptable_values=['kg', 'lb'])
 
+    @classmethod
+    def _convert_kg_to_lb(cls, value: float) -> float:
+        return round(value * 2.20462262185, 2)
+
 
 class ScaleRecord(JsonObject):
     """
@@ -111,8 +115,16 @@ class ScaleRecord(JsonObject):
         self.protein = protein if protein else self._extract_attribute('protein', others)
         self.timezone = timezone if timezone else self._extract_attribute('timezone', others)
         self.user_id = user_id if user_id else self._extract_attribute('user_id', others)
-        self.weight = weight if weight else self._extract_attribute('weight', others)
+        self._weight = weight if weight else self._extract_attribute('weight', others)
         show_unknown_key_warning(self, others)
+
+    @property
+    def weight(self, unit: str = 'lb'):
+        if self._weight is None:
+            return None
+        if unit == 'lb':
+            return ScaleProps._convert_kg_to_lb(self._weight)
+        return self._weight
 
 
 class UserGoalWeight(JsonObject):
@@ -148,12 +160,28 @@ class UserGoalWeight(JsonObject):
     ):
         self.id = id if id else str(self._extract_attribute('id', others))
         self.created = created if created else epoch_to_datetime(self._extract_attribute('create_time', others), ms=True)
-        self.current_weight = current_weight if current_weight else self._extract_attribute('current_weight', others)
+        self._current_weight = current_weight if current_weight else self._extract_attribute('current_weight', others)
         self.family_member_id = family_member_id if family_member_id else self._extract_attribute('family_member_id', others)
-        self.goal_weight = goal_weight if goal_weight else self._extract_attribute('goal_weight', others)
+        self._goal_weight = goal_weight if goal_weight else self._extract_attribute('goal_weight', others)
         self.updated = updated if updated else epoch_to_datetime(self._extract_attribute('update_time', others), ms=True)
         self.user_id = user_id if user_id else self._extract_attribute('user_id', others)
         show_unknown_key_warning(self, others)
+
+    @property
+    def goal_weight(self, unit: str = 'lb'):
+        if self._goal_weight is None:
+            return None
+        if unit == 'lb':
+            return ScaleProps._convert_kg_to_lb(self._goal_weight)
+        return self._goal_weight
+
+    @property
+    def current_weight(self, unit: str = 'lb'):
+        if self._current_weight is None:
+            return None
+        if unit == 'lb':
+            return ScaleProps._convert_kg_to_lb(self._current_weight)
+        return self._current_weight
 
 
 class Scale(AbstractWirelessNetworkedDevice):
@@ -185,6 +213,7 @@ class Scale(AbstractWirelessNetworkedDevice):
         if latest_records is not None:
             self._latest_records = [latest_record if isinstance(latest_record, ScaleRecord) else ScaleRecord(**latest_record) for latest_record in latest_records]
         self._device_members = super()._extract_attribute('device_members', others)
+        self._user_profile = super()._extract_attribute('user_profile', others)
         show_unknown_key_warning(self, others)
 
     @property
@@ -204,6 +233,10 @@ class Scale(AbstractWirelessNetworkedDevice):
     @property
     def device_members(self) -> Sequence[dict]:
         return self._device_members
+
+    @property
+    def user_profile(self) -> dict:
+        return self._user_profile
 
     @property
     def goal_weight(self) -> UserGoalWeight:

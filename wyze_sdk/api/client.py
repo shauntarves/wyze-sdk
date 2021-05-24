@@ -92,7 +92,7 @@ class Client(object):
 
     @property
     def scales(self) -> ScalesClient:
-        return ScalesClient(token=self._token, base_url=self._base_url)
+        return ScalesClient(token=self._token, user_id=self._user_id, base_url=self._base_url)
 
     @property
     def events(self) -> EventsClient:

@@ -3,7 +3,7 @@ from typing import Optional, Sequence, Union
 
 from wyze_sdk.api.base import BaseClient
 from wyze_sdk.errors import WyzeRequestError
-from wyze_sdk.models.devices import DeviceModels, Scale, ScaleRecord
+from wyze_sdk.models.devices import DeviceModels, Scale, ScaleRecord, UserGoalWeight
 from wyze_sdk.service import WyzeResponse
 
 
@@ -55,10 +55,14 @@ class ScalesClient(BaseClient):
         if "data" in token.data and token.data['data'] is not None:
             scale.update(token.data["data"])
 
-        # user_device_relation = super()._scale_client().get_user_device_relation(did=device_mac, user_id='d4e502568f8d453b0ffd014527706f40')
-        # print(user_device_relation)
-        # if "data" in user_preference.data and user_preference.data['data'] is not None:
-        #     scale.update({"user_preferences": user_preference.data["data"]})
+        if self._user_id is not None:
+            user_device_relation = super()._scale_client().get_user_device_relation(did=device_mac, user_id=self._user_id)
+            if "data" in user_device_relation.data and user_device_relation.data['data'] is not None:
+                scale.update({"device_relation": user_device_relation.data["data"]})
+
+            user_goal_weight = super()._scale_client().get_goal_weight(user_id=self._user_id)
+            if "data" in user_goal_weight.data and user_goal_weight.data['data'] is not None:
+                scale.update({"goal_weight": user_goal_weight.data["data"]})
 
         # com.wyze.ihealth.d.e
         user_profile = super()._platform_client().get_user_profile(appid='nHtOAABMsnTbOmg74g3zBsFuHx4iVi5G')
@@ -82,17 +86,17 @@ class ScalesClient(BaseClient):
 
         :rtype: Sequence[ScaleRecord]
         """
-        return [ScaleRecord(**record) for record in super()._scale_client().get_records(user_id=user_id, start_time=start_time, end_time=end_time)["data"]]
+        return [ScaleRecord(**record) for record in super()._scale_client().get_records(user_id=user_id if user_id is not None else self._user_id, start_time=start_time, end_time=end_time)["data"]]
 
-    def get_goal_weight(self, *, user_id: str, **kwargs) -> WyzeResponse:
+    def get_goal_weight(self, *, user_id: Optional[str] = None, **kwargs) -> UserGoalWeight:
         """Retrieves a user's goal weight.
 
         :param str user_id: The user id. e.g. ``abcdef1234567890abcdef1234567890``
 
         :rtype: WyzeResponse
         """
-        response = super()._scale_client().get_goal_weight(user_id=user_id)
-        return response
+        response = super()._scale_client().get_goal_weight(user_id=user_id if user_id is not None else self._user_id)
+        return UserGoalWeight(**response["data"])
 
     def delete_goal_weight(self, *, user_id: Optional[str] = None, **kwargs) -> WyzeResponse:
         """Deletes a user's goal weight, if one exists.
