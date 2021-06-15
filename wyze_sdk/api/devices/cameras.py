@@ -74,3 +74,13 @@ class CamerasClient(BaseClient):
         """
         return super()._api_client().run_action(
             mac=device_mac, provider_key=device_model, action_key="power_off")
+
+    def restart(self, *, device_mac: str, device_model: str, **kwargs) -> WyzeResponse:
+        """Restarts a camera.
+
+        Args:
+            :param str device_mac: The device mac. e.g. 'ABCDEF1234567890'
+            :param str device_model: The device model. e.g. 'WYZEC1-JZ'
+        """
+        return super()._api_client().run_action(
+            mac=device_mac, provider_key=device_model, action_key="restart")
