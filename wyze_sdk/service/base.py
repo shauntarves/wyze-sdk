@@ -364,6 +364,7 @@ class ExServiceClient(WpkNetServiceClient, metaclass=ABCMeta):
             'appid': self.app_id,
             'appinfo': f"wyze_android_{self.app_version}",
             'phoneid': self.phone_id,
+            'User-Agent': f"wyze_android_{self.app_version}",
         })
 
         return super()._get_headers(request_specific_headers=request_specific_headers)
