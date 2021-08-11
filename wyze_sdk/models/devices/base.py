@@ -329,6 +329,12 @@ class Device(JsonObject):
             prop_def = PropDef(pid=prop_def)
 
         if isinstance(others, dict):
+            self.logger.debug(f"extracting property {prop_def.pid} from dict {others}")
+            for key, value in others.items():
+                self.logger.debug(f"key: {key}, value: {value}")
+                if key == prop_def.pid:
+                    self.logger.debug(f"returning new DeviceProp with value {value}")
+                    return DeviceProp(definition=prop_def, value=value)
             if 'data' in others and 'property_list' in others['data']:
                 self.logger.debug("found non-empty data property_list")
                 return self._extract_property(prop_def=prop_def, others=others['data'])
@@ -341,12 +347,6 @@ class Device(JsonObject):
             if 'device_params' in others and others['device_params']:
                 self.logger.debug("found non-empty device_params")
                 return self._extract_property(prop_def=prop_def, others=others['device_params'])
-            self.logger.debug(f"extracting property {prop_def.pid} from dict {others}")
-            for key, value in others.items():
-                self.logger.debug(f"key: {key}, value: {value}")
-                if key == prop_def.pid:
-                    self.logger.debug(f"returning new DeviceProp with value {value}")
-                    return DeviceProp(definition=prop_def, value=value)
         else:
             self.logger.debug(f"extracting property {prop_def.pid} from {others.__class__} {others}")
             for value in others:
@@ -378,9 +378,9 @@ class AbstractNetworkedDevice(Device, metaclass=ABCMeta):
         **others: dict,
     ):
         super().__init__(type=type, **others)
-        self._ip = ip if ip else super()._extract_attribute('ip', others)
+        self._ip = ip if ip is not None else super()._extract_attribute('ip', others)
         if not self._ip:
-            super()._extract_attribute('ipaddr', others)
+            self._ip = super()._extract_attribute('ipaddr', others)
 
     @property
     def ip(self) -> str:
