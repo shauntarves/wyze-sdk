@@ -322,7 +322,7 @@ class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
 
 class LockGateway(AbstractWirelessNetworkedDevice):
 
-    type = "GateWay"
+    type = "gateway"
 
     @property
     def attributes(self) -> Set[str]:
