@@ -110,8 +110,14 @@ class ContactSensor(ContactMixin, Sensor):
     ):
         super().__init__(type=self.type, **others)
         self.open_close_state = super()._extract_property(SensorProps.open_close_state(), others)
+        self.open_close_state_ts = self._extract_open_close_state_ts(others)
         show_unknown_key_warning(self, others)
 
+    def _extract_open_close_state_ts(self, others: Union[dict, Sequence[dict]]) -> DeviceProp:
+        v = None
+        if "device_params" in others and "open_close_state_ts" in others["device_params"]:
+            v = others["device_params"]["open_close_state_ts"]
+        return v
 
 class MotionSensor(MotionMixin, Sensor):
 
