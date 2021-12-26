@@ -151,7 +151,7 @@ class Client(object):
         if self._refresh_token is None:
             raise WyzeClientConfigurationError("client is not logged in")
         response = self._api_client().refresh_token(refresh_token=self._refresh_token)
-        self._update_session(access_token=response["access_token"], refresh_token=response["refresh_token"])
+        self._update_session(access_token=response["data"]["access_token"], refresh_token=response["data"]["refresh_token"])
         return response
 
     def user_get_info(self) -> WyzeResponse:
