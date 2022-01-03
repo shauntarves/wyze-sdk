@@ -74,7 +74,7 @@ try:
         print(f"is_online: {device.is_online}")
         print(f"product model: {device.product.model}")
 except WyzeApiError as e:
-    # You will get a WyzeApiError is the request failed
+    # You will get a WyzeApiError if the request failed
     print(f"Got an error: {e}")
 ```
 
@@ -103,7 +103,7 @@ try:
     plug = client.plugs.info(device_mac=plug.mac)
     assert plug.is_on is True
 except WyzeApiError as e:
-    # You will get a WyzeApiError is the request failed
+    # You will get a WyzeApiError if the request failed
     print(f"Got an error: {e}")
 ```
 
@@ -138,7 +138,7 @@ try:
   client.bulbs.set_away_mode(device_mac=bulb.mac, device_model=bulb.product.model, away_mode=True)
 
 except WyzeApiError as e:
-    # You will get a WyzeApiError is the request failed
+    # You will get a WyzeApiError if the request failed
     print(f"Got an error: {e}")
 ```
 
@@ -171,7 +171,7 @@ try:
       client.locks.lock(device_mac='YD.LO1.abcdefg0123456789abcdefg0123456789')
 
 except WyzeApiError as e:
-    # You will get a WyzeApiError is the request failed
+    # You will get a WyzeApiError if the request failed
     print(f"Got an error: {e}")
 
 
@@ -194,7 +194,7 @@ try:
     client.vacuums.sweep_rooms(device_mac='JA_RO2_ABCDEF123456', room_ids=[room.id for room in vacuum.current_map.rooms if room.name == 'Kitchen'])
 
 except WyzeApiError as e:
-    # You will get a WyzeApiError is the request failed
+    # You will get a WyzeApiError if the request failed
     print(f"Got an error: {e}")
 ```
 

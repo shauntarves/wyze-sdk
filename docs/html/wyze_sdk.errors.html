@@ -4,12 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Errors &#8212; Wyze SDK 1.1.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Errors &#8212; Wyze SDK 1.2.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -34,7 +35,7 @@
         <li class="right" >
           <a href="wyze_sdk.models.html" title="Data Models"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Errors</a></li> 
       </ul>
     </div>  
@@ -44,13 +45,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="errors">
+  <section id="errors">
 <h1>Errors<a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-wyze_sdk.errors">
+<section id="module-wyze_sdk.errors">
 <span id="wyze-sdk-errors"></span><h2>wyze_sdk.errors<a class="headerlink" href="#module-wyze_sdk.errors" title="Permalink to this headline">¶</a></h2>
 <dl class="py exception">
-<dt id="wyze_sdk.errors.WyzeApiError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></code><code class="sig-name descname"><span class="pre">WyzeApiError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.errors.WyzeApiError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wyze_sdk.errors.WyzeApiError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></span><span class="sig-name descname"><span class="pre">WyzeApiError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.errors.WyzeApiError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wyze_sdk.errors.WyzeClientError" title="wyze_sdk.errors.WyzeClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.errors.WyzeClientError</span></code></a></p>
 <p>Error raised when Wyze does not send the expected response.</p>
 <div class="admonition note">
@@ -60,59 +61,59 @@ a user converts the exception to a str.
 i.e. <code class="docutils literal notranslate"><span class="pre">str(WyzeApiError(&quot;This</span> <span class="pre">text</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">sent</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">string.&quot;))</span></code></p>
 </div>
 <dl class="py attribute">
-<dt id="wyze_sdk.errors.WyzeApiError.response">
-<code class="sig-name descname"><span class="pre">response</span></code><a class="headerlink" href="#wyze_sdk.errors.WyzeApiError.response" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wyze_sdk.errors.WyzeApiError.response">
+<span class="sig-name descname"><span class="pre">response</span></span><a class="headerlink" href="#wyze_sdk.errors.WyzeApiError.response" title="Permalink to this definition">¶</a></dt>
 <dd><p>The WyzeResponse object containing all of the data sent back from the API</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py exception">
-<dt id="wyze_sdk.errors.WyzeClientConfigurationError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></code><code class="sig-name descname"><span class="pre">WyzeClientConfigurationError</span></code><a class="headerlink" href="#wyze_sdk.errors.WyzeClientConfigurationError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wyze_sdk.errors.WyzeClientConfigurationError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></span><span class="sig-name descname"><span class="pre">WyzeClientConfigurationError</span></span><a class="headerlink" href="#wyze_sdk.errors.WyzeClientConfigurationError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wyze_sdk.errors.WyzeClientError" title="wyze_sdk.errors.WyzeClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.errors.WyzeClientError</span></code></a></p>
 <p>Error raised when attempting to send messages over the websocket when the
 connection is closed.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="wyze_sdk.errors.WyzeClientError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></code><code class="sig-name descname"><span class="pre">WyzeClientError</span></code><a class="headerlink" href="#wyze_sdk.errors.WyzeClientError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wyze_sdk.errors.WyzeClientError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></span><span class="sig-name descname"><span class="pre">WyzeClientError</span></span><a class="headerlink" href="#wyze_sdk.errors.WyzeClientError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Base class for Client errors</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="wyze_sdk.errors.WyzeClientNotConnectedError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></code><code class="sig-name descname"><span class="pre">WyzeClientNotConnectedError</span></code><a class="headerlink" href="#wyze_sdk.errors.WyzeClientNotConnectedError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wyze_sdk.errors.WyzeClientNotConnectedError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></span><span class="sig-name descname"><span class="pre">WyzeClientNotConnectedError</span></span><a class="headerlink" href="#wyze_sdk.errors.WyzeClientNotConnectedError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wyze_sdk.errors.WyzeClientError" title="wyze_sdk.errors.WyzeClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.errors.WyzeClientError</span></code></a></p>
 <p>Error raised when attempting to send messages over the websocket when the
 connection is closed.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="wyze_sdk.errors.WyzeFeatureNotSupportedError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></code><code class="sig-name descname"><span class="pre">WyzeFeatureNotSupportedError</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.errors.WyzeFeatureNotSupportedError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wyze_sdk.errors.WyzeFeatureNotSupportedError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></span><span class="sig-name descname"><span class="pre">WyzeFeatureNotSupportedError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#wyze_sdk.errors.WyzeFeatureNotSupportedError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wyze_sdk.errors.WyzeRequestError" title="wyze_sdk.errors.WyzeRequestError"><code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.errors.WyzeRequestError</span></code></a></p>
 <p>Error raised when the requested action on a device isn’t supported.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="wyze_sdk.errors.WyzeObjectFormationError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></code><code class="sig-name descname"><span class="pre">WyzeObjectFormationError</span></code><a class="headerlink" href="#wyze_sdk.errors.WyzeObjectFormationError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wyze_sdk.errors.WyzeObjectFormationError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></span><span class="sig-name descname"><span class="pre">WyzeObjectFormationError</span></span><a class="headerlink" href="#wyze_sdk.errors.WyzeObjectFormationError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wyze_sdk.errors.WyzeClientError" title="wyze_sdk.errors.WyzeClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.errors.WyzeClientError</span></code></a></p>
 <p>Error raised when a constructed object is not valid/malformed</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt id="wyze_sdk.errors.WyzeRequestError">
-<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></code><code class="sig-name descname"><span class="pre">WyzeRequestError</span></code><a class="headerlink" href="#wyze_sdk.errors.WyzeRequestError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="wyze_sdk.errors.WyzeRequestError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">wyze_sdk.errors.</span></span><span class="sig-name descname"><span class="pre">WyzeRequestError</span></span><a class="headerlink" href="#wyze_sdk.errors.WyzeRequestError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#wyze_sdk.errors.WyzeClientError" title="wyze_sdk.errors.WyzeClientError"><code class="xref py py-class docutils literal notranslate"><span class="pre">wyze_sdk.errors.WyzeClientError</span></code></a></p>
 <p>Error raised when there’s a problem with the request that’s being submitted.</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -131,6 +132,7 @@ connection is closed.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="wyze_sdk.signature.html">Request Signature Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wyze_sdk.logging.html">Logging</a></li>
 </ul>
 
   <h4>Previous topic</h4>
@@ -175,13 +177,13 @@ connection is closed.</p>
         <li class="right" >
           <a href="wyze_sdk.models.html" title="Data Models"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Wyze SDK 1.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Errors</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Shaun Tarves.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
     </div>
   </body>
 </html>
