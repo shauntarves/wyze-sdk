@@ -46,7 +46,7 @@ python3 --version
 We recommend using [PyPI][pypi] to install the Wyze Developer Kit for Python.
 
 ```bash
-$ pip install wyze_sdk
+$ pip install wyze-sdk
 ```
 
 ### Basic Usage of the Web Client
