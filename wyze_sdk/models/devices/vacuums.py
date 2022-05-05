@@ -364,10 +364,8 @@ class VacuumMap(JsonObject):
     def navigation_points(self) -> Optional[Sequence[VacuumMapNavigationPoint]]:
         map_data = self.parse_blob(blob=self._blob)
         if 'historyPose_' in map_data:
-            print(map_data['historyPose_'])
             return [VacuumMapNavigationPoint(**points) for points in map_data['historyPose_']['points']]
         if '6' in map_data:
-            print(map_data['6'])
             return [VacuumMapNavigationPoint(**points) for points in map_data['6']['2']]
 
     def parse_blob(self, blob: str) -> dict:
