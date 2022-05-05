@@ -245,7 +245,8 @@ class VacuumMap(JsonObject):
                     '1': {'type': 'int', 'name': 'update_'},
                     '2': {'type': 'float', 'name': 'x_'},
                     '3': {'type': 'float', 'name': 'y_'}
-                }, 'name': ''}
+                }, 'name': 'points_'},
+                '3': {'type': 'int', 'name': 'pathType_'}
             }, 'name': ''},
             '7': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'float', 'name': 'x_'},
@@ -367,7 +368,7 @@ class VacuumMap(JsonObject):
             return [VacuumMapNavigationPoint(**points) for points in map_data['historyPose_']['points']]
         if '6' in map_data:
             print(map_data['6'])
-            return [VacuumMapNavigationPoint(**points) for points in map_data['6']['points']]
+            return [VacuumMapNavigationPoint(**points) for points in map_data['6']['2']]
 
     def parse_blob(self, blob: str) -> dict:
         if blob is None:
