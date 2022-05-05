@@ -495,6 +495,129 @@ class VacuumSweepRecord(JsonObject):
         return self._map_img_small_url
 
 
+class VacuumSupplyProps(object):
+    """
+    :meta private:
+    """
+
+    @classmethod
+    def filter(cls) -> PropDef:
+        return PropDef("filter", int)
+
+    @classmethod
+    def sweep_record_clean_time(cls) -> PropDef:
+        return PropDef("clean_time", int)
+
+    @classmethod
+    def sweep_record_clean_size(cls) -> PropDef:
+        return PropDef("clean_size", int)
+
+
+class VacuumSupplyType(Enum):
+
+    MAIN_BRUSH = ('Main brush', 300)
+    SIDE_BRUSH = ('Side brush', 200)
+    FILTER = ('Filter', 150)
+    # DISHCLOTH = ('Dishcloth', 0) // not used
+
+    def __init__(self, description: str, max_hours: int):
+        self.description = description
+        self.max_hours = max_hours
+
+    def describe(self) -> str:
+        return self.description
+
+
+class VacuumSupplyLevel(object):
+    """
+    The usage information for vacuum supplies.
+    """
+
+    attributes = {
+        "type",
+        "usage",
+        "remaining",
+    }
+
+    def __init__(
+        self,
+        *,
+        type: VacuumSupplyType = None,
+        usage: Optional[int] = None,
+    ):
+        self._type = type
+        self._usage = usage
+
+    @property
+    def type(self) -> VacuumSupplyType:
+        return self._type
+
+    @property
+    def usage(self) -> str:
+        return self._usage
+
+    @property
+    def remaining(self) -> str:
+        return self.type.max_hours - self.usage
+
+
+class VacuumSupplies(JsonObject):
+    """
+    Vacuum supply levels.
+    """
+
+    @property
+    def attributes(self) -> Set[str]:
+        return {
+            "filter",
+            "main_brush",
+            "side_brush",
+            # "dishcloth" // not used
+        }
+
+    def __init__(
+        self,
+        *,
+        filter: int = None,
+        main_brush: int = None,
+        side_brush: int = None,
+        **others: dict
+    ):
+        self._filter = VacuumSupplyLevel(
+            type=VacuumSupplyType.FILTER,
+            usage=filter if filter is not None else self._extract_attribute(Vacuum.props().get('filter').pid, others)
+        )
+        self._main_brush = VacuumSupplyLevel(
+            type=VacuumSupplyType.MAIN_BRUSH,
+            usage=main_brush if main_brush is not None else self._extract_attribute(Vacuum.props().get('main_brush').pid, others)
+        )
+        self._side_brush = VacuumSupplyLevel(
+            type=VacuumSupplyType.SIDE_BRUSH,
+            usage=side_brush if side_brush is not None else self._extract_attribute(Vacuum.props().get('side_brush').pid, others)
+        )
+
+    @property
+    def filter(self) -> VacuumSupplyLevel:
+        """
+        The supply levels of the filter.
+        """
+        return self._filter
+
+    @property
+    def main_brush(self) -> VacuumSupplyLevel:
+        """
+        The supply levels of the main brush.
+        """
+        return self._main_brush
+
+    @property
+    def side_brush(self) -> VacuumSupplyLevel:
+        """
+        The supply levels of the side brush.
+        """
+        return self._side_brush
+
+
 class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
 
     type = "Vacuum"
@@ -505,6 +628,7 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
             "rooms",
             "current_position",
             "current_map",
+            "supplies",
         }).union(Vacuum.props().keys()).union(Vacuum.device_info_props().keys())
 
     @classmethod
@@ -523,6 +647,10 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
             "clean_level": VacuumProps.clean_level(),
             "notice_save_map": PropDef("notice_save_map", bool),
             "memory_map_update_time": PropDef("memory_map_update_time", int),
+            "filter": PropDef("filter", int),
+            "side_brush": PropDef("side_brush", int),
+            "main_brush": PropDef("main_brush", int),
+            # "dishcloth": PropDef("dishcloth", int), // unused
         }
 
     @classmethod
@@ -542,6 +670,7 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
         self.voltage = super()._extract_property(VacuumProps.battery(), others)
         self.mode = super()._extract_attribute('mode' if "mode" in others else VacuumProps.mode().pid, others)
         self.clean_level = super()._extract_attribute('clean_level' if "clean_level" in others else VacuumProps.clean_level().pid, others)
+        self._supplies = VacuumSupplies(**others)
         self._current_map = VacuumMap(**super()._extract_attribute('current_map', others)) if "current_map" in others else None
         self.current_position = super()._extract_attribute('current_position', others)
         show_unknown_key_warning(self, others)
@@ -567,6 +696,10 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
     @property
     def current_map(self) -> VacuumMap:
         return self._current_map
+
+    @property
+    def supplies(self) -> VacuumSupplies:
+        return self._supplies
 
     @property
     def mode(self) -> VacuumMode:
