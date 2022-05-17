@@ -181,10 +181,10 @@ class VacuumMapRoom(JsonObject):
         name_position: VacuumMapPoint = None,
         **others: dict
     ):
-        self._id = id if id else int(self._extract_attribute('id', others))
-        self._name = name if name else self._extract_attribute('name', others)
-        self._clean_state = clean_state if clean_state else int(self._extract_attribute('clean_state', others))
-        self._room_clean = room_clean if room_clean else int(self._extract_attribute('room_clean', others))
+        self._id = id if id else int(self._extract_attribute('roomId_', others))
+        self._name = name if name else self._extract_attribute('roomName_', others)
+        self._clean_state = clean_state if clean_state else int(self._extract_attribute('cleanState_', others))
+        self._room_clean = room_clean if room_clean else int(self._extract_attribute('roomClean_', others))
         self._name_position = name_position if name_position else VacuumMapPoint(**self._extract_attribute('roomNamePost_', others))
         show_unknown_key_warning(self, others)
 
@@ -217,11 +217,18 @@ class VacuumMap(JsonObject):
     @classmethod
     def _robot_map_proto(cls) -> dict:
         return {
+            # Java type int
+            #  0 == REAL_TIME
+            #  1 == POINT
+            #  2 == AREA
+            #  3 == MEMORY
             '1': {'type': 'int', 'name': 'mapType_'},
+            # Mapped from MapExtInfo to VenusMapExtraTimeBean
             '2': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'taskBeginDate_'},
                 '2': {'type': 'int', 'name': 'mapUploadDate_'}
             }, 'name': 'mapExtInfo_'},
+            # Mapped from MapHeadInfo to VenusMapHeadBean
             '3': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'mapHeadId_'},
                 '2': {'type': 'int', 'name': 'sizeX_'},
@@ -232,27 +239,33 @@ class VacuumMap(JsonObject):
                 '7': {'type': 'float', 'name': 'maxY_'},
                 '8': {'type': 'float', 'name': 'resolution_'}
             }, 'name': 'mapHeadInfo_'},
+            # Mapped from MapDataInfo to VenusMapContentBean
             '4': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'bytes', 'name': 'mapData_'}
             }, 'name': 'mapData_'},
+            # Mapped from List<AllMapInfo> to List<VenusMapIdAndNameBean>
             '5': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'mapHeadId_'},
                 '2': {'type': 'bytes', 'name': 'mapName_'}
             }, 'name': 'mapInfo_'},
+            # Mapped from DeviceHistoryPoseInfo to VenusDeviceHistoryPoseBean
             '6': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'poseId_'},
+                # Mapped from DeviceCoverPointDataInfo to VenusDeviceCoverPointBean
                 '2': {'type': 'message', 'message_typedef': {
                     '1': {'type': 'int', 'name': 'update_'},
                     '2': {'type': 'float', 'name': 'x_'},
                     '3': {'type': 'float', 'name': 'y_'}
                 }, 'name': 'points_'},
                 '3': {'type': 'int', 'name': 'pathType_'}
-            }, 'name': ''},
+            }, 'name': 'historyPose_'},
+            # Mapped from DevicePoseDataInfo to VenusChargingPilePositionBean
             '7': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'float', 'name': 'x_'},
                 '2': {'type': 'float', 'name': 'y_'},
                 '3': {'type': 'float', 'name': 'phi_'}
             }, 'name': 'chargeStation_'},
+            # Mapped from DeviceCurrentPoseInfo to VenusDeviceCurrentPositionBean
             '8': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'poseId_'},
                 '2': {'type': 'int', 'name': 'update_'},
@@ -260,8 +273,29 @@ class VacuumMap(JsonObject):
                 '4': {'type': 'float', 'name': 'y_'},
                 '5': {'type': 'float', 'name': 'phi_'}
             }, 'name': 'currentPose_'},
-            #  9: virtualWalls
-            # 10: areasInfo
+            #  Mapped from List<DeviceAreaDataInfo> to List<VenusDeviceAreaBean>
+            '9': {'type': 'message', 'message_typedef': {
+                '1': {'type': 'int', 'name': 'status_'},
+                '2': {'type': 'int', 'name': 'type_'},
+                '3': {'type': 'int', 'name': 'areaIndex_'},
+                # Mapped from List<DevicePointInfo> to List<VenusDeviceAreaBean.RoomPoint>
+                '4': {'type': 'message', 'message_typedef': {
+                    '1': {'type': 'float', 'name': 'x_'},
+                    '2': {'type': 'float', 'name': 'y_'}
+                }, 'name': 'points_'},
+            }, 'name': 'virtualWalls_'},
+            #  Mapped from List<DeviceAreaDataInfo> to List<VenusDeviceAreaBean>
+            '10': {'type': 'message', 'message_typedef': {
+                '1': {'type': 'int', 'name': 'status_'},
+                '2': {'type': 'int', 'name': 'type_'},
+                '3': {'type': 'int', 'name': 'areaIndex_'},
+                # Mapped from List<DevicePointInfo> to List<VenusDeviceAreaBean.RoomPoint>
+                '4': {'type': 'message', 'message_typedef': {
+                    '1': {'type': 'float', 'name': 'x_'},
+                    '2': {'type': 'float', 'name': 'y_'}
+                }, 'name': 'points_'},
+            }, 'name': 'areasInfo_'},
+            # Mapped from List<DeviceNavigationPointDataInfo> to List<VenusDeviceNavigationPointBean>
             '11': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'pointId_'},
                 '2': {'type': 'int', 'name': 'status_'},
@@ -269,35 +303,88 @@ class VacuumMap(JsonObject):
                 '4': {'type': 'float', 'name': 'x_'},
                 '5': {'type': 'float', 'name': 'y_'},
                 '6': {'type': 'float', 'name': 'phi_'}
-            }, 'name': ''},  # navigationPoints_
+            }, 'name': 'navigationPoints_'},
+            # Mapped from List<RoomDataInfo> to List<VenusRoomSweepBean>
             '12': {'type': 'message', 'message_typedef': {
-                '1': {'type': 'int', 'name': 'id'},  # roomId_
-                '2': {'type': 'bytes', 'name': 'name'},  # roomName_
-                # '3': {'type': 'bytes', 'name': 'roomTypeId_'},
-                # '4': {'type': 'bytes', 'name': 'meterialId_'},
-                '5': {'type': 'int', 'name': 'clean_state'},  # cleanState_
-                '6': {'type': 'int', 'name': 'room_clean'},  # roomClean_
-                # '7': {'type': 'int', 'name': 'roomCleanIndex_'},
+                '1': {'type': 'int', 'name': 'roomId_'},
+                '2': {'type': 'bytes', 'name': 'roomName_'},
+                '3': {'type': 'int', 'name': 'roomTypeId_'},
+                '4': {'type': 'int', 'name': 'meterialId_'},
+                '5': {'type': 'int', 'name': 'cleanState_'},
+                '6': {'type': 'int', 'name': 'roomClean_'},
+                '7': {'type': 'int', 'name': 'roomCleanIndex_'},
+                # Mapped from List<DevicePointInfo> to List<VenusDeviceAreaBean.RoomPoint>
                 '8': {'type': 'message', 'message_typedef': {
                     '1': {'type': 'float', 'name': 'x_'},
                     '2': {'type': 'float', 'name': 'y_'}
-                }, 'name': 'roomNamePost_'}
-            }, 'name': ''},  # error when using roomDataInfo_
+                }, 'name': 'roomNamePost_'},
+                # Mapped from CleanPerferenceDataInfo to VenusCleanPreferenceBean
+                '9': {'type': 'message', 'message_typedef': {
+                    '1': {'type': 'int', 'name': 'cleanMode_'},
+                    '2': {'type': 'int', 'name': 'waterLevel_'},
+                    '3': {'type': 'int', 'name': 'windPower_'},
+                    '4': {'type': 'int', 'name': 'twiceClean_'},
+                }, 'name': 'cleanPerfer_'}
+            }, 'name': ''},  # roomDataInfo_
+            # Mapped from DeviceRoomMatrix to VenusRoomMatrixBean
             '13': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'bytes', 'name': 'matrix_'}
             }, 'name': 'roomMatrix_'},
+            # Mapped from List<DeviceRoomChainDataInfo> to List<VenusRoomChainBean>
             '14': {'type': 'message', 'message_typedef': {
-                '1': {'type': 'int', 'name': 'room'},
+                '1': {'type': 'int', 'name': 'roomId_'},
+                # Mapped from List<DeviceChainPointDataInfo> to List<VenusRoomChainBean.RoomChainPoint>
                 '2': {'type': 'message', 'message_typedef': {
                     '1': {'type': 'int', 'name': 'x_'},
                     '2': {'type': 'int', 'name': 'y_'},
                     '3': {'type': 'int', 'name': 'value_'}
-                }, 'name': ''}  # error when using points_
-            }, 'name': ''}  # error when using roomChain_
-            # 15: objects
-            # 16: furnitureInfo
-            # 17: houseInfos
-            # 18: backupAreas
+                }, 'name': 'points_'}
+            }, 'name': 'roomChain_'},
+            # Mapped from List<ObjectDataInfo> to List<VenusObjectIdentifyBean>
+            '15': {'type': 'message', 'message_typedef': {
+                '1': {'type': 'int', 'name': 'objectId_'},
+                '2': {'type': 'int', 'name': 'objectTypeId_'},
+                '3': {'type': 'bytes', 'name': 'objectName_'},
+                '4': {'type': 'int', 'name': 'confirm_'},
+                '5': {'type': 'float', 'name': 'x_'},
+                '6': {'type': 'float', 'name': 'y_'},
+                '7': {'type': 'bytes', 'name': 'url_'},
+            }, 'name': 'objects_'},
+            # Mapped from List<FurnitureDataInfo> to List<VenusFurnitureBean>
+            '16': {'type': 'message', 'message_typedef': {
+                '1': {'type': 'int', 'name': 'id_'},
+                '2': {'type': 'int', 'name': 'typeId_'},
+                # Mapped from List<DevicePointInfo> to List<VenusDeviceAreaBean.RoomPoint>
+                '3': {'type': 'message', 'message_typedef': {
+                    '1': {'type': 'float', 'name': 'x_'},
+                    '2': {'type': 'float', 'name': 'y_'}
+                }, 'name': 'points_'},
+                '4': {'type': 'bytes', 'name': 'url_'},
+                '5': {'type': 'int', 'name': 'status_'},
+            }, 'name': 'furnitureInfo_'},
+            # Mapped from List<HouseInfo> to List<VenusHouseBean>
+            '17': {'type': 'message', 'message_typedef': {
+                '1': {'type': 'int', 'name': 'id_'},
+                '2': {'type': 'bytes', 'name': 'name_'},
+                '3': {'type': 'int', 'name': 'curMapCount_'},
+                '4': {'type': 'int', 'name': 'maxMapSize_'},
+                # Mapped from List<AllMapInfo> to List<VenusMapIdAndNameBean>
+                '5': {'type': 'message', 'message_typedef': {
+                    '1': {'type': 'int', 'name': 'mapHeadId_'},
+                    '2': {'type': 'bytes', 'name': 'mapName_'}
+                }, 'name': 'maps_'},
+            }, 'name': 'houseInfos_'},
+            #  Mapped from List<DeviceAreaDataInfo> to List<VenusDeviceAreaBean>
+            '18': {'type': 'message', 'message_typedef': {
+                '1': {'type': 'int', 'name': 'status_'},
+                '2': {'type': 'int', 'name': 'type_'},
+                '3': {'type': 'int', 'name': 'areaIndex_'},
+                # Mapped from List<DevicePointInfo> to List<VenusDeviceAreaBean.RoomPoint>
+                '4': {'type': 'message', 'message_typedef': {
+                    '1': {'type': 'float', 'name': 'x_'},
+                    '2': {'type': 'float', 'name': 'y_'}
+                }, 'name': 'points_'},
+            }, 'name': 'backupAreas_'},
         }
 
     @property
@@ -394,10 +481,10 @@ class VacuumMap(JsonObject):
 
             map = json.loads(map)
             for key, value in map.items():
-                self._logger.debug(f"key: {key}")
-                self._logger.debug(f"  type: {value.__class__}")
+                self._logger.info(f"key: {key}")
+                self._logger.info(f"  type: {value.__class__}")
                 if isinstance(value, (list, dict)):
-                    self._logger.debug(f"  count: {len(value)}")
+                    self._logger.info(f"  count: {len(value)}")
 
             return map
         except (binascii.Error, zlib.error) as e:
