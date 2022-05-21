@@ -29,8 +29,8 @@ class DeviceModels(object):
     LOCK = ['YD.LO1']
     LOCK_GATEWAY = ['YD.GW1']
     THERMOSTAT = ['CO_EA1']
-    CONTACT_SENSOR = ['DWS3U']
-    MOTION_SENSOR = ['PIR3U']
+    CONTACT_SENSOR = ['DWS3U', 'DWS2U']
+    MOTION_SENSOR = ['PIR3U', 'PIR2U']
     VACUUM = ['JA_RO2']
     CAMERA = CAMERA_V1 + CAMERA_V2 + CAMERA_V3 + CAMERA_OUTDOOR
     SCALE = ['JA.SC', 'JA.SC2']
