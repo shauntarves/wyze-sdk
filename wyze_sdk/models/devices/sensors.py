@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from abc import ABCMeta
-from typing import Set
+from typing import Set, Optional
 
-from wyze_sdk.models import PropDef, show_unknown_key_warning
+from wyze_sdk.models import PropDef, epoch_to_datetime, show_unknown_key_warning
 from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
                                      ContactMixin, DeviceProps, MotionMixin,
                                      SwitchableMixin, VoltageMixin)
@@ -81,17 +81,20 @@ class Sensor(VoltageMixin, SwitchableMixin, AbstractWirelessNetworkedDevice, met
     def attributes(self) -> Set[str]:
         return super().attributes.union({
             "voltage",
+            "last_changed",
         })
 
     def __init__(
         self,
         *,
         type: str,
+        last_changed: Optional[int],
         **others: dict,
     ):
         super().__init__(type=type, **others)
         self.switch_state = self._extract_property(DeviceProps.power_state(), others)
         self.voltage = super()._extract_property(SensorProps.voltage(), others)
+        self.last_changed = None if last_changed is None else epoch_to_datetime(last_changed, ms=True)
 
 
 class ContactSensor(ContactMixin, Sensor):
@@ -102,13 +105,12 @@ class ContactSensor(ContactMixin, Sensor):
     def attributes(self) -> Set[str]:
         return super().attributes.union({
             "open_close_state",
-            "open_close_ts",
         })
 
     def __init__(
         self, **others: dict,
     ):
-        super().__init__(type=self.type, **others)
+        super().__init__(type=self.type, last_changed=self._extract_attribute('open_close_state_ts', others), **others)
         self.open_close_state = super()._extract_property(SensorProps.open_close_state(), others)
         show_unknown_key_warning(self, others)
 
@@ -121,12 +123,11 @@ class MotionSensor(MotionMixin, Sensor):
     def attributes(self) -> Set[str]:
         return super().attributes.union({
             "motion_state",
-            "motion_ts",
         })
 
     def __init__(
         self, **others: dict,
     ):
-        super().__init__(type=self.type, **others)
+        super().__init__(type=self.type, last_changed=self._extract_attribute('motion_state_ts', others), **others)
         self.motion_state = super()._extract_property(SensorProps.motion_state(), others)
         show_unknown_key_warning(self, others)
