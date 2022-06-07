@@ -36,10 +36,14 @@ class DeviceModels(object):
     SCALE = ['JA.SC', 'JA.SC2']
     WATCH = ['RA.WP1', 'RY.WA1']
     BAND = ['RY.HP1']
-    OUTDOOR_PLUG = ['WLPPO-SUB']
+
+    BULB_WHITE = ['WLPA19']
+    BULB_WHITE_V2 = ['HL_HWB2']
     MESH_BULB = ['WLPA19C']
+    BULB = BULB_WHITE + BULB_WHITE_V2 + MESH_BULB
+
+    OUTDOOR_PLUG = ['WLPPO-SUB']
     PLUG = ['WLPP1', 'WLPP1CFH'] + OUTDOOR_PLUG
-    BULB = ['WLPA19'] + MESH_BULB
 
 
 class Product(object):
