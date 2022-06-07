@@ -9,7 +9,7 @@ from datetime import datetime
 from functools import wraps
 from typing import Any, Callable, Iterable, Optional, Sequence, Set, Union
 
-from wyze_sdk.errors import WyzeObjectFormationError, WyzeRequestError
+from wyze_sdk.errors import WyzeObjectFormationError, WyzeRequestError, WyzeFeatureNotSupportedError
 
 
 def datetime_to_epoch(datetime: datetime, ms: bool = True) -> int:
@@ -93,9 +93,12 @@ class JsonObject(BaseObject, metaclass=ABCMeta):
         :meta: private
         """
         for attribute in (func for func in dir(self) if not func.startswith("__")):
-            method = getattr(self, attribute, None)
-            if callable(method) and hasattr(method, "validator"):
-                method()
+            try:
+                method = getattr(self, attribute, None)
+                if callable(method) and hasattr(method, "validator"):
+                    method()
+            except WyzeFeatureNotSupportedError:
+                return
 
     def get_non_null_attributes(self) -> dict:
         """
