@@ -231,7 +231,7 @@ class BulbsClient(BaseClient):
         )
 
     def _set_away_mode_disbled(self, *, device_mac: str, device_model: str, **kwargs) -> WyzeResponse:
-        prop_def = BulbProps.away_mode
+        prop_def = BulbProps.away_mode()
 
         if device_model in DeviceModels.MESH_BULB:
             return super()._api_client().run_action_list(
