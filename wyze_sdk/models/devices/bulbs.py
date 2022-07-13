@@ -45,7 +45,7 @@ class BulbProps(object):
 
     @classmethod
     def control_light(cls) -> PropDef:
-        return PropDef("P1508", bool, int, [0, 1])
+        return PropDef("P1508", int, acceptable_values=[0, 1, 2])
 
     @classmethod
     def delay_off(cls) -> PropDef:
@@ -70,6 +70,7 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
             "color_temp",
             "away_mode",
             "power_loss_recovery",
+            "control_light",
         })
 
     def __init__(
@@ -84,6 +85,7 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
         self.color_temp = super()._extract_property(BulbProps.color_temp(), others)
         self.away_mode = super()._extract_property(BulbProps.away_mode(), others)
         self.power_loss_recovery = super()._extract_property(BulbProps.power_loss_recovery(), others)
+        self.control_light = super()._extract_property(BulbProps.control_light(), others)
         show_unknown_key_warning(self, others)
 
     @property
@@ -127,6 +129,16 @@ class Bulb(SwitchableMixin, AbstractWirelessNetworkedDevice):
         self._power_loss_recovery = value
 
     @property
+    def control_light(self) -> bool:
+        return False if self._control_light is None else self._control_light.value
+
+    @control_light.setter
+    def control_light(self, value: Union[int, DeviceProp]):
+        if isinstance(value, int):
+            value = DeviceProp(definition=BulbProps.control_light(), value=value)
+        self._control_light = value
+
+    @property
     def color(self) -> str:
         raise WyzeFeatureNotSupportedError("color")
 
@@ -158,7 +170,8 @@ class MeshBulb(Bulb):
     @property
     def attributes(self) -> Set[str]:
         return super().attributes.union({
-            "color"
+            "color",
+            "color_mode"
         })
 
     def __init__(
@@ -179,12 +192,17 @@ class MeshBulb(Bulb):
             value = DeviceProp(definition=BulbProps.color(), value=value)
         self._color = value
 
+    @property
+    def color_mode(self) -> Union[str, None]:
+        return None if self._control_light is None else ( 'color' if self._control_light.value == 1 else 'temperature')
+
     @classmethod
     def props(cls) -> dict[str, PropDef]:
         return {**Bulb.props(), **{
             "color": BulbProps.color(),
             "remaining_time": BulbProps.remaining_time(),
             "control_light": BulbProps.control_light(),
+            "color_mode": str,
             "power_loss_recovery": BulbProps.power_loss_recovery(),  # remember_off
             "delay_off": BulbProps.delay_off(),
         }}

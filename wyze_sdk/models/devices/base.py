@@ -39,7 +39,7 @@ class DeviceModels(object):
     OUTDOOR_PLUG = ['WLPPO-SUB']
     MESH_BULB = ['WLPA19C']
     PLUG = ['WLPP1', 'WLPP1CFH'] + OUTDOOR_PLUG
-    BULB = ['WLPA19'] + MESH_BULB
+    BULB = ['WLPA19', 'HL_HWB2'] + MESH_BULB
 
 
 class Product(object):
