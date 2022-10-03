@@ -142,7 +142,7 @@ class ApiServiceClient(BaseServiceClient):
 
         See: com.HLApi.CloudAPI.CloudProtocol.deviceTimerSet
         """
-        SV_SET_DEVICE_TIMER = 'b4810ce03e7747669fdc4644e554fd23'
+        SV_SET_DEVICE_TIMER = '1b3e8bfc7f654e1eaddf8db22090034f'
 
         kwargs.update({
             "device_mac": mac,
@@ -168,7 +168,7 @@ class ApiServiceClient(BaseServiceClient):
         return self.api_call('/app/v2/device_group/timer/get', json=kwargs)
 
     def cancel_device_timer(self, *, mac: str, action_type: int, **kwargs) -> WyzeResponse:
-        SV_CANCEL_DEVICE_TIMER = '3f97925c690740f4aff91da765087db5'
+        SV_CANCEL_DEVICE_TIMER = '8670b7ddb88845468b77ef4d383bfd59'
 
         kwargs.update({"device_mac": mac, "action_type": action_type, "sv": SV_CANCEL_DEVICE_TIMER})
         return self.api_call('/app/v2/device/timer/cancel', json=kwargs)
