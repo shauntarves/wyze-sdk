@@ -11,50 +11,42 @@ class BulbProps(object):
     """
     :meta private:
     """
-    # "": PropDef("P1512", ""), # not used
-    # "": PropDef("P1513", ""), # not used
-    # "": PropDef("P1514", ""), # not used
-    # "": PropDef("P1517", ""), # not used
-    # "": PropDef("P1518", ""), # not used
-    # "": PropDef("P1519", ""), # not used
-    # "": PropDef("P1520", ""), # not used
-    # "": PropDef("P1521", ""), # not used
 
     @classmethod
     def brightness(cls) -> PropDef:
-        return PropDef("P1501", int, acceptable_values=range(0, 100 + 1))
+        return LightProps.brightness()
 
     @classmethod
     def color_temp(cls) -> PropDef:
-        return PropDef("P1502", int, acceptable_values=range(2700, 6500 + 1))
+        return LightProps.color_temp()
 
     @classmethod
     def color_temp_mesh(cls) -> PropDef:
-        return PropDef("P1502", int, acceptable_values=range(1800, 6500 + 1))
+        return LightProps.color_temp_mesh()
 
     @classmethod
     def remaining_time(cls) -> PropDef:
-        return PropDef("P1505", int)
+        return LightProps.remaining_time()
 
     @classmethod
     def away_mode(cls) -> PropDef:
-        return PropDef("P1506", bool, int, [0, 1])
+        return LightProps.away_mode()
 
     @classmethod
     def color(cls) -> PropDef:
-        return PropDef("P1507", str)
+        return LightProps.color()
 
     @classmethod
     def control_light(cls) -> PropDef:
-        return PropDef("P1508", int, acceptable_values=[1, 2])
+        return LightProps.control_light()
 
     @classmethod
     def power_loss_recovery(cls) -> PropDef:
-        return PropDef("P1509", int, acceptable_values=[0, 1])
+        return LightProps.power_loss_recovery()
 
     @classmethod
     def delay_off(cls) -> PropDef:
-        return PropDef("P1510", bool, int, [0, 1])
+        return LightProps.delay_off()
 
 
 class Bulb(Light):
@@ -98,7 +90,6 @@ class MeshBulb(Bulb):
     def attributes(self) -> Set[str]:
         return super().attributes.union({
             "color",
-            "temperature_mode",
             "delay_off",
             "sun_match",
             "has_location",
@@ -110,7 +101,6 @@ class MeshBulb(Bulb):
     ):
         super().__init__(type=self.type, **others)
         self.color = super()._extract_property(LightProps.color(), others)
-        self.temperature_mode = super()._extract_property(LightProps.temperature_mode(), others)
         self.delay_off = super()._extract_property(LightProps.delay_off(), others)
         self.sun_match = super()._extract_property(LightProps.sun_match(), others)
         self.has_location = super()._extract_property(LightProps.has_location(), others)
@@ -125,16 +115,6 @@ class MeshBulb(Bulb):
         if isinstance(value, str):
             value = DeviceProp(definition=LightProps.color(), value=value)
         self._color = value
-
-    @property
-    def temperature_mode(self) -> int:
-        return False if self._temperature_mode is None else self._temperature_mode.value
-
-    @temperature_mode.setter
-    def temperature_mode(self, value: Union[int, DeviceProp]):
-        if isinstance(value, int):
-            value = DeviceProp(definition=LightProps.temperature_mode(), value=value)
-        self._temperature_mode = value
 
     @property
     def delay_off(self) -> bool:

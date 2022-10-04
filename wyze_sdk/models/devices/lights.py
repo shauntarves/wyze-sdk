@@ -11,6 +11,14 @@ class LightProps(object):
     """
     :meta private:
     """
+    # "": PropDef("P1512", ""), # not used
+    # "": PropDef("P1513", ""), # not used
+    # "": PropDef("P1514", ""), # not used
+    # "": PropDef("P1517", ""), # not used
+    # "": PropDef("P1518", ""), # not used
+    # "": PropDef("P1519", ""), # not used
+    # "": PropDef("P1520", ""), # not used
+    # "": PropDef("P1521", ""), # not used
 
     @classmethod
     def brightness(cls) -> PropDef:
@@ -23,10 +31,6 @@ class LightProps(object):
     @classmethod
     def color_temp_mesh(cls) -> PropDef:
         return PropDef("P1502", int, acceptable_values=range(1800, 6500 + 1))
-
-    @classmethod
-    def temperature_mode(cls) -> PropDef:
-        return PropDef("P1503", int, acceptable_values=[0, 1])
 
     @classmethod
     def remaining_time(cls) -> PropDef:
