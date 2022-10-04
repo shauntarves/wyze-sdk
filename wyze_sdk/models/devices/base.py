@@ -40,6 +40,7 @@ class DeviceModels(object):
     BULB_WHITE = ['WLPA19']
     BULB_WHITE_V2 = ['HL_HWB2']
     MESH_BULB = ['WLPA19C']
+
     BULB = BULB_WHITE + BULB_WHITE_V2 + MESH_BULB
 
     OUTDOOR_PLUG = ['WLPPO-SUB']
@@ -200,6 +201,8 @@ class DeviceProps(object):
     @classmethod
     def online_state(cls) -> PropDef:
         return PropDef("P5", bool, int, [0, 1])
+
+    # WHAT IS P7?
 
 
 class Device(JsonObject):

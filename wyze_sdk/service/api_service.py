@@ -77,6 +77,26 @@ class ApiServiceClient(BaseServiceClient):
         kwargs.update({"device_mac": mac, "device_model": model, "pid": pid, "pvalue": str(value), "sv": SV_SET_DEVICE_PROPERTY})
         return self.api_call('/app/v2/device/set_property', json=kwargs)
 
+    def set_device_property_list(self, *, mac: str, model: str, props: Union[DeviceProp, Sequence[DeviceProp]] = [], **kwargs) -> WyzeResponse:
+        SV_SET_DEVICE_PROPERTY_LIST = 'a8290b86080a481982b97045b8710611'
+
+        kwargs.update({
+            "device_mac": mac,
+            "device_model": model,
+            "property_list": [],
+            "sv": SV_SET_DEVICE_PROPERTY_LIST
+        })
+
+        if not isinstance(props, (list, Tuple)):
+            props = [props]
+        for prop in props:
+            kwargs["property_list"].append({
+                "pid": prop.definition.pid,
+                "pvalue": str(prop.api_value),
+            })
+
+        return self.api_call('/app/v2/device/set_property_list', json=kwargs)
+
     def get_device_list_property_list(self, *, device_ids: Sequence[str], target_pids: Sequence[str], **kwargs) -> WyzeResponse:
         SV_GET_DEVICE_LIST_PROPERTY_LIST = 'be9e90755d3445d0a4a583c8314972b6'
 
