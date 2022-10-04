@@ -76,8 +76,8 @@ class BulbsClient(BaseClient):
                 }
             )
         if after is None:
-            return super()._api_client().set_device_property(
-                mac=device_mac, model=device_model, pid=prop_def.pid, value=1)
+            return super()._api_client().set_device_property_list(
+                mac=device_mac, model=device_model, props=DeviceProp(definition=PropDef(prop_def.pid, str), value="1"))
 
         return super()._api_client().set_device_timer(mac=device_mac, delay_time=after.seconds, action_type=1, action_value=1)
 
@@ -104,8 +104,8 @@ class BulbsClient(BaseClient):
                 }
             )
         if after is None:
-            return super()._api_client().set_device_property(
-                mac=device_mac, model=device_model, pid=prop_def.pid, value=0)
+            return super()._api_client().set_device_property_list(
+                mac=device_mac, model=device_model, props=DeviceProp(definition=PropDef(prop_def.pid, str), value="0"))
 
         return super()._api_client().set_device_timer(mac=device_mac, delay_time=after.seconds, action_type=1, action_value=0)
 
@@ -132,8 +132,8 @@ class BulbsClient(BaseClient):
                     "provider_key": device_model,
                 }
             )
-        return super()._api_client().set_device_property(
-            mac=device_mac, model=device_model, pid=prop_def.pid, value=brightness)
+        return super()._api_client().set_device_property_list(
+            mac=device_mac, model=device_model, props=DeviceProp(definition=PropDef(prop_def.pid, str), value=str(brightness)))
 
     def set_color_temp(self, *, device_mac: str, device_model: str, color_temp: int, **kwargs) -> WyzeResponse:
         """Sets the color temperature of a bulb.
@@ -164,8 +164,8 @@ class BulbsClient(BaseClient):
         prop_def = BulbProps.color_temp()
         prop_def.validate(color_temp)
 
-        return super()._api_client().set_device_property(
-            mac=device_mac, model=device_model, pid=prop_def.pid, value=color_temp)
+        return super()._api_client().set_device_property_list(
+            mac=device_mac, model=device_model, props=DeviceProp(definition=PropDef(prop_def.pid, str), value=str(color_temp)))
 
     def set_color(self, *, device_mac: str, device_model: str, color: str, **kwargs) -> WyzeResponse:
         """Sets the color of a bulb.
@@ -215,8 +215,8 @@ class BulbsClient(BaseClient):
         """
         prop_def = LightProps.sun_match()
 
-        return super()._api_client().set_device_property(
-            mac=device_mac, model=device_model, pid=prop_def.pid, value="1" if sun_match else "0")
+        return super()._api_client().set_device_property_list(
+            mac=device_mac, model=device_model, props=DeviceProp(definition=PropDef(prop_def.pid, str), value="1" if sun_match else "0"))
 
     def set_away_mode(self, *, device_mac: str, device_model: str, away_mode: bool = True, **kwargs) -> WyzeResponse:
         """Sets away/vacation mode for a bulb.

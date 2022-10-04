@@ -321,7 +321,7 @@ class AwayModeGenerator(object):
             value.append(f"{strftime('%H%M', gmtime(_value))}{i2}")
             i2 ^= 1  # adds the on/off bit
 
-        print(f"value returning={value}")
+        self._logger.debug(f"value returning={value}")
         return value
 
     def _calculate_away_mode(self, arrayList: list, local_start: datetime, local_end: datetime) -> Sequence[str]:
