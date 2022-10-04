@@ -1,10 +1,53 @@
 from __future__ import annotations
 
-from typing import Set, Union
+from enum import Enum
+from typing import Set, Union, Optional
 
 from wyze_sdk.models import PropDef
 from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
                                      DeviceProp, DeviceProps, SwitchableMixin)
+
+
+class LightControlMode(Enum):
+    """
+    See: com.hualai.wyze.rgblight.device.h.B and com.hualai.wyze.lslight.device.f
+    """
+
+    COLOR = ('Color', 1)
+    TEMPERATURE = ('Temperature', 2)
+    # if the bulb is light strip in fragmented control mode, value is 3
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self):
+        return self.description
+
+    @classmethod
+    def parse(cls, code: int) -> Optional["LightControlMode"]:
+        for mode in list(LightControlMode):
+            if code == mode.code:
+                return mode
+
+
+class LightPowerLossRecoveryMode(Enum):
+
+    POWER_ON = ('Turn the light on', 0)
+    RESTORE_PREVIOUS_STATE = ('Maintain previous state', 1)
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self):
+        return self.description
+
+    @classmethod
+    def parse(cls, code: int) -> Optional["LightPowerLossRecoveryMode"]:
+        for mode in list(LightPowerLossRecoveryMode):
+            if code == mode.code:
+                return mode
 
 
 class LightProps(object):
@@ -46,9 +89,6 @@ class LightProps(object):
 
     @classmethod
     def control_light(cls) -> PropDef:
-        # if the bulb is in color mode, value is 1
-        # if the bulb is in temperature mode, value is 2
-        # see: com.hualai.wyze.rgblight.device.h.B
         return PropDef("P1508", int, acceptable_values=[1, 2])
 
     @classmethod
@@ -94,6 +134,13 @@ class Light(SwitchableMixin, AbstractWirelessNetworkedDevice):
             "color_temp",
             "away_mode",
             "power_loss_recovery",
+            "power_loss_recovery_mode",
+            "control_mode",
+            "has_location",
+            "supports_sun_match",
+            "sun_match",
+            "supports_timer",
+            "delay_off",
         })
 
     def __init__(
@@ -108,6 +155,14 @@ class Light(SwitchableMixin, AbstractWirelessNetworkedDevice):
         self.color_temp = super()._extract_property(LightProps.color_temp(), others)
         self.away_mode = super()._extract_property(LightProps.away_mode(), others)
         self.power_loss_recovery = super()._extract_property(LightProps.power_loss_recovery(), others)
+        self.power_loss_recovery_mode = super()._extract_property(LightProps.power_loss_recovery(), others)
+        self.control_mode = super()._extract_property(LightProps.control_light(), others)
+        self.has_location = super()._extract_property(LightProps.has_location(), others)
+        self.supports_sun_match = super()._extract_property(LightProps.supports_sun_match(), others)
+        self.sun_match = super()._extract_property(LightProps.sun_match(), others)
+        self.supports_timer = super()._extract_property(LightProps.supports_timer(), others)
+        self.delay_off = super()._extract_property(LightProps.delay_off(), others)
+        # self.remaining_time = super()._extract_property(LightProps.remaining_time(), others)
 
     @property
     def brightness(self) -> int:
@@ -148,3 +203,77 @@ class Light(SwitchableMixin, AbstractWirelessNetworkedDevice):
         if isinstance(value, int):
             value = DeviceProp(definition=LightProps.power_loss_recovery(), value=value)
         self._power_loss_recovery = value
+
+    @property
+    def power_loss_recovery_mode(self) -> Optional[LightPowerLossRecoveryMode]:
+        return self._power_loss_recovery_mode
+
+    @power_loss_recovery_mode.setter
+    def power_loss_recovery_mode(self, value: Union[str, DeviceProp]):
+        if value is None:
+            return
+        if isinstance(value, int):
+            value = DeviceProp(definition=LightProps.power_loss_recovery(), value=value)
+        self._power_loss_recovery_mode = LightPowerLossRecoveryMode.parse(value.value)
+
+    @property
+    def control_mode(self) -> Optional[LightControlMode]:
+        return self._control_mode
+
+    @control_mode.setter
+    def control_mode(self, value: Union[str, DeviceProp]):
+        if value is None:
+            return
+        if isinstance(value, int):
+            value = DeviceProp(definition=LightProps.control_light(), value=value)
+        self._control_mode = LightControlMode.parse(value.value)
+
+    @property
+    def sun_match(self) -> bool:
+        return False if self._sun_match is None else self._sun_match.value
+
+    @sun_match.setter
+    def sun_match(self, value: Union[int, DeviceProp]):
+        if isinstance(value, int):
+            value = DeviceProp(definition=LightProps.sun_match(), value=value)
+        self._sun_match = value
+
+    @property
+    def has_location(self) -> bool:
+        return False if self._has_location is None else self._has_location.value
+
+    @has_location.setter
+    def has_location(self, value: Union[int, DeviceProp]):
+        if isinstance(value, int):
+            value = DeviceProp(definition=LightProps.has_location(), value=value)
+        self._has_location = value
+
+    @property
+    def supports_sun_match(self) -> bool:
+        return False if self._supports_sun_match is None else self._supports_sun_match.value
+
+    @supports_sun_match.setter
+    def supports_sun_match(self, value: Union[int, DeviceProp]):
+        if isinstance(value, int):
+            value = DeviceProp(definition=LightProps.supports_sun_match(), value=value)
+        self._supports_sun_match = value
+
+    @property
+    def supports_timer(self) -> bool:
+        return False if self._supports_timer is None else self._supports_timer.value
+
+    @supports_timer.setter
+    def supports_timer(self, value: Union[int, DeviceProp]):
+        if isinstance(value, int):
+            value = DeviceProp(definition=LightProps.supports_timer(), value=value)
+        self._supports_timer = value
+
+    @property
+    def delay_off(self) -> bool:
+        return False if self._delay_off is None else self._delay_off.value
+
+    @delay_off.setter
+    def delay_off(self, value: Union[int, DeviceProp]):
+        if isinstance(value, int):
+            value = DeviceProp(definition=LightProps.delay_off(), value=value)
+        self._delay_off = value

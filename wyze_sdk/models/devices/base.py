@@ -203,6 +203,7 @@ class DeviceProps(object):
         return PropDef("P5", bool, int, [0, 1])
 
     # WHAT IS P7?
+    # WHAT IS P16 (bulb)?
 
 
 class Device(JsonObject):

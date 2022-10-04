@@ -5,6 +5,7 @@ from typing import Optional, Set, Union
 from wyze_sdk.models import PropDef, show_unknown_key_warning
 from wyze_sdk.models.devices import (DeviceProp, DeviceModels,
                                      LightProps, Light)
+from wyze_sdk.models.devices.lights import LightControlMode
 
 
 class BulbProps(object):
@@ -49,9 +50,7 @@ class BulbProps(object):
         return LightProps.delay_off()
 
 
-class Bulb(Light):
-
-    type = "Light"
+class BaseBulb(Light):
 
     def __init__(
         self,
@@ -62,10 +61,10 @@ class Bulb(Light):
         super().__init__(type=type, **others)
 
     @classmethod
-    def parse(cls, device: Union[dict, "Bulb"]) -> Optional["Bulb"]:
+    def parse(cls, device: Union[dict, "BaseBulb"]) -> Optional["BaseBulb"]:
         if device is None:
             return None
-        elif isinstance(device, Bulb):
+        elif isinstance(device, BaseBulb):
             return device
         else:
             if "product_type" in device:
@@ -82,7 +81,30 @@ class Bulb(Light):
                 return None
 
 
-class MeshBulb(Bulb):
+class Bulb(BaseBulb):
+
+    def __init__(
+        self,
+        *,
+        type: str = type,
+        **others: dict,
+    ):
+        super().__init__(type=type, **others)
+        self._control_mode = LightControlMode.TEMPERATURE
+        show_unknown_key_warning(self, others)
+
+
+class WhiteBulb(Bulb):
+
+    def __init__(
+        self,
+        **others: dict,
+    ):
+        super().__init__(type=self.type, **others)
+        show_unknown_key_warning(self, others)
+
+
+class MeshBulb(BaseBulb):
 
     type = "MeshLight"
 
@@ -90,9 +112,6 @@ class MeshBulb(Bulb):
     def attributes(self) -> Set[str]:
         return super().attributes.union({
             "color",
-            "delay_off",
-            "sun_match",
-            "has_location",
         })
 
     def __init__(
@@ -101,9 +120,6 @@ class MeshBulb(Bulb):
     ):
         super().__init__(type=self.type, **others)
         self.color = super()._extract_property(LightProps.color(), others)
-        self.delay_off = super()._extract_property(LightProps.delay_off(), others)
-        self.sun_match = super()._extract_property(LightProps.sun_match(), others)
-        self.has_location = super()._extract_property(LightProps.has_location(), others)
         show_unknown_key_warning(self, others)
 
     @property
@@ -115,105 +131,3 @@ class MeshBulb(Bulb):
         if isinstance(value, str):
             value = DeviceProp(definition=LightProps.color(), value=value)
         self._color = value
-
-    @property
-    def delay_off(self) -> bool:
-        return False if self._delay_off is None else self._delay_off.value
-
-    @delay_off.setter
-    def delay_off(self, value: Union[int, DeviceProp]):
-        if isinstance(value, int):
-            value = DeviceProp(definition=LightProps.delay_off(), value=value)
-        self._delay_off = value
-
-    @property
-    def sun_match(self) -> bool:
-        return False if self._sun_match is None else self._sun_match.value
-
-    @sun_match.setter
-    def sun_match(self, value: Union[int, DeviceProp]):
-        if isinstance(value, int):
-            value = DeviceProp(definition=LightProps.sun_match(), value=value)
-        self._sun_match = value
-
-    @property
-    def has_location(self) -> bool:
-        return False if self._has_location is None else self._has_location.value
-
-    @has_location.setter
-    def has_location(self, value: Union[int, DeviceProp]):
-        if isinstance(value, int):
-            value = DeviceProp(definition=LightProps.has_location(), value=value)
-        self._has_location = value
-
-    @classmethod
-    def props(cls) -> dict[str, PropDef]:
-        return {**Bulb.props(), **{
-            "color": LightProps.color(),
-            "remaining_time": LightProps.remaining_time(),
-            "control_light": LightProps.control_light(),
-            "power_loss_recovery": LightProps.power_loss_recovery(),  # remember_off
-            "delay_off": LightProps.delay_off(),
-        }}
-
-
-class WhiteBulb(Bulb):
-
-    type = "Light"
-
-    @property
-    def attributes(self) -> Set[str]:
-        return super().attributes.union({
-            "delay_off",
-            "sun_match",
-            "has_location",
-        })
-
-    def __init__(
-        self,
-        **others: dict,
-    ):
-        super().__init__(type=self.type, **others)
-        self.delay_off = super()._extract_property(LightProps.delay_off(), others)
-        self.sun_match = super()._extract_property(LightProps.sun_match(), others)
-        self.has_location = super()._extract_property(LightProps.has_location(), others)
-        show_unknown_key_warning(self, others)
-
-    @property
-    def delay_off(self) -> bool:
-        return False if self._delay_off is None else self._delay_off.value
-
-    @delay_off.setter
-    def delay_off(self, value: Union[int, DeviceProp]):
-        if isinstance(value, int):
-            value = DeviceProp(definition=LightProps.delay_off(), value=value)
-        self._delay_off = value
-
-    @property
-    def sun_match(self) -> bool:
-        return False if self._sun_match is None else self._sun_match.value
-
-    @sun_match.setter
-    def sun_match(self, value: Union[int, DeviceProp]):
-        if isinstance(value, int):
-            value = DeviceProp(definition=LightProps.sun_match(), value=value)
-        self._sun_match = value
-
-    @property
-    def has_location(self) -> bool:
-        return False if self._has_location is None else self._has_location.value
-
-    @has_location.setter
-    def has_location(self, value: Union[int, DeviceProp]):
-        if isinstance(value, int):
-            value = DeviceProp(definition=LightProps.has_location(), value=value)
-        self._has_location = value
-
-    @classmethod
-    def props(cls) -> dict[str, PropDef]:
-        return {**Bulb.props(), **{
-            "remaining_time": LightProps.remaining_time(),
-            "control_light": LightProps.control_light(),
-            "power_loss_recovery": LightProps.power_loss_recovery(),  # remember_off
-            "delay_off": LightProps.delay_off(),
-        }}

@@ -1,10 +1,12 @@
 from datetime import timedelta
-from typing import Optional, Sequence, Union
+from typing import Optional, Sequence
 
 from wyze_sdk.api.base import BaseClient
 from wyze_sdk.errors import WyzeFeatureNotSupportedError
 from wyze_sdk.models.devices import (Bulb, BulbProps, DeviceModels, DeviceProp,
                                      DeviceProps, MeshBulb, PropDef)
+from wyze_sdk.models.devices.bulbs import BaseBulb
+from wyze_sdk.models.devices.lights import LightProps
 from wyze_sdk.service import WyzeResponse, api_service
 
 
@@ -23,12 +25,12 @@ class BulbsClient(BaseClient):
         """
         return [Bulb(**device) for device in self._list_bulbs()]
 
-    def info(self, *, device_mac: str, **kwargs) -> Optional[Union[MeshBulb, Bulb]]:
+    def info(self, *, device_mac: str, **kwargs) -> Optional[BaseBulb]:
         """Retrieves details of a bulb.
 
         :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
 
-        :rtype: Optional[Union[MeshBulb, Bulb]]
+        :rtype: Optional[BaseBulb]
         """
         bulbs = [_bulb for _bulb in self._list_bulbs() if _bulb['mac']
                  == device_mac]
@@ -49,7 +51,7 @@ class BulbsClient(BaseClient):
                 target_pids=[])["data"]
         )
 
-        return Bulb.parse(bulb)
+        return BaseBulb.parse(bulb)
 
     def turn_on(self, *, device_mac: str, device_model: str, after: Optional[timedelta] = None, **kwargs) -> WyzeResponse:
         """Turns on a bulb.
@@ -64,7 +66,7 @@ class BulbsClient(BaseClient):
 
         if device_model in DeviceModels.MESH_BULB:
             if after is not None:
-                raise WyzeFeatureNotSupportedError("delayed power action")
+                return super()._api_client().set_device_timer(mac=device_mac, delay_time=after.seconds, action_type=1, action_value=1)
             return super()._api_client().run_action_list(
                 actions={
                     "key": "set_mesh_property",
@@ -92,7 +94,7 @@ class BulbsClient(BaseClient):
 
         if device_model in DeviceModels.MESH_BULB:
             if after is not None:
-                raise WyzeFeatureNotSupportedError("delayed power action")
+                return super()._api_client().set_device_timer(mac=device_mac, delay_time=after.seconds, action_type=1, action_value=0)
             return super()._api_client().run_action_list(
                 actions={
                     "key": "set_mesh_property",
@@ -200,9 +202,21 @@ class BulbsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
-        if device_model in DeviceModels.MESH_BULB:
-            raise WyzeFeatureNotSupportedError("clear_timer")
         return super()._api_client().cancel_device_timer(mac=device_mac, action_type=1)
+
+    def set_sun_match(self, *, device_mac: str, device_model: str, sun_match: bool = True, **kwargs) -> WyzeResponse:
+        """Sets sunlight matching to mimic natural sunlight for a bulb.
+
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+        :param str device_model: The device model. e.g. ``WLPA19``
+        :param bool sun_match: The new sun match. e.g. ``True``
+
+        :rtype: WyzeResponse
+        """
+        prop_def = LightProps.sun_match()
+
+        return super()._api_client().set_device_property(
+            mac=device_mac, model=device_model, pid=prop_def.pid, value="1" if sun_match else "0")
 
     def set_away_mode(self, *, device_mac: str, device_model: str, away_mode: bool = True, **kwargs) -> WyzeResponse:
         """Sets away/vacation mode for a bulb.
@@ -231,7 +245,7 @@ class BulbsClient(BaseClient):
         )
 
     def _set_away_mode_disbled(self, *, device_mac: str, device_model: str, **kwargs) -> WyzeResponse:
-        prop_def = BulbProps.away_mode()
+        prop_def = LightProps.away_mode()
 
         if device_model in DeviceModels.MESH_BULB:
             return super()._api_client().run_action_list(
@@ -242,4 +256,5 @@ class BulbsClient(BaseClient):
                     "provider_key": device_model,
                 }
             )
-        super()._api_client().set_device_property(mac=device_mac, model=device_model, pid=prop_def.pid, value="0")
+        return super()._api_client().set_device_property(
+            mac=device_mac, model=device_model, pid=prop_def.pid, value="0")
