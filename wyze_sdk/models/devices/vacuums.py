@@ -183,9 +183,21 @@ class VacuumMapRoom(JsonObject):
     ):
         self._id = id if id else int(self._extract_attribute('roomId_', others))
         self._name = name if name else self._extract_attribute('roomName_', others)
-        self._clean_state = clean_state if clean_state else int(self._extract_attribute('cleanState_', others))
-        self._room_clean = room_clean if room_clean else int(self._extract_attribute('roomClean_', others))
-        self._name_position = name_position if name_position else VacuumMapPoint(**self._extract_attribute('roomNamePost_', others))
+        if not clean_state:
+            clean_state = self._extract_attribute('cleanState_', others)
+            if clean_state:
+                clean_state = int(clean_state)
+        self._clean_state = clean_state
+        if not room_clean:
+            room_clean = self._extract_attribute('roomClean_', others)
+            if room_clean:
+                room_clean = int(room_clean)
+        self._room_clean = room_clean
+        if not name_position:
+            name_position = self._extract_attribute('roomNamePost_', others)
+            if name_position:
+                name_position = VacuumMapPoint(**name_position)
+        self._name_position = name_position
         show_unknown_key_warning(self, others)
 
     @property
@@ -197,15 +209,15 @@ class VacuumMapRoom(JsonObject):
         return self._name
 
     @property
-    def clean_state(self) -> int:
+    def clean_state(self) -> Optional[int]:
         return self._clean_state
 
     @property
-    def room_clean(self) -> int:
+    def room_clean(self) -> Optional[int]:
         return self._room_clean
 
     @property
-    def name_position(self) -> VacuumMapPoint:
+    def name_position(self) -> Optional[VacuumMapPoint]:
         return self._name_position
 
 
@@ -247,7 +259,7 @@ class VacuumMap(JsonObject):
             '5': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'mapHeadId_'},
                 '2': {'type': 'bytes', 'name': 'mapName_'}
-            }, 'name': 'mapInfo_'},
+            }, 'name': ''},  # mapInfo_
             # Mapped from DeviceHistoryPoseInfo to VenusDeviceHistoryPoseBean
             '6': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'poseId_'},
@@ -266,6 +278,7 @@ class VacuumMap(JsonObject):
                 '3': {'type': 'float', 'name': 'phi_'}
             }, 'name': 'chargeStation_'},
             # Mapped from DeviceCurrentPoseInfo to VenusDeviceCurrentPositionBean
+            # currentPose_ only present when unit is active
             '8': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'poseId_'},
                 '2': {'type': 'int', 'name': 'update_'},
@@ -296,6 +309,7 @@ class VacuumMap(JsonObject):
                 }, 'name': 'points_'},
             }, 'name': 'areasInfo_'},
             # Mapped from List<DeviceNavigationPointDataInfo> to List<VenusDeviceNavigationPointBean>
+            # navigationPoints_ only present when unit is active
             '11': {'type': 'message', 'message_typedef': {
                 '1': {'type': 'int', 'name': 'pointId_'},
                 '2': {'type': 'int', 'name': 'status_'},
@@ -450,9 +464,9 @@ class VacuumMap(JsonObject):
     @property
     def navigation_points(self) -> Optional[Sequence[VacuumMapNavigationPoint]]:
         map_data = self.parse_blob(blob=self._blob)
-        if 'historyPose_' in map_data:
+        if 'historyPose_' in map_data and 'points' in map_data['historyPose_']:
             return [VacuumMapNavigationPoint(**points) for points in map_data['historyPose_']['points']]
-        if '6' in map_data:
+        if '6' in map_data and '2' in map_data['6']:
             return [VacuumMapNavigationPoint(**points) for points in map_data['6']['2']]
 
     def parse_blob(self, blob: str) -> dict:
@@ -489,6 +503,74 @@ class VacuumMap(JsonObject):
             return map
         except (binascii.Error, zlib.error) as e:
             raise WyzeObjectFormationError(f"encountered an error parsing map blob {e}")
+
+
+class VacuumMapSummary(JsonObject):
+    """
+    A vacuum map summary.
+    """
+
+    @property
+    def attributes(self) -> Set[str]:
+        return {
+            "current_map",
+            "img_url",
+            "latest_area_point_list",
+            "map_id",
+            "room_info_list",
+            "user_map_name",
+        }
+
+    def __init__(
+        self,
+        *,
+        current_map: bool = False,
+        img_url: str = None,
+        map_id: int = None,
+        user_map_name: str = None,
+        **others: dict
+    ):
+        self._current_map = current_map if current_map else self._extract_attribute('current_map', others)
+        self._img_url = img_url if img_url else self._extract_attribute('img_url', others)
+        self._map_id = map_id if map_id else self._extract_attribute('map_id', others)
+        self._user_map_name = user_map_name if user_map_name else self._extract_attribute('user_map_name', others)
+        self._room_info_list = None
+        self._latest_area_point_list = None
+        latest_area_point_list = self._extract_attribute('latest_area_point_list', others)
+        if latest_area_point_list:
+            if not isinstance(latest_area_point_list, (list, Tuple)):
+                latest_area_point_list = [latest_area_point_list]
+            self._latest_area_point_list = [VacuumMapPoint(x=point['point_x'], y=point['point_y']) for point in latest_area_point_list]
+        room_info_list = self._extract_attribute('room_info_list', others)
+        if room_info_list:
+            if not isinstance(room_info_list, (list, Tuple)):
+                room_info_list = [room_info_list]
+            self._room_info_list = [VacuumMapRoom(id=room['room_id'], name=room['room_name']) for room in room_info_list]
+        show_unknown_key_warning(self, others)
+
+    @property
+    def is_current(self) -> bool:
+        return False if self._current_map is None else self._current_map
+
+    @property
+    def img_url(self) -> str:
+        return self._img_url
+
+    @property
+    def id(self) -> int:
+        return self._map_id
+
+    @property
+    def name(self) -> int:
+        return self._user_map_name
+
+    @property
+    def rooms(self) -> Optional[Sequence[VacuumMapRoom]]:
+        return None if not self._room_info_list else self._room_info_list
+
+    @property
+    def latest_points(self) -> Optional[Sequence[VacuumMapPoint]]:
+        return None if not self._latest_area_point_list else self._latest_area_point_list
 
 
 class VacuumSweepRecord(JsonObject):
