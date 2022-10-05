@@ -43,6 +43,10 @@ class VenusServiceClient(ExServiceClient):
             nonce=nonce,
         )
 
+    def get_maps(self, *, did: str, **kwargs) -> WyzeResponse:
+        kwargs.update({'did': did})
+        return self.api_call('/plugin/venus/memory_map/list', http_verb="GET", params=kwargs)
+
     def get_current_position(self, *, did: str, **kwargs) -> WyzeResponse:
         kwargs.update({'did': did})
         return self.api_call('/plugin/venus/memory_map/current_position', http_verb="GET", params=kwargs)
@@ -50,6 +54,10 @@ class VenusServiceClient(ExServiceClient):
     def get_current_map(self, *, did: str, **kwargs) -> WyzeResponse:
         kwargs.update({'did': did})
         return self.api_call('/plugin/venus/memory_map/current_map', http_verb="GET", params=kwargs)
+
+    def set_current_map(self, *, did: str, map_id: int, **kwargs) -> WyzeResponse:
+        kwargs.update({'device_id': did, 'map_id': map_id})
+        return self.api_call('/plugin/venus/memory_map/current_map', http_verb="POST", json=kwargs)
 
     def get_sweep_records(self, *, did: str, keys: Union[str, Sequence[str]], limit: int = 20, since: datetime, **kwargs) -> WyzeResponse:
         # if isinstance(keys, (list, Tuple)):

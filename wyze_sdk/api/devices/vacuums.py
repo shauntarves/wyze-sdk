@@ -3,7 +3,7 @@ from typing import Optional, Sequence, Union
 
 from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import DeviceModels, Vacuum, VacuumSuctionLevel
-from wyze_sdk.models.devices.vacuums import VacuumSweepRecord
+from wyze_sdk.models.devices.vacuums import VacuumMapSummary, VacuumSweepRecord
 from wyze_sdk.service import VenusServiceClient, WyzeResponse
 
 
@@ -103,6 +103,28 @@ class VacuumsClient(BaseClient):
         :rtype: Sequence[VacuumSweepRecord]
         """
         return [VacuumSweepRecord(**record) for record in super()._venus_client().get_sweep_records(did=device_mac, keys=[], limit=limit, since=since)["data"]["data"]]
+
+    def get_maps(self, *, device_mac: str, **kwargs) -> Sequence[VacuumMapSummary]:
+        """Retrieves defined maps for a vacuum.
+
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+
+        :rtype: Sequence[VacuumMapSummary]
+        """
+        return [VacuumMapSummary(**map) for map in super()._venus_client().get_maps(did=device_mac)["data"]]
+
+    def set_current_map(self, *, device_mac: str, map_id: int, **kwargs) -> WyzeResponse:
+        """Sets the current map of a vacuum.
+
+        Args:
+            :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+            :param int map_id: The new current map id. e.g. ``12345678``
+
+        :rtype: WyzeResponse
+        """
+
+        return super()._venus_client().set_current_map(
+            did=device_mac, map_id=map_id)
 
     def set_suction_level(self, *, device_mac: str, device_model: str, suction_level: VacuumSuctionLevel, **kwargs) -> WyzeResponse:
         """Sets the suction level of a vacuum.
