@@ -39,7 +39,7 @@ class DeviceModels(object):
 
     BULB_WHITE = ['WLPA19']
     BULB_WHITE_V2 = ['HL_HWB2']
-    MESH_BULB = ['WLPA19C']
+    MESH_BULB = ['WLPA19C', 'HL_LSL', 'HL_LSLP']
 
     BULB = BULB_WHITE + BULB_WHITE_V2 + MESH_BULB
 

@@ -6,7 +6,7 @@ from .base import (AbstractNetworkedDevice, AbstractWirelessNetworkedDevice,  # 
                    DeviceProp, DeviceProps, LockableMixin, MotionMixin,
                    PropDef, SwitchableMixin, VoltageMixin)
 from .lights import LightProps, Light  # noqa
-from .bulbs import BulbProps, Bulb, MeshBulb, WhiteBulb  # noqa
+from .bulbs import BulbProps, BaseBulb, Bulb, MeshBulb, WhiteBulb  # noqa
 from .cameras import BaseStation, Camera, CameraProps  # noqa
 from .locks import (Lock, LockEventType, LockGateway, LockProps,  # noqa
                     LockRecord, LockRecordDetail)

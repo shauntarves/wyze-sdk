@@ -15,7 +15,7 @@ class LightControlMode(Enum):
 
     COLOR = ('Color', 1)
     TEMPERATURE = ('Temperature', 2)
-    # if the bulb is light strip in fragmented control mode, value is 3
+    FRAGMENTED = ('Fragmented', 3)
 
     def __init__(self, description: str, code: int):
         self.description = description

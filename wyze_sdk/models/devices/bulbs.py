@@ -73,6 +73,8 @@ class BaseBulb(Light):
                     return WhiteBulb(**device) if device["product_model"] in DeviceModels.BULB_WHITE_V2 else Bulb(**device)
                 elif type == MeshBulb.type:
                     return MeshBulb(**device)
+                elif type == LightStrip.type:
+                    return LightStrip(**device)
                 else:
                     cls.logger.warning(f"Unknown bulb type detected ({device})")
                     return Bulb(**device)
@@ -113,6 +115,29 @@ class MeshBulb(BaseBulb):
         return super().attributes.union({
             "color",
         })
+
+    def __init__(
+        self,
+        **others: dict,
+    ):
+        super().__init__(type=self.type, **others)
+        self.color = super()._extract_property(LightProps.color(), others)
+        show_unknown_key_warning(self, others)
+
+    @property
+    def color(self) -> str:
+        return None if self._color is None else self._color.value
+
+    @color.setter
+    def color(self, value: Union[str, DeviceProp]):
+        if isinstance(value, str):
+            value = DeviceProp(definition=LightProps.color(), value=value)
+        self._color = value
+
+
+class LightStrip(BaseBulb):
+
+    type = "LightStrip"
 
     def __init__(
         self,
