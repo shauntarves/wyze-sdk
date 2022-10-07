@@ -156,6 +156,7 @@ class LockRecordDetail(JsonObject):
             "source_name",
             "sourceid",
             "time",
+            "audio_played",
         }
 
     def __init__(
@@ -172,6 +173,7 @@ class LockRecordDetail(JsonObject):
         source_name: str = None,
         sourceid: int = None,
         time: datetime = None,
+        audio_played: int = None,
         **others: dict
     ):
         self.id = id if id else self._extract_attribute('id', others)
@@ -191,6 +193,7 @@ class LockRecordDetail(JsonObject):
         self.source_name = source_name if source_name else self._extract_attribute('source_name', others)
         self.sourceid = sourceid if sourceid else self._extract_attribute('sourceid', others)
         self.time = time if time else epoch_to_datetime(self._extract_attribute('time', others), ms=True)
+        self.audio_played = audio_played if audio_played else self._extract_attribute('audio_played', others)
         show_unknown_key_warning(self, others)
 
 
