@@ -133,12 +133,18 @@ class FordServiceClient(BaseServiceClient):
         kwargs.update({'limit': str(limit), "offset": str(offset), "detail": "1"})
         return self.api_call('/openapi/v1/device', params=kwargs)
 
-    def get_lock_info(self, *, uuid: str, **kwargs) -> FordResponse:
+    def get_lock_info(self, *, uuid: str, with_keypad: bool = True, **kwargs) -> FordResponse:
         """
         See: com.yunding.ford.manager.NetLockManager.getLockInfo
         """
         kwargs.update({'uuid': uuid})
+        if with_keypad:
+            kwargs.update({'with_keypad': 1})
         return self.api_call('/openapi/lock/v1/info', params=kwargs)
+
+    def get_keypad_info(self, *, uuid: str, **kwargs) -> FordResponse:
+        kwargs.update({'uuid': uuid})
+        return self.api_call('/openapi/keypad/v1/info', params=kwargs)
 
     def get_gateway_info(self, *, uuid: str, **kwargs) -> FordResponse:
         kwargs.update({'uuid': uuid})
@@ -176,3 +182,11 @@ class FordServiceClient(BaseServiceClient):
         """
         kwargs.update({'uuid': uuid, 'action': action})
         return self.api_call('/openapi/lock/v1/control', http_verb="POST", json=kwargs)
+
+    def get_codes(self, *, uuid: str, **kwargs) -> FordResponse:
+        kwargs.update({'uuid': uuid})
+        return self.api_call('/openapi/lock/v1/pwd', params=kwargs)
+
+    def add_code(self, *, uuid: str, **kwargs) -> FordResponse:
+        kwargs.update({'uuid': uuid})
+        return self.api_call('/openapi/lock/v1/pwd/operations/add', http_verb="POST", json=kwargs)

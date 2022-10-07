@@ -7,6 +7,15 @@ from wyze_sdk.models.devices import DeviceModels, Lock, LockGateway
 from wyze_sdk.models.devices.locks import LockRecord
 from wyze_sdk.service import FordServiceClient, WyzeResponse
 
+# The relationship between locks and gateways is a bit complicated.
+# Gateways can supposedly service multiple locks, with each lock
+# being paired with exactly one gateway. The gateway is accessible
+# from the Wyze app, but it really only exists there to modify WiFi
+# network information in the event that it changes.
+#
+# Keypads are paired 1:1 with locks, with the lock entity storing
+# the relationship key.
+
 
 class BaseLockClient(BaseClient, metaclass=ABCMeta):
 
@@ -28,7 +37,7 @@ class BaseLockClient(BaseClient, metaclass=ABCMeta):
 class LockGatewaysClient(BaseLockClient):
 
     def list(self, **kwargs) -> Sequence[LockGateway]:
-        """Lists all lock gateway available to a Wyze account.
+        """Lists all lock gateways available to a Wyze account.
 
         :rtype: Sequence[LockGateway]
         """

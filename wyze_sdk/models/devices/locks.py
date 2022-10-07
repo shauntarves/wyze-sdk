@@ -33,6 +33,10 @@ class LockProps(object):
         return PropDef("open_close_state", bool, int)
 
     @classmethod
+    def onoff_line(cls) -> PropDef:
+        return PropDef("onoff_line", bool, int)
+
+    @classmethod
     def voltage(cls) -> PropDef:
         return PropDef("power", int)
 
@@ -249,6 +253,30 @@ class LockRecord(JsonObject):
         self._type = value
 
 
+class LockKeypad(VoltageMixin, Device):
+
+    type = "LockKeypad"
+
+    @property
+    def attributes(self) -> Set[str]:
+        return super().attributes.union({
+            "uuid",
+            "power",
+            "onoff_time",
+            "power_refreshtime",
+        })
+
+    def __init__(
+        self,
+        **others: dict,
+    ):
+        super().__init__(type=self.type, **others)
+        self.uuid = super()._extract_attribute("uuid", others)
+        self.voltage = self._extract_property(prop_def=LockProps.voltage(), others=others)
+        self.is_online = self._extract_property(prop_def=LockProps.onoff_line(), others=others)
+        show_unknown_key_warning(self, others)
+
+
 class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
 
     type = "Lock"
@@ -274,6 +302,7 @@ class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
         self,
         parent: Optional[str] = None,
         record_count: Optional[int] = None,
+        keypad: Optional[LockKeypad] = None,
         **others: dict,
     ):
         super().__init__(type=self.type, **others)
@@ -283,6 +312,11 @@ class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
         self.open_close_state = self._extract_open_close_state(others)
         self.voltage = self._extract_property(prop_def=LockProps.voltage(), others=others)
         self._parent = parent if parent is not None else super()._extract_attribute("parent", others)
+        if keypad is None:
+            keypad = super()._extract_attribute("keypad", others)
+            if keypad is not None:
+                keypad = LockKeypad(**keypad)
+        self.keypad = keypad
         self._record_count = record_count if record_count is not None else super()._extract_attribute("record_count", others)
         show_unknown_key_warning(self, others)
 
