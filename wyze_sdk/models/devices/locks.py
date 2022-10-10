@@ -58,12 +58,9 @@ class LockEventType(Enum):
     TRASH_MODE = ('Trash mode', 2225)
     AUTO_CALIBRATED = ('Auto-calibrated', 2226)
 
-    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+    def __init__(self, description: str, code: int):
         self.description = description
-        if isinstance(codes, (list, Tuple)):
-            self.codes = codes
-        else:
-            self.codes = [codes]
+        self.code = code
 
     def describe(self):
         return self.description
@@ -71,7 +68,7 @@ class LockEventType(Enum):
     @classmethod
     def parse(cls, code: int) -> Optional["LockEventType"]:
         for mode in list(LockEventType):
-            if code in mode.codes:
+            if code == mode.code:
                 return mode
 
 
@@ -144,12 +141,9 @@ class LockKeyType(Enum):
     ACCESS_CODE = ('Access Code', 2)
     FINGERPRINT = ('Fingerprint', 3)
 
-    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+    def __init__(self, description: str, code: int):
         self.description = description
-        if isinstance(codes, (list, Tuple)):
-            self.codes = codes
-        else:
-            self.codes = [codes]
+        self.code = code
 
     def describe(self):
         return self.description
@@ -157,7 +151,7 @@ class LockKeyType(Enum):
     @classmethod
     def parse(cls, code: int) -> Optional["LockKeyType"]:
         for type in list(LockKeyType):
-            if code in type.codes:
+            if code == type.code:
                 return type
 
 
@@ -172,12 +166,9 @@ class LockKeyState(Enum):
     OUT_OF_PERMISSION = ('Out of permission', 4)
     FROZENED = ('Frozen', 5)
 
-    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+    def __init__(self, description: str, code: int):
         self.description = description
-        if isinstance(codes, (list, Tuple)):
-            self.codes = codes
-        else:
-            self.codes = [codes]
+        self.code = code
 
     def describe(self):
         return self.description
@@ -185,7 +176,7 @@ class LockKeyState(Enum):
     @classmethod
     def parse(cls, code: int) -> Optional["LockKeyState"]:
         for state in list(LockKeyState):
-            if code in state.codes:
+            if code == state.code:
                 return state
 
 
@@ -200,12 +191,9 @@ class LockKeyOperation(Enum):
     FROZEN = ('Freeze', 4)
     UNFROZEN = ('Unfreeze', 5)
 
-    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+    def __init__(self, description: str, code: int):
         self.description = description
-        if isinstance(codes, (list, Tuple)):
-            self.codes = codes
-        else:
-            self.codes = [codes]
+        self.code = code
 
     def describe(self):
         return self.description
@@ -213,7 +201,7 @@ class LockKeyOperation(Enum):
     @classmethod
     def parse(cls, code: int) -> Optional["LockKeyOperation"]:
         for operation in list(LockKeyOperation):
-            if code in operation.codes:
+            if code == operation.code:
                 return operation
 
 
@@ -226,12 +214,9 @@ class LockKeyOperationStage(Enum):
     INVALID = ('Failure', 2)
     SUCCESS = ('Success', 3)
 
-    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+    def __init__(self, description: str, code: int):
         self.description = description
-        if isinstance(codes, (list, Tuple)):
-            self.codes = codes
-        else:
-            self.codes = [codes]
+        self.code = code
 
     def describe(self):
         return self.description
@@ -239,7 +224,7 @@ class LockKeyOperationStage(Enum):
     @classmethod
     def parse(cls, code: int) -> Optional["LockKeyOperationStage"]:
         for stage in list(LockKeyOperationStage):
-            if code in stage.codes:
+            if code == stage.code:
                 return stage
 
 
@@ -248,15 +233,12 @@ class LockKeyPermissionType(Enum):
     See: com.yunding.ydbleapi.bean.YDPermission.status
     """
 
-    FOREVER = ('Always', 1)
+    ALWAYS = ('Always', 1)
     DURATION = ('Duration', 2)
 
-    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+    def __init__(self, description: str, code: int):
         self.description = description
-        if isinstance(codes, (list, Tuple)):
-            self.codes = codes
-        else:
-            self.codes = [codes]
+        self.code = code
 
     def describe(self):
         return self.description
@@ -264,7 +246,7 @@ class LockKeyPermissionType(Enum):
     @classmethod
     def parse(cls, code: int) -> Optional["LockKeyPermissionType"]:
         for type in list(LockKeyPermissionType):
-            if code in type.codes:
+            if code == type.code:
                 return type
 
 

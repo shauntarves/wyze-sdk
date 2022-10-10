@@ -1,11 +1,15 @@
 from abc import ABCMeta
 from datetime import datetime
+from optparse import Option
+import re
 from typing import Optional, Sequence
 
 from wyze_sdk.api.base import BaseClient
+from wyze_sdk.errors import WyzeRequestError
 from wyze_sdk.models.devices import DeviceModels, Lock, LockGateway
-from wyze_sdk.models.devices.locks import LockKey, LockKeyType, LockRecord
+from wyze_sdk.models.devices.locks import LockKey, LockKeyPermission, LockKeyPermissionType, LockKeyType, LockRecord
 from wyze_sdk.service import FordServiceClient, WyzeResponse
+from wyze_sdk.signature import CBCEncryptor, MD5Hasher
 
 # The relationship between locks and gateways is a bit complicated.
 # Gateways can supposedly service multiple locks, with each lock
@@ -170,6 +174,35 @@ class LocksClient(BaseLockClient):
 
         return Lock(**lock)
 
+    def _validate_access_code(self, access_code: str):
+        if access_code is None or access_code.strip() == '':
+            raise WyzeRequestError("access code must be a numeric code between 4 and 8 digits long")
+        if re.match('\d{4,8}$', access_code) is None:
+            raise WyzeRequestError(f"{access_code} is not a valid access code")
+
+    def _encrypt_access_code(self, access_code: str) -> str:
+        secret = self._ford_client().get_crypt_secret()["secret"]
+        return CBCEncryptor(self._ford_client().WYZE_FORD_IV_HEX).encrypt(MD5Hasher().hash(secret), access_code).hex()
+
+    def create_access_code(self, device_mac: str, access_code: str, name: Optional[str], permission: Optional[LockKeyPermission] = None, **kwargs) -> WyzeResponse:
+        """Creates a guest access code on a lock.
+
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+        :param str access_code: The new access code. e.g. ``1234``
+        :param str name: The name for the guest access code.
+        :param LockKeyPermission permission: The access permission rules for the guest access code.
+
+        :rtype: WyzeResponse
+
+        :raises WyzeRequestError: if the new access code is not valid
+        """
+        self._validate_access_code(access_code=access_code)
+        if permission is None:
+            permission = LockKeyPermission(type=LockKeyPermissionType.ALWAYS)
+
+        uuid = Lock.parse_uuid(mac=device_mac)
+        return self._ford_client().add_password(uuid=uuid, password=self._encrypt_access_code(access_code=access_code), name=name, permission=permission)
+
     def delete_access_code(self, device_mac: str, access_code_id: int, **kwargs) -> WyzeResponse:
         """Deletes an access code from a lock.
 
@@ -189,9 +222,13 @@ class LocksClient(BaseLockClient):
         :param str access_code: The new access code. e.g. ``1234``
 
         :rtype: WyzeResponse
+
+        :raises WyzeRequestError: if the new access code is not valid
         """
+        self._validate_access_code(access_code=access_code)
+
         uuid = Lock.parse_uuid(mac=device_mac)
-        return self._ford_client().update_password(uuid=uuid, password_id=str(access_code_id), password=access_code)
+        return self._ford_client().update_password(uuid=uuid, password_id=str(access_code_id), password=self._encrypt_access_code(access_code=access_code))
 
     @property
     def gateways(self) -> LockGatewaysClient:

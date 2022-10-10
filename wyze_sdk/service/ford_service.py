@@ -7,6 +7,7 @@ from typing import Dict, Optional, Union
 
 import wyze_sdk.errors as e
 from wyze_sdk.models import datetime_to_epoch
+from wyze_sdk.models.devices.locks import LockKeyPermission
 from wyze_sdk.signature import RequestVerifier
 
 from .base import BaseServiceClient, WyzeResponse
@@ -47,6 +48,7 @@ class FordServiceClient(BaseServiceClient):
     WYZE_API_URL = "https://yd-saas-toc.wyzecam.com"
     WYZE_FORD_APP_KEY = "275965684684dbdaf29a0ed9"
     WYZE_FORD_APP_SECRET = "4deekof1ba311c5c33a9cb8e12787e8c"
+    WYZE_FORD_IV_HEX = "0123456789ABCDEF"
 
     def __init__(
         self,
@@ -187,11 +189,18 @@ class FordServiceClient(BaseServiceClient):
         kwargs.update({'uuid': uuid})
         return self.api_call('/openapi/lock/v1/pwd', params=kwargs)
 
-    def add_password(self, *, uuid: str, **kwargs) -> FordResponse:
+    def add_password(self, *, uuid: str, password: str = None, name: str = None, permission: LockKeyPermission, **kwargs) -> FordResponse:
         kwargs.update({'uuid': uuid})
+        kwargs.update({'permission': {
+            'status': permission.type.code
+        }})
+        if password is not None:
+            kwargs.update({'password': password})
+        if name is not None:
+            kwargs.update({'name': name})
         return self.api_call('/openapi/lock/v1/pwd/operations/add', http_verb="POST", json=kwargs)
 
-    def update_password(self, *, uuid: str, password_id: str, permission: Optional[str], password: Optional[str], **kwargs) -> FordResponse:
+    def update_password(self, *, uuid: str, password_id: str, permission: Optional[str] = None, password: Optional[str] = None, **kwargs) -> FordResponse:
         kwargs.update({
             'uuid': uuid,
             'passwordid': password_id,
