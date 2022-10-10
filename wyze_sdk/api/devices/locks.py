@@ -1,6 +1,5 @@
 from abc import ABCMeta
 from datetime import datetime
-from optparse import Option
 import re
 from typing import Optional, Sequence
 
