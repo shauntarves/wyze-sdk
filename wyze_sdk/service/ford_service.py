@@ -183,10 +183,28 @@ class FordServiceClient(BaseServiceClient):
         kwargs.update({'uuid': uuid, 'action': action})
         return self.api_call('/openapi/lock/v1/control', http_verb="POST", json=kwargs)
 
-    def get_codes(self, *, uuid: str, **kwargs) -> FordResponse:
+    def get_passwords(self, *, uuid: str, **kwargs) -> FordResponse:
         kwargs.update({'uuid': uuid})
         return self.api_call('/openapi/lock/v1/pwd', params=kwargs)
 
-    def add_code(self, *, uuid: str, **kwargs) -> FordResponse:
+    def add_password(self, *, uuid: str, **kwargs) -> FordResponse:
         kwargs.update({'uuid': uuid})
         return self.api_call('/openapi/lock/v1/pwd/operations/add', http_verb="POST", json=kwargs)
+
+    def update_password(self, *, uuid: str, password_id: str, permission: Optional[str], password: Optional[str], **kwargs) -> FordResponse:
+        kwargs.update({
+            'uuid': uuid,
+            'passwordid': password_id,
+        })
+        if permission is not None:
+            kwargs.update({'permission': permission})
+        if password is not None:
+            kwargs.update({'password': password})
+        return self.api_call('/openapi/lock/v1/pwd/operations/update', http_verb="POST", json=kwargs)
+
+    def delete_password(self, *, uuid: str, password_id: str, **kwargs) -> FordResponse:
+        kwargs.update({
+            'uuid': uuid,
+            'passwordid': password_id,
+        })
+        return self.api_call('/openapi/lock/v1/pwd/operations/delete', http_verb="POST", json=kwargs)

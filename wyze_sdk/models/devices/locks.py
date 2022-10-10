@@ -135,6 +135,139 @@ class LockLeftOpenTime(Enum):
                 return mode
 
 
+class LockKeyType(Enum):
+    """
+    See: com.yunding.ydbleapi.bean.KeyInfo.type
+    """
+
+    BLUETOOTH = ('Bluetooth', 1)
+    ACCESS_CODE = ('Access Code', 2)
+    FINGERPRINT = ('Fingerprint', 3)
+
+    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+        self.description = description
+        if isinstance(codes, (list, Tuple)):
+            self.codes = codes
+        else:
+            self.codes = [codes]
+
+    def describe(self):
+        return self.description
+
+    @classmethod
+    def parse(cls, code: int) -> Optional["LockKeyType"]:
+        for type in list(LockKeyType):
+            if code in type.codes:
+                return type
+
+
+class LockKeyState(Enum):
+    """
+    See: com.yunding.ydbleapi.bean.LockPasswordInfo.pwd_state
+    """
+
+    INIT = ('Init', 1)
+    IN_USE = ('In use', 2)
+    WILL_USE = ('Will use', 3)
+    OUT_OF_PERMISSION = ('Out of permission', 4)
+    FROZENED = ('Frozen', 5)
+
+    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+        self.description = description
+        if isinstance(codes, (list, Tuple)):
+            self.codes = codes
+        else:
+            self.codes = [codes]
+
+    def describe(self):
+        return self.description
+
+    @classmethod
+    def parse(cls, code: int) -> Optional["LockKeyState"]:
+        for state in list(LockKeyState):
+            if code in state.codes:
+                return state
+
+
+class LockKeyOperation(Enum):
+    """
+    See: com.yunding.ydbleapi.bean.LockPasswordInfo.operation
+    """
+
+    ADD = ('Add', 1)
+    DELETE = ('Delete', 2)
+    UPDATE = ('Update', 3)
+    FROZEN = ('Freeze', 4)
+    UNFROZEN = ('Unfreeze', 5)
+
+    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+        self.description = description
+        if isinstance(codes, (list, Tuple)):
+            self.codes = codes
+        else:
+            self.codes = [codes]
+
+    def describe(self):
+        return self.description
+
+    @classmethod
+    def parse(cls, code: int) -> Optional["LockKeyOperation"]:
+        for operation in list(LockKeyOperation):
+            if code in operation.codes:
+                return operation
+
+
+class LockKeyOperationStage(Enum):
+    """
+    See: com.yunding.ydbleapi.bean.LockPasswordInfo.operation_stage
+    """
+
+    GOING = ('Pending', 1)
+    INVALID = ('Failure', 2)
+    SUCCESS = ('Success', 3)
+
+    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+        self.description = description
+        if isinstance(codes, (list, Tuple)):
+            self.codes = codes
+        else:
+            self.codes = [codes]
+
+    def describe(self):
+        return self.description
+
+    @classmethod
+    def parse(cls, code: int) -> Optional["LockKeyOperationStage"]:
+        for stage in list(LockKeyOperationStage):
+            if code in stage.codes:
+                return stage
+
+
+class LockKeyPermissionType(Enum):
+    """
+    See: com.yunding.ydbleapi.bean.YDPermission.status
+    """
+
+    FOREVER = ('Always', 1)
+    DURATION = ('Duration', 2)
+
+    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+        self.description = description
+        if isinstance(codes, (list, Tuple)):
+            self.codes = codes
+        else:
+            self.codes = [codes]
+
+    def describe(self):
+        return self.description
+
+    @classmethod
+    def parse(cls, code: int) -> Optional["LockKeyPermissionType"]:
+        for type in list(LockKeyPermissionType):
+            if code in type.codes:
+                return type
+
+
 class LockRecordDetail(JsonObject):
     """
     A lock record's details.
@@ -197,6 +330,44 @@ class LockRecordDetail(JsonObject):
         show_unknown_key_warning(self, others)
 
 
+class LockKeyPermission(JsonObject):
+    """
+    A lock key permission.
+
+    See: com.yunding.ydbleapi.bean.YDPermission
+    """
+
+    @property
+    def attributes(self) -> Set[str]:
+        return {
+            "type",
+            "begin",
+            "end",
+        }
+
+    def __init__(
+        self,
+        *,
+        type: Union[int, LockKeyPermissionType] = None,
+        begin: Optional[Union[int, datetime]] = None,
+        end: Optional[Union[int, datetime]] = None,
+        **others: dict
+    ):
+        if isinstance(type, LockKeyPermissionType):
+            self.type = type
+        else:
+            self.type = LockKeyPermissionType.parse(type)
+        if isinstance(begin, datetime):
+            self.begin = begin
+        else:
+            self.begin = epoch_to_datetime(begin if begin is not None else self._extract_attribute('begin', others), ms=True)
+        if isinstance(end, datetime):
+            self.end = end
+        else:
+            self.end = epoch_to_datetime(end if end is not None else self._extract_attribute('end', others), ms=True)
+        show_unknown_key_warning(self, others)
+
+
 class LockRecord(JsonObject):
     """
     A lock record.
@@ -254,6 +425,141 @@ class LockRecord(JsonObject):
         if isinstance(value, int):
             value = LockEventType.parse(value)
         self._type = value
+
+
+class LockKey(JsonObject):
+    """
+    A lock key. This can be either:
+        * a Bluetooth connection
+        * a password (hash of a numeric code)
+        * a fingerprint
+    BLE Actions:
+        * freeze   (1)
+            * permission_state = 5
+            * operation = 4
+        * unfreeze (2)
+            * permission_state = 2
+            * operation = 5
+        * update   (3)
+            * operation = 3
+            * (set permission)
+    Password Actions:
+        * freeze   (1)
+            * pwd_state = 5
+            * operation = 4
+            * operation_stage = 3
+        * unfreeze (2)
+            * pwd_state = 2
+            * operation = 5
+            * operation_stage = 3
+        * update   (3)
+            * operation = 3
+            * operation_stage = 3
+            * (set permission)
+    Fingerprint Actions:
+        * freeze   (1)
+            * fp_state = 5
+            * operation = 4
+            * operation_stage = 3
+        * unfreeze (2)
+            * fp_state = 2
+            * operation = 5
+            * operation_stage = 3
+        * update   (3)
+            * operation = 3
+            * operation_stage = 3
+            * (set permission)
+
+    See: com.yunding.ydbleapi.bean.KeyInfo
+    """
+
+    @property
+    def attributes(self) -> Set[str]:
+        return {
+            "id",
+            "type",
+            "time",
+            "name",
+            "description",
+            "is_default",
+            "notify",
+            "userid",
+            "username",
+            "permission",
+            "operation",
+            "operation_stage",
+            "permission_state",  # used with Bluetooth key
+            "pwd_state",  # used with password key
+        }
+
+    def __init__(
+        self,
+        *,
+        id: int = None,
+        type: LockKeyType = None,
+        time: datetime = None,
+        name: str = None,
+        description: str = None,
+        is_default: Union[int, bool] = None,
+        notify: Union[int, bool] = False,
+        userid: str = None,
+        username: str = None,
+        permission: Union[dict, LockKeyPermission] = None,
+        operation: Union[int, LockKeyOperation] = None,
+        operation_stage: Union[int, LockKeyOperationStage] = None,
+        permission_state: Optional[Union[int, LockKeyState]] = None,
+        pwd_state: Optional[Union[int, LockKeyState]] = None,
+        **others: dict
+    ):
+        self.id = id if id is not None else self._extract_attribute('id', others)
+        self.type = type
+        if isinstance(time, datetime):
+            self.time = time
+        else:
+            self.time = epoch_to_datetime(time if time is not None else self._extract_attribute('time', others), ms=True)
+        self.name = name if name is not None else self._extract_attribute('name', others)
+        self.description = description if description is not None else self._extract_attribute('description', others)
+        self.is_default = is_default if is_default is not None else self._extract_attribute('is_default', others)
+        self.notify = notify if notify is not None else self._extract_attribute('notify', others)
+        self.userid = userid if userid else self._extract_attribute('userid', others)
+        self.username = username if username else self._extract_attribute('username', others)
+        if isinstance(permission, LockKeyPermission):
+            self.permission = permission
+        else:
+            self.permission = LockKeyPermission(**permission) if permission is not None else LockKeyPermission(**self._extract_attribute('permission', others))
+        if not isinstance(operation, LockKeyOperation):
+            self.operation = LockKeyOperation.parse(operation if operation is not None else self._extract_attribute('operation', others))
+        self.operation = operation
+        if not isinstance(operation_stage, LockKeyOperationStage):
+            self.operation_stage = LockKeyOperationStage.parse(operation_stage if operation_stage is not None else self._extract_attribute('operation_stage', others))
+        self.operation_stage = operation_stage
+        if not isinstance(permission_state, LockKeyState):
+            self.permission_state = LockKeyState.parse(permission_state if permission_state is not None else self._extract_attribute('permission_state', others))
+        self.permission_state = permission_state
+        if not isinstance(pwd_state, LockKeyState):
+            self.pwd_state = LockKeyState.parse(pwd_state if pwd_state is not None else self._extract_attribute('pwd_state', others))
+        self.pwd_state = pwd_state
+        show_unknown_key_warning(self, others)
+
+    @property
+    def is_default(self) -> bool:
+        return self._is_default
+
+    @is_default.setter
+    def is_default(self, value: Union[int, bool]):
+        if isinstance(value, int):
+            value = True if value == 1 else False
+        self._is_default = value
+
+    @property
+    def notify(self) -> bool:
+        return self._notify
+
+    @notify.setter
+    def notify(self, value: Union[int, bool]):
+        if isinstance(value, int):
+            value = True if value == 1 else False
+        self._notify = value
 
 
 class LockKeypad(VoltageMixin, Device):
