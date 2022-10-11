@@ -18,11 +18,11 @@ class LockProps(object):
 
     @classmethod
     def locker_lock_state(cls) -> PropDef:
-        return PropDef("hardlock", bool, int)
+        return PropDef("hardlock", int, acceptable_values=range(-1, 6))
 
     @classmethod
     def locker_open_close_state(cls) -> PropDef:
-        return PropDef("door", bool, int)
+        return PropDef("door", int, acceptable_values=[1, 2])
 
     @classmethod
     def lock_state(cls) -> PropDef:
@@ -39,6 +39,33 @@ class LockProps(object):
     @classmethod
     def voltage(cls) -> PropDef:
         return PropDef("power", int)
+
+
+class LockStatusType(Enum):
+    """
+    See: com.yunding.ford.widget.LockStatusWidget
+    """
+
+    OFFLINE = ('Offline', -1)
+    CONNECTING = ('Connecting', 0)
+    LOCKED = ('Locked', 1)
+    LOCKING = ('Locking', 2)
+    UNLOCKED = ('Unlocked', 3)
+    UNLOCKING = ('Unlocking', 4)
+    UNCALIBRATED = ('Uncalibrated', 5)
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self):
+        return self.description
+
+    @classmethod
+    def parse(cls, code: int) -> Optional["LockStatusType"]:
+        for type in list(LockStatusType):
+            if code == type.code:
+                return type
 
 
 class LockEventType(Enum):
@@ -67,9 +94,9 @@ class LockEventType(Enum):
 
     @classmethod
     def parse(cls, code: int) -> Optional["LockEventType"]:
-        for mode in list(LockEventType):
-            if code == mode.code:
-                return mode
+        for type in list(LockEventType):
+            if code == type.code:
+                return type
 
 
 class LockEventSource(Enum):
@@ -77,7 +104,7 @@ class LockEventSource(Enum):
     See: ford_lock_history_source
     """
 
-    LOCAL = ('Local', 1)
+    LOCAL = ('App', 1)
     KEYPAD = ('Keypad', [2, 102])
     FINGERPRINT = ('Fingerprint', 3)
     INSIDE_BUTTON = ('Inside button', 4)
@@ -617,7 +644,7 @@ class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
             prop_def = LockProps.locker_lock_state()
             value = super()._extract_property(prop_def=prop_def, others=others["device_params"]["locker_status"])
             ts = super()._extract_attribute(name=prop_def.pid + "_refreshtime", others=others["device_params"]["locker_status"])
-            self.logger.debug(f"returning new DeviceProp with {value}")
+            self.logger.debug(f"returning new DeviceProp with value {value.value}")
             return DeviceProp(definition=prop_def, ts=ts, value=value.value)
         # if switch_state == 1, device is UNlocked so we have to flip the bit
         prop = super()._extract_property(prop_def=LockProps.lock_state(), others=others)
@@ -643,6 +670,16 @@ class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
     @property
     def record_count(self) -> int:
         return self._record_count
+
+    @property
+    def is_locked(self) -> bool:
+        # this is janky...a lock needs to store a lock status
+        if super().lock_state is None:
+            return False
+        if isinstance(super().lock_state.definition.type, bool):
+            return super().lock_state
+            # return True if super().lock_state.value == 1 else True
+        return super().lock_state.value == LockStatusType.LOCKED.code
 
 
 class LockGateway(AbstractWirelessNetworkedDevice):
