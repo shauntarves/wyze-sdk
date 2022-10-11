@@ -564,7 +564,7 @@ class LockKeypad(VoltageMixin, Device):
         super().__init__(type=self.type, **others)
         self.uuid = super()._extract_attribute("uuid", others)
         self.voltage = self._extract_property(prop_def=LockProps.voltage(), others=others)
-        self.is_online = self._extract_property(prop_def=LockProps.onoff_line(), others=others)
+        self._is_online = self._extract_property(prop_def=LockProps.onoff_line(), others=others)
         show_unknown_key_warning(self, others)
 
 
