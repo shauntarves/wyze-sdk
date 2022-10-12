@@ -11,6 +11,9 @@ from .base import (AbstractWirelessNetworkedDevice, ContactMixin, Device,
                    DeviceModels, DeviceProp, LockableMixin, VoltageMixin)
 
 
+# door_open_status and notice in device_params appear to be unused
+# notifications are controlled by a different API
+# see: https://wyze-lock-service-broker.wyzecam.com/app/v2/lock
 class LockProps(object):
     """
     :meta private:
@@ -39,6 +42,38 @@ class LockProps(object):
     @classmethod
     def voltage(cls) -> PropDef:
         return PropDef("power", int)
+
+    @classmethod
+    def ajar_alarm(cls) -> PropDef:
+        return PropDef("ajar_alarm", int, acceptable_values=[1, 2])
+
+    @classmethod
+    def trash_mode(cls) -> PropDef:
+        return PropDef("trash_mode", int, acceptable_values=[1, 2])
+
+    @classmethod
+    def auto_unlock(cls) -> PropDef:
+        return PropDef("auto_unlock", int, acceptable_values=[1, 2])
+
+    @classmethod
+    def door_sensor(cls) -> PropDef:
+        return PropDef("door_sensor", int, acceptable_values=[1, 2])
+
+    @classmethod
+    def auto_lock_time(cls) -> PropDef:
+        return PropDef("auto_lock_time", int, acceptable_values=range(0, 7))
+
+    @classmethod
+    def left_open_time(cls) -> PropDef:
+        return PropDef("left_open_time", int, acceptable_values=range(0, 7))
+
+    @classmethod
+    def open_volume(cls) -> PropDef:
+        return PropDef("open_volume", int, acceptable_values=range(0, 100))
+
+    @classmethod
+    def keypad_enable_status(cls) -> PropDef:
+        return PropDef("keypad_enable_status", int, acceptable_values=[1, 2])
 
 
 class LockStatusType(Enum):
@@ -131,32 +166,53 @@ class LockEventSource(Enum):
                 return mode
 
 
+class LockVolumeLevel(Enum):
+    """
+    See: ford_lock_setting_volume
+    """
+
+    OFF = ('Off', 0)
+    NORMAL = ('Normal', 50)
+    HIGH = ('High', 100)
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self):
+        return self.description
+
+    @classmethod
+    def parse(cls, code: int) -> Optional["LockVolumeLevel"]:
+        for level in list(LockVolumeLevel):
+            if code == level.code:
+                return level
+
+
 class LockLeftOpenTime(Enum):
     """
     See: ford_open_alarm_time
     """
 
+    IMMEDIATE = ('At once', 1)
     MIN_1 = ('1 min', 2)
     MIN_5 = ('5 min', 3)
     MIN_10 = ('10 min', 4)
     MIN_30 = ('30 min', 5)
     MIN_60 = ('60 min', 6)
 
-    def __init__(self, description: str, codes: Union[int, Sequence[int]]):
+    def __init__(self, description: str, code: int):
         self.description = description
-        if isinstance(codes, (list, Tuple)):
-            self.codes = codes
-        else:
-            self.codes = [codes]
+        self.code = code
 
     def describe(self):
         return self.description
 
     @classmethod
     def parse(cls, code: int) -> Optional["LockLeftOpenTime"]:
-        for mode in list(LockLeftOpenTime):
-            if code in mode.codes:
-                return mode
+        for time in list(LockLeftOpenTime):
+            if code == time.code:
+                return time
 
 
 class LockKeyType(Enum):
@@ -276,6 +332,9 @@ class LockKeyPermissionType(Enum):
             if code == type.code:
                 return type
 
+    def to_json(self):
+        return self.code
+
 
 class LockRecordDetail(JsonObject):
     """
@@ -357,15 +416,12 @@ class LockKeyPermission(JsonObject):
     def __init__(
         self,
         *,
-        type: Union[int, LockKeyPermissionType] = None,
+        type: Optional[LockKeyPermissionType] = None,
         begin: Optional[Union[int, datetime]] = None,
         end: Optional[Union[int, datetime]] = None,
         **others: dict
     ):
-        if isinstance(type, LockKeyPermissionType):
-            self.type = type
-        else:
-            self.type = LockKeyPermissionType.parse(type)
+        self.type = type if type is not None else LockKeyPermissionType.parse(self._extract_attribute('status', others))
         if isinstance(begin, datetime):
             self.begin = begin
         else:
@@ -375,6 +431,14 @@ class LockKeyPermission(JsonObject):
         else:
             self.end = epoch_to_datetime(end if end is not None else self._extract_attribute('end', others), ms=True)
         show_unknown_key_warning(self, others)
+
+    def to_json(self):
+        to_return = {'status': self.type.to_json()}
+        if self.begin is not None:
+            to_return['begin'] = self.begin.isoformat()
+        if self.end is not None:
+            to_return['end'] = self.end.isoformat()
+        return to_return
 
 
 class LockRecord(JsonObject):
@@ -411,10 +475,8 @@ class LockRecord(JsonObject):
         self.type = type if type is not None else self._extract_attribute('eventid', others)
         if isinstance(details, LockRecordDetail):
             self.details = details
-        elif details is not None:
-            LockRecordDetail(**details)
         else:
-            self.details = LockRecordDetail(**self._extract_attribute('detail', others))
+            self.details = LockRecordDetail(**(details if details is not None else self._extract_attribute('detail', others)))
         self.priority = priority if priority is not None else self._extract_attribute('priority', others)
         self.processed = processed if processed is not None else self._extract_attribute('processed', others)
         if isinstance(time, datetime):
@@ -580,17 +642,20 @@ class LockKeypad(VoltageMixin, Device):
         return super().attributes.union({
             "uuid",
             "power",
+            "is_enabled",
             "onoff_time",
             "power_refreshtime",
         })
 
     def __init__(
         self,
+        is_enabled: bool = False,
         **others: dict,
     ):
         super().__init__(type=self.type, **others)
         self.uuid = super()._extract_attribute("uuid", others)
         self.voltage = self._extract_property(prop_def=LockProps.voltage(), others=others)
+        self.is_enabled = is_enabled
         self._is_online = self._extract_property(prop_def=LockProps.onoff_line(), others=others)
         show_unknown_key_warning(self, others)
 
@@ -607,6 +672,15 @@ class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
             "switch_state",
             "switch_state_ts",
             "parent",
+            "door_sensor",  # Auto-Lock -> Door Position
+            "auto_lock_time",  # Auto-Lock -> Auto-Lock/Timing
+            "trash_mode",  # Auto-Lock -> Trash Mode
+            "auto_unlock",  # Auto-Unlock -> Auto-Unlock
+            "keypad",
+            "ajar_alarm",  # Alarm Settings -> Door Jam Alarm
+            "left_open_time",  # Alarm Settings -> Left Open Alarm
+            "door_open_status",
+            "open_volume",
             "record_count",
         })
 
@@ -619,8 +693,15 @@ class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
     def __init__(
         self,
         parent: Optional[str] = None,
-        record_count: Optional[int] = None,
+        door_sensor: Union[int, bool] = None,
+        auto_lock_time: Union[int, bool, LockLeftOpenTime] = None,
+        trash_mode: Union[int, bool] = None,
+        auto_unlock: Union[int, bool] = None,
         keypad: Optional[LockKeypad] = None,
+        ajar_alarm: Union[int, bool] = None,
+        left_open_time: Union[int, bool, LockLeftOpenTime] = None,
+        open_volume: Union[int, LockVolumeLevel] = None,
+        record_count: Optional[int] = None,
         **others: dict,
     ):
         super().__init__(type=self.type, **others)
@@ -630,11 +711,48 @@ class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
         self.open_close_state = self._extract_open_close_state(others)
         self.voltage = self._extract_property(prop_def=LockProps.voltage(), others=others)
         self._parent = parent if parent is not None else super()._extract_attribute("parent", others)
+        if ajar_alarm is None:
+            ajar_alarm = self._extract_attribute(name=LockProps.ajar_alarm().pid, others=others)
+        self.ajar_alarm = True if ajar_alarm is True or ajar_alarm == 1 else False
+        if isinstance(left_open_time, LockLeftOpenTime):
+            self.left_open_time = left_open_time
+        else:
+            if left_open_time is None:
+                left_open_time = self._extract_attribute(name=LockProps.left_open_time().pid, others=others)
+            if left_open_time is False or isinstance(left_open_time, int) and left_open_time == 0:
+                self.left_open_time = False
+            else:
+                self.left_open_time = LockLeftOpenTime.parse(left_open_time)
+        if door_sensor is None:
+            door_sensor = self._extract_attribute(name=LockProps.door_sensor().pid, others=others)
+        self.door_sensor = True if door_sensor is True or door_sensor == 1 else False
+        if isinstance(auto_lock_time, LockLeftOpenTime):
+            self.auto_lock_time = auto_lock_time
+        else:
+            if auto_lock_time is None:
+                auto_lock_time = self._extract_attribute(name=LockProps.auto_lock_time().pid, others=others)
+            if auto_lock_time is False or isinstance(auto_lock_time, int) and auto_lock_time == 0:
+                self.auto_lock_time = False
+            else:
+                self.auto_lock_time = LockLeftOpenTime.parse(auto_lock_time)
+        if trash_mode is None:
+            trash_mode = self._extract_attribute(name=LockProps.trash_mode().pid, others=others)
+        self.trash_mode = True if trash_mode is True or trash_mode == 1 else False
+        if auto_unlock is None:
+            auto_unlock = self._extract_attribute(name=LockProps.auto_unlock().pid, others=others)
+        self.auto_unlock = True if auto_unlock is True or auto_unlock == 1 else False
         if keypad is None:
             keypad = super()._extract_attribute("keypad", others)
             if keypad is not None:
-                keypad = LockKeypad(**keypad)
+                keypad_enable_status = super()._extract_attribute("keypad_enable_status", others)
+                keypad = LockKeypad(**keypad, is_enabled=True if keypad_enable_status == 1 else False)
         self.keypad = keypad
+        if isinstance(open_volume, LockVolumeLevel):
+            self.open_volume = open_volume
+        else:
+            if open_volume is None:
+                open_volume = self._extract_attribute(name=LockProps.open_volume().pid, others=others)
+            self.open_volume = LockVolumeLevel.parse(open_volume)
         self._record_count = record_count if record_count is not None else super()._extract_attribute("record_count", others)
         show_unknown_key_warning(self, others)
 

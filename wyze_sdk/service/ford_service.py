@@ -1,4 +1,5 @@
 from __future__ import annotations
+import json
 
 import logging
 import urllib
@@ -11,6 +12,11 @@ from wyze_sdk.models.devices.locks import LockKeyPermission
 from wyze_sdk.signature import RequestVerifier
 
 from .base import BaseServiceClient, WyzeResponse
+
+def default(obj):
+    if hasattr(obj, 'to_json'):
+        return obj.to_json()
+    raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
 
 
 class FordResponse(WyzeResponse):
@@ -100,7 +106,9 @@ class FordServiceClient(BaseServiceClient):
                 json = {}
             # this must be done here so that it will be included in the signing
             json.update({
-                "access_token": self.token,
+                # suddenly, the app started using `accessToken` instead of `access_token`
+                # in POST requests :|
+                "accessToken": self.token,
                 "key": self.WYZE_FORD_APP_KEY,
                 "timestamp": str(nonce),
             })
@@ -167,7 +175,7 @@ class FordServiceClient(BaseServiceClient):
             kwargs.update({'end': datetime_to_epoch(end)})
         return self.api_call('/openapi/v1/safety/count', params=kwargs)
 
-    def get_family_record(self, *, uuid: str, begin: datetime, end: Optional[datetime] = None, offset: int = 0, limit: int = 20, **kwargs) -> FordResponse:
+    def get_family_records(self, *, uuid: str, begin: datetime, end: Optional[datetime] = None, offset: int = 0, limit: int = 20, **kwargs) -> FordResponse:
         """
         Gets a reverse chronological list of lock event records. `begin` is the earliest time.
 
@@ -189,26 +197,29 @@ class FordServiceClient(BaseServiceClient):
         kwargs.update({'uuid': uuid})
         return self.api_call('/openapi/lock/v1/pwd', params=kwargs)
 
-    def add_password(self, *, uuid: str, password: str = None, name: str = None, permission: LockKeyPermission, **kwargs) -> FordResponse:
-        kwargs.update({'uuid': uuid})
-        kwargs.update({'permission': {
-            'status': permission.type.code
-        }})
+    def add_password(self, *, uuid: str, password: str = None, name: str = None, permission: LockKeyPermission, userid: str, **kwargs) -> FordResponse:
+        kwargs.update({
+            'uuid': uuid,
+            'userid': userid,
+        })
+        kwargs.update({'permission': json.dumps(permission, default=default)})
         if password is not None:
             kwargs.update({'password': password})
         if name is not None:
             kwargs.update({'name': name})
         return self.api_call('/openapi/lock/v1/pwd/operations/add', http_verb="POST", json=kwargs)
 
-    def update_password(self, *, uuid: str, password_id: str, permission: Optional[str] = None, password: Optional[str] = None, **kwargs) -> FordResponse:
+    def update_password(self, *, uuid: str, password_id: str, password: Optional[str] = None, name: str = None, permission: Optional[LockKeyPermission] = None, **kwargs) -> FordResponse:
         kwargs.update({
             'uuid': uuid,
             'passwordid': password_id,
         })
         if permission is not None:
-            kwargs.update({'permission': permission})
+            kwargs.update({'permission': json.dumps(permission, default=default)})
         if password is not None:
             kwargs.update({'password': password})
+        if name is not None:
+            kwargs.update({'name': name})
         return self.api_call('/openapi/lock/v1/pwd/operations/update', http_verb="POST", json=kwargs)
 
     def delete_password(self, *, uuid: str, password_id: str, **kwargs) -> FordResponse:

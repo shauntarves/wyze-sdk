@@ -129,7 +129,7 @@ class LocksClient(BaseLockClient):
 
         :rtype: Sequence[LockRecord]
         """
-        return [LockRecord(**record) for record in super()._ford_client().get_family_record(uuid=Lock.parse_uuid(mac=device_mac), begin=since, end=until, limit=limit, offset=offset)["family_record"]]
+        return [LockRecord(**record) for record in super()._ford_client().get_family_records(uuid=Lock.parse_uuid(mac=device_mac), begin=since, end=until, limit=limit, offset=offset)["family_record"]]
 
     def get_keys(self, *, device_mac: str, **kwargs) -> Sequence[LockKey]:
         """Retrieves keys for a lock.
@@ -200,7 +200,7 @@ class LocksClient(BaseLockClient):
             permission = LockKeyPermission(type=LockKeyPermissionType.ALWAYS)
 
         uuid = Lock.parse_uuid(mac=device_mac)
-        return self._ford_client().add_password(uuid=uuid, password=self._encrypt_access_code(access_code=access_code), name=name, permission=permission)
+        return self._ford_client().add_password(uuid=uuid, password=self._encrypt_access_code(access_code=access_code), name=name, permission=permission, userid=self._user_id)
 
     def delete_access_code(self, device_mac: str, access_code_id: int, **kwargs) -> WyzeResponse:
         """Deletes an access code from a lock.
@@ -213,21 +213,25 @@ class LocksClient(BaseLockClient):
         uuid = Lock.parse_uuid(mac=device_mac)
         return self._ford_client().delete_password(uuid=uuid, password_id=str(access_code_id))
 
-    def reset_access_code(self, device_mac: str, access_code_id: int, access_code: str, **kwargs) -> WyzeResponse:
-        """Resets an existing access code on a lock.
+    def update_access_code(self, device_mac: str, access_code_id: int, access_code: Optional[str] = None, name: Optional[str] = None, permission: LockKeyPermission = None, **kwargs) -> WyzeResponse:
+        """Updates an existing access code on a lock.
 
         :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
         :param int access_code_id: The id of the access code to reset.
-        :param str access_code: The new access code. e.g. ``1234``
+        :param Optional[str] access_code: The new access code. e.g. ``1234``
+        :param Optional[str] name: The new name for the guest access code.
+        :param LockKeyPermission permission: The access permission rules for the guest access code.
 
         :rtype: WyzeResponse
 
         :raises WyzeRequestError: if the new access code is not valid
         """
         self._validate_access_code(access_code=access_code)
+        if permission is None:
+            raise WyzeRequestError("permission must be provided")
 
         uuid = Lock.parse_uuid(mac=device_mac)
-        return self._ford_client().update_password(uuid=uuid, password_id=str(access_code_id), password=self._encrypt_access_code(access_code=access_code))
+        return self._ford_client().update_password(uuid=uuid, password_id=str(access_code_id), password=self._encrypt_access_code(access_code=access_code), name=name, permission=permission)
 
     @property
     def gateways(self) -> LockGatewaysClient:
