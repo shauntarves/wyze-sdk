@@ -210,9 +210,9 @@ class LockLeftOpenTime(Enum):
 
     @classmethod
     def parse(cls, code: int) -> Optional["LockLeftOpenTime"]:
-        for time in list(LockLeftOpenTime):
-            if code == time.code:
-                return time
+        for item in list(LockLeftOpenTime):
+            if code == item.code:
+                return item
 
 
 class LockKeyType(Enum):
