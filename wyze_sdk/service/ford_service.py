@@ -8,7 +8,7 @@ from typing import Dict, Optional, Union
 
 import wyze_sdk.errors as e
 from wyze_sdk.models import datetime_to_epoch
-from wyze_sdk.models.devices.locks import LockKeyPermission
+from wyze_sdk.models.devices.locks import LockKeyPeriodicity, LockKeyPermission
 from wyze_sdk.signature import RequestVerifier
 
 from .base import BaseServiceClient, WyzeResponse
@@ -197,25 +197,29 @@ class FordServiceClient(BaseServiceClient):
         kwargs.update({'uuid': uuid})
         return self.api_call('/openapi/lock/v1/pwd', params=kwargs)
 
-    def add_password(self, *, uuid: str, password: str = None, name: str = None, permission: LockKeyPermission, userid: str, **kwargs) -> FordResponse:
+    def add_password(self, *, uuid: str, password: str = None, name: str = None, permission: LockKeyPermission, periodicity: Optional[LockKeyPeriodicity] = None, userid: str, **kwargs) -> FordResponse:
         kwargs.update({
             'uuid': uuid,
             'userid': userid,
         })
         kwargs.update({'permission': json.dumps(permission, default=default)})
+        if periodicity is not None:
+            kwargs.update({'period_info': json.dumps(periodicity, default=default)})
         if password is not None:
             kwargs.update({'password': password})
         if name is not None:
             kwargs.update({'name': name})
         return self.api_call('/openapi/lock/v1/pwd/operations/add', http_verb="POST", json=kwargs)
 
-    def update_password(self, *, uuid: str, password_id: str, password: Optional[str] = None, name: str = None, permission: Optional[LockKeyPermission] = None, **kwargs) -> FordResponse:
+    def update_password(self, *, uuid: str, password_id: str, password: Optional[str] = None, name: str = None, permission: Optional[LockKeyPermission] = None, periodicity: Optional[LockKeyPeriodicity] = None, **kwargs) -> FordResponse:
         kwargs.update({
             'uuid': uuid,
             'passwordid': password_id,
         })
         if permission is not None:
             kwargs.update({'permission': json.dumps(permission, default=default)})
+        if periodicity is not None:
+            kwargs.update({'period_info': json.dumps(periodicity, default=default)})
         if password is not None:
             kwargs.update({'password': password})
         if name is not None:

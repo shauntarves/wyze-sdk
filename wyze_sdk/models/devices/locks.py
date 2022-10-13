@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, time
 from enum import Enum
 from typing import Optional, Sequence, Set, Tuple, Union
 
 from wyze_sdk.models import (JsonObject, PropDef, epoch_to_datetime,
-                             show_unknown_key_warning)
+                             show_unknown_key_warning, str_to_time)
 
 from .base import (AbstractWirelessNetworkedDevice, ContactMixin, Device,
                    DeviceModels, DeviceProp, LockableMixin, VoltageMixin)
@@ -317,7 +317,9 @@ class LockKeyPermissionType(Enum):
     """
 
     ALWAYS = ('Always', 1)
-    DURATION = ('Duration', 2)
+    DURATION = ('Temporary', 2)
+    ONCE = ('One-Time', 3)
+    RECURRING = ('Recurring', 4)
 
     def __init__(self, description: str, code: int):
         self.description = description
@@ -434,11 +436,66 @@ class LockKeyPermission(JsonObject):
 
     def to_json(self):
         to_return = {'status': self.type.to_json()}
-        if self.begin is not None:
-            to_return['begin'] = self.begin.isoformat()
-        if self.end is not None:
-            to_return['end'] = self.end.isoformat()
+        if self.type == LockKeyPermissionType.DURATION or self.type == LockKeyPermissionType.ONCE:
+            if self.begin is not None:
+                to_return['begin'] = int(self.begin.replace(microsecond=0).timestamp())
+            if self.end is not None:
+                to_return['end'] = int(self.end.replace(microsecond=0).timestamp())
+        if self.type == LockKeyPermissionType.RECURRING:
+            to_return['begin'] = 0
+            to_return['end'] = 0
         return to_return
+
+
+class LockKeyPeriodicity(JsonObject):
+    """
+    A lock key periodicity describing recurring access rules.
+
+    See: com.yunding.ydbleapi.bean.PeriodicityInfo
+    """
+
+    @property
+    def attributes(self) -> Set[str]:
+        return {
+            "type",
+            "interval",
+            "begin",
+            "end",
+            "valid_days",
+        }
+
+    def __init__(
+        self,
+        *,
+        begin: Union[str, int, time] = None,
+        end: Union[str, int, time] = None,
+        valid_days: Union[int, Sequence[int]] = None,
+        **others: dict
+    ):
+        self.type = 2
+        self.interval = 1
+        if isinstance(begin, time):
+            self.begin = begin
+        else:
+            self.begin = str_to_time(begin if begin is not None else self._extract_attribute('begin', others))
+        if isinstance(end, time):
+            self.end = end
+        else:
+            self.end = str_to_time(end if end is not None else self._extract_attribute('end', others))
+        if not isinstance(valid_days, (list, Tuple)):
+            valid_days = [valid_days]
+        self.valid_days = valid_days
+
+        show_unknown_key_warning(self, others)
+
+    def to_json(self):
+        return {
+            'type': self.type,
+            'interval': self.interval,
+            'begin': self.begin.replace(second=0, microsecond=0).strftime('%H%M%S'),
+            'end': self.end.replace(second=0, microsecond=0).strftime('%H%M%S'),
+            'valid_days': self.valid_days,
+        }
 
 
 class LockRecord(JsonObject):
@@ -557,6 +614,7 @@ class LockKey(JsonObject):
             "userid",
             "username",
             "permission",
+            "periodicity",
             "operation",
             "operation_stage",
             "permission_state",  # used with Bluetooth key
@@ -576,6 +634,7 @@ class LockKey(JsonObject):
         userid: str = None,
         username: str = None,
         permission: Union[dict, LockKeyPermission] = None,
+        periodicity: Optional[Union[dict, LockKeyPeriodicity]] = None,
         operation: Union[int, LockKeyOperation] = None,
         operation_stage: Union[int, LockKeyOperationStage] = None,
         permission_state: Optional[Union[int, LockKeyState]] = None,
@@ -598,6 +657,11 @@ class LockKey(JsonObject):
             self.permission = permission
         else:
             self.permission = LockKeyPermission(**permission) if permission is not None else LockKeyPermission(**self._extract_attribute('permission', others))
+        if isinstance(periodicity, LockKeyPeriodicity):
+            self.periodicity = periodicity
+        else:
+            periodicity = periodicity if periodicity is not None else self._extract_attribute('period_info', others)
+            self.periodicity = LockKeyPeriodicity(**periodicity) if periodicity is not None else None
         if not isinstance(operation, LockKeyOperation):
             self.operation = LockKeyOperation.parse(operation if operation is not None else self._extract_attribute('operation', others))
         self.operation = operation
