@@ -13,6 +13,7 @@ from wyze_sdk.signature import RequestVerifier
 
 from .base import BaseServiceClient, WyzeResponse
 
+
 def default(obj):
     if hasattr(obj, 'to_json'):
         return obj.to_json()
