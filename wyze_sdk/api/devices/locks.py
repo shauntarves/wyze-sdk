@@ -1,11 +1,23 @@
 from abc import ABCMeta
-from datetime import datetime
+from datetime import datetime, timedelta
+import re
 from typing import Optional, Sequence
 
 from wyze_sdk.api.base import BaseClient
+from wyze_sdk.errors import WyzeRequestError
 from wyze_sdk.models.devices import DeviceModels, Lock, LockGateway
-from wyze_sdk.models.devices.locks import LockRecord
+from wyze_sdk.models.devices.locks import LockKey, LockKeyPeriodicity, LockKeyPermission, LockKeyPermissionType, LockKeyType, LockRecord
 from wyze_sdk.service import FordServiceClient, WyzeResponse
+from wyze_sdk.signature import CBCEncryptor, MD5Hasher
+
+# The relationship between locks and gateways is a bit complicated.
+# Gateways can supposedly service multiple locks, with each lock
+# being paired with exactly one gateway. The gateway is accessible
+# from the Wyze app, but it really only exists there to modify WiFi
+# network information in the event that it changes.
+#
+# Keypads are paired 1:1 with locks, with the lock entity storing
+# the relationship key.
 
 
 class BaseLockClient(BaseClient, metaclass=ABCMeta):
@@ -28,7 +40,7 @@ class BaseLockClient(BaseClient, metaclass=ABCMeta):
 class LockGatewaysClient(BaseLockClient):
 
     def list(self, **kwargs) -> Sequence[LockGateway]:
-        """Lists all lock gateway available to a Wyze account.
+        """Lists all lock gateways available to a Wyze account.
 
         :rtype: Sequence[LockGateway]
         """
@@ -117,7 +129,18 @@ class LocksClient(BaseLockClient):
 
         :rtype: Sequence[LockRecord]
         """
-        return [LockRecord(**record) for record in super()._ford_client().get_family_record(uuid=Lock.parse_uuid(mac=device_mac), begin=since, end=until, limit=limit, offset=offset)["family_record"]]
+        return [LockRecord(**record) for record in super()._ford_client().get_family_records(uuid=Lock.parse_uuid(mac=device_mac), begin=since, end=until, limit=limit, offset=offset)["family_record"]]
+
+    def get_keys(self, *, device_mac: str, **kwargs) -> Sequence[LockKey]:
+        """Retrieves keys for a lock.
+
+        Args:
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+
+        :rtype: Sequence[LockKey]
+        """
+        uuid = Lock.parse_uuid(mac=device_mac)
+        return [LockKey(type=LockKeyType.ACCESS_CODE, **password) for password in super()._ford_client().get_passwords(uuid=uuid)["passwords"]]
 
     def info(self, *, device_mac: str, **kwargs) -> Optional[Lock]:
         """Retrieves details of a lock.
@@ -149,6 +172,77 @@ class LocksClient(BaseLockClient):
         lock.update({"record_count": self._ford_client().get_family_record_count(uuid=uuid, begin=datetime(1970, 1, 1, 0, 0, 0))["cnt"]})
 
         return Lock(**lock)
+
+    def _validate_access_code(self, access_code: str):
+        if access_code is None or access_code.strip() == '':
+            raise WyzeRequestError("access code must be a numeric code between 4 and 8 digits long")
+        if re.match('\d{4,8}$', access_code) is None:
+            raise WyzeRequestError(f"{access_code} is not a valid access code")
+
+    def _encrypt_access_code(self, access_code: str) -> str:
+        secret = self._ford_client().get_crypt_secret()["secret"]
+        return CBCEncryptor(self._ford_client().WYZE_FORD_IV_HEX).encrypt(MD5Hasher().hash(secret), access_code).hex()
+
+    def create_access_code(self, device_mac: str, access_code: str, name: Optional[str], permission: Optional[LockKeyPermission] = None, periodicity: Optional[LockKeyPeriodicity] = None, **kwargs) -> WyzeResponse:
+        """Creates a guest access code on a lock.
+
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+        :param str access_code: The new access code. e.g. ``1234``
+        :param str name: The name for the guest access code.
+        :param LockKeyPermission permission: The access permission rules for the guest access code.
+        :param Optional[LockKeyPeriodicity] periodicity: The recurrance rules for a recurring guest access code.
+
+        :rtype: WyzeResponse
+
+        :raises WyzeRequestError: if the new access code is not valid
+        """
+        self._validate_access_code(access_code=access_code)
+        if permission.type == LockKeyPermissionType.RECURRING and periodicity is None:
+            raise WyzeRequestError("periodicity must be provided when setting recurring permission")
+        if permission.type == LockKeyPermissionType.ONCE:
+            if permission.begin is None:
+                permission.begin = datetime.now()
+            if permission.end is None:
+                permission.end = permission.begin + timedelta(days=30)
+        if permission is None:
+            permission = LockKeyPermission(type=LockKeyPermissionType.ALWAYS)
+
+        uuid = Lock.parse_uuid(mac=device_mac)
+        return self._ford_client().add_password(uuid=uuid, password=self._encrypt_access_code(access_code=access_code), name=name, permission=permission, periodicity=periodicity, userid=self._user_id)
+
+    def delete_access_code(self, device_mac: str, access_code_id: int, **kwargs) -> WyzeResponse:
+        """Deletes an access code from a lock.
+
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+        :param int access_code_id: The id of the access code to delete.
+
+        :rtype: WyzeResponse
+        """
+        uuid = Lock.parse_uuid(mac=device_mac)
+        return self._ford_client().delete_password(uuid=uuid, password_id=str(access_code_id))
+
+    def update_access_code(self, device_mac: str, access_code_id: int, access_code: Optional[str] = None, name: Optional[str] = None, permission: LockKeyPermission = None, periodicity: Optional[LockKeyPeriodicity] = None, **kwargs) -> WyzeResponse:
+        """Updates an existing access code on a lock.
+
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+        :param int access_code_id: The id of the access code to reset.
+        :param Optional[str] access_code: The new access code. e.g. ``1234``
+        :param Optional[str] name: The new name for the guest access code.
+        :param LockKeyPermission permission: The access permission rules for the guest access code.
+        :param Optional[LockKeyPeriodicity] periodicity: The recurrance rules for a recurring guest access code.
+
+        :rtype: WyzeResponse
+
+        :raises WyzeRequestError: if the new access code is not valid
+        """
+        self._validate_access_code(access_code=access_code)
+        if permission is None:
+            raise WyzeRequestError("permission must be provided")
+        if permission.type == LockKeyPermissionType.RECURRING and periodicity is None:
+            raise WyzeRequestError("periodicity must be provided when setting recurring permission")
+
+        uuid = Lock.parse_uuid(mac=device_mac)
+        return self._ford_client().update_password(uuid=uuid, password_id=str(access_code_id), password=self._encrypt_access_code(access_code=access_code), name=name, permission=permission, periodicity=periodicity)
 
     @property
     def gateways(self) -> LockGatewaysClient:

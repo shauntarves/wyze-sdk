@@ -5,7 +5,7 @@ from __future__ import annotations
 import distutils.util
 import logging
 from abc import ABCMeta, abstractmethod
-from datetime import datetime
+from datetime import datetime, time
 from functools import wraps
 from typing import Any, Callable, Iterable, Optional, Sequence, Set, Union
 
@@ -27,6 +27,19 @@ def epoch_to_datetime(epoch: Union[int, float], ms: bool = False) -> datetime:
     """
     if isinstance(epoch, (int, float)):
         return datetime.fromtimestamp(float(epoch) / 1000 if ms else float(epoch))
+
+
+def str_to_time(string: Union[int, str]) -> Optional[time]:
+    """
+    Convert a string representation to a python time.
+    """
+    if isinstance(string, int):
+        string = str(string)
+
+    if len(string) != 6:
+        return
+
+    return time(hour=int(string[0:2]), minute=int(string[2:4]), second=int(string[4:6]))
 
 
 def show_unknown_key_warning(name: Union[str, object], others: dict):

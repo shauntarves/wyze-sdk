@@ -88,7 +88,7 @@ class Client(object):
 
     @property
     def locks(self) -> LocksClient:
-        return LocksClient(token=self._token, base_url=self._base_url)
+        return LocksClient(token=self._token, base_url=self._base_url, user_id=self._user_id)
 
     @property
     def scales(self) -> ScalesClient:

@@ -501,11 +501,11 @@ class LockableMixin(metaclass=ABCMeta):
 
     @property
     def is_locked(self) -> bool:
-        return self.lock_state
+        return False
 
     @property
-    def lock_state(self) -> bool:
-        return False if self._lock_state is None else self._lock_state.value
+    def lock_state(self) -> DeviceProp:
+        return self._lock_state
 
     @lock_state.setter
     def lock_state(self, value: DeviceProp):

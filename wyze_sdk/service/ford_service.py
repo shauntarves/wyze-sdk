@@ -1,4 +1,5 @@
 from __future__ import annotations
+import json
 
 import logging
 import urllib
@@ -7,9 +8,16 @@ from typing import Dict, Optional, Union
 
 import wyze_sdk.errors as e
 from wyze_sdk.models import datetime_to_epoch
+from wyze_sdk.models.devices.locks import LockKeyPeriodicity, LockKeyPermission
 from wyze_sdk.signature import RequestVerifier
 
 from .base import BaseServiceClient, WyzeResponse
+
+
+def default(obj):
+    if hasattr(obj, 'to_json'):
+        return obj.to_json()
+    raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
 
 
 class FordResponse(WyzeResponse):
@@ -47,6 +55,7 @@ class FordServiceClient(BaseServiceClient):
     WYZE_API_URL = "https://yd-saas-toc.wyzecam.com"
     WYZE_FORD_APP_KEY = "275965684684dbdaf29a0ed9"
     WYZE_FORD_APP_SECRET = "4deekof1ba311c5c33a9cb8e12787e8c"
+    WYZE_FORD_IV_HEX = "0123456789ABCDEF"
 
     def __init__(
         self,
@@ -98,7 +107,9 @@ class FordServiceClient(BaseServiceClient):
                 json = {}
             # this must be done here so that it will be included in the signing
             json.update({
-                "access_token": self.token,
+                # suddenly, the app started using `accessToken` instead of `access_token`
+                # in POST requests :|
+                "accessToken": self.token,
                 "key": self.WYZE_FORD_APP_KEY,
                 "timestamp": str(nonce),
             })
@@ -133,12 +144,18 @@ class FordServiceClient(BaseServiceClient):
         kwargs.update({'limit': str(limit), "offset": str(offset), "detail": "1"})
         return self.api_call('/openapi/v1/device', params=kwargs)
 
-    def get_lock_info(self, *, uuid: str, **kwargs) -> FordResponse:
+    def get_lock_info(self, *, uuid: str, with_keypad: bool = True, **kwargs) -> FordResponse:
         """
         See: com.yunding.ford.manager.NetLockManager.getLockInfo
         """
         kwargs.update({'uuid': uuid})
+        if with_keypad:
+            kwargs.update({'with_keypad': 1})
         return self.api_call('/openapi/lock/v1/info', params=kwargs)
+
+    def get_keypad_info(self, *, uuid: str, **kwargs) -> FordResponse:
+        kwargs.update({'uuid': uuid})
+        return self.api_call('/openapi/keypad/v1/info', params=kwargs)
 
     def get_gateway_info(self, *, uuid: str, **kwargs) -> FordResponse:
         kwargs.update({'uuid': uuid})
@@ -159,7 +176,7 @@ class FordServiceClient(BaseServiceClient):
             kwargs.update({'end': datetime_to_epoch(end)})
         return self.api_call('/openapi/v1/safety/count', params=kwargs)
 
-    def get_family_record(self, *, uuid: str, begin: datetime, end: Optional[datetime] = None, offset: int = 0, limit: int = 20, **kwargs) -> FordResponse:
+    def get_family_records(self, *, uuid: str, begin: datetime, end: Optional[datetime] = None, offset: int = 0, limit: int = 20, **kwargs) -> FordResponse:
         """
         Gets a reverse chronological list of lock event records. `begin` is the earliest time.
 
@@ -176,3 +193,43 @@ class FordServiceClient(BaseServiceClient):
         """
         kwargs.update({'uuid': uuid, 'action': action})
         return self.api_call('/openapi/lock/v1/control', http_verb="POST", json=kwargs)
+
+    def get_passwords(self, *, uuid: str, **kwargs) -> FordResponse:
+        kwargs.update({'uuid': uuid})
+        return self.api_call('/openapi/lock/v1/pwd', params=kwargs)
+
+    def add_password(self, *, uuid: str, password: str = None, name: str = None, permission: LockKeyPermission, periodicity: Optional[LockKeyPeriodicity] = None, userid: str, **kwargs) -> FordResponse:
+        kwargs.update({
+            'uuid': uuid,
+            'userid': userid,
+        })
+        kwargs.update({'permission': json.dumps(permission, default=default)})
+        if periodicity is not None:
+            kwargs.update({'period_info': json.dumps(periodicity, default=default)})
+        if password is not None:
+            kwargs.update({'password': password})
+        if name is not None:
+            kwargs.update({'name': name})
+        return self.api_call('/openapi/lock/v1/pwd/operations/add', http_verb="POST", json=kwargs)
+
+    def update_password(self, *, uuid: str, password_id: str, password: Optional[str] = None, name: str = None, permission: Optional[LockKeyPermission] = None, periodicity: Optional[LockKeyPeriodicity] = None, **kwargs) -> FordResponse:
+        kwargs.update({
+            'uuid': uuid,
+            'passwordid': password_id,
+        })
+        if permission is not None:
+            kwargs.update({'permission': json.dumps(permission, default=default)})
+        if periodicity is not None:
+            kwargs.update({'period_info': json.dumps(periodicity, default=default)})
+        if password is not None:
+            kwargs.update({'password': password})
+        if name is not None:
+            kwargs.update({'name': name})
+        return self.api_call('/openapi/lock/v1/pwd/operations/update', http_verb="POST", json=kwargs)
+
+    def delete_password(self, *, uuid: str, password_id: str, **kwargs) -> FordResponse:
+        kwargs.update({
+            'uuid': uuid,
+            'passwordid': password_id,
+        })
+        return self.api_call('/openapi/lock/v1/pwd/operations/delete', http_verb="POST", json=kwargs)
