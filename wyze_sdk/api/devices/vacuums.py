@@ -2,8 +2,9 @@ from datetime import datetime
 from typing import Optional, Sequence, Union
 
 from wyze_sdk.api.base import BaseClient
+from wyze_sdk.errors import WyzeRequestError
 from wyze_sdk.models.devices import DeviceModels, Vacuum, VacuumSuctionLevel
-from wyze_sdk.models.devices.vacuums import VacuumMapSummary, VacuumSweepRecord
+from wyze_sdk.models.devices.vacuums import VacuumDeviceControlRequestType, VacuumDeviceControlRequestValue, VacuumMapSummary, VacuumMode, VacuumStatus, VacuumSweepRecord, VenusDotArg1Message, VenusDotArg2Message, VenusDotArg3Message
 from wyze_sdk.service import VenusServiceClient, WyzeResponse
 
 
@@ -44,6 +45,13 @@ class VacuumsClient(BaseClient):
         if "data" in device_info.data and "settings" in device_info.data["data"]:
             vacuum.update(device_info.data["data"]["settings"])
 
+        status = super()._venus_client().get_status(did=device_mac)
+        if "data" in status.data:
+            if "eventFlag" in status.data["data"]:
+                vacuum.update(**status.data["data"]["eventFlag"])
+            if "heartBeat" in status.data["data"]:
+                vacuum.update(**status.data["data"]["heartBeat"])
+
         current_position = super()._venus_client().get_current_position(did=device_mac)
         if ("data" in current_position.data and current_position.data['data'] is not None):
             vacuum.update({"current_position": current_position.data["data"]})
@@ -54,41 +62,111 @@ class VacuumsClient(BaseClient):
 
         return Vacuum(**vacuum)
 
-    def clean(self, *, device_mac: str, device_model: str, **kwargs) -> WyzeResponse:
+    def clean(self, *, device_mac: str, **kwargs) -> WyzeResponse:
         """Starts cleaning.
 
         :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
-        :param str device_model: The device model. e.g. ``JA_RO2``
+        :param str device_model: The device model. e.g. ``JA_RO2`` DEPRECATED
 
         :rtype: WyzeResponse
         """
-        response = self._set_vacuum_mode(device_mac, device_model, 0, 1)
-        self._create_user_vacuum_event(event_id='WRV_CLEAN', event_type=1)
+        response = super()._venus_client().control(
+            did=device_mac,
+            type=VacuumDeviceControlRequestType.GLOBAL_SWEEPING,
+            value=VacuumDeviceControlRequestValue.START,
+        )
+        super()._venus_client()._create_event(
+            did=device_mac,
+            type=VacuumDeviceControlRequestType.GLOBAL_SWEEPING,
+            value=VacuumDeviceControlRequestValue.START,
+            args=[VenusDotArg1Message.Vacuum, VenusDotArg2Message.Whole, VenusDotArg3Message.Start]
+        )
         return response
 
-    def pause(self, *, device_mac: str, device_model: str, **kwargs) -> WyzeResponse:
-        """Pauses cleaning.
+    def pause(self, *, device_mac: str, **kwargs) -> WyzeResponse:
+        """Pauses the vacuum's current cleaning action.
 
         :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
-        :param str device_model: The device model. e.g. ``JA_RO2``
+        :param str device_model: The device model. e.g. ``JA_RO2`` DEPRECATED
 
         :rtype: WyzeResponse
         """
-        response = self._set_vacuum_mode(device_mac, device_model, 0, 2)
-        self._create_user_vacuum_event(event_id='WRV_PAUSE', event_type=1)
+        response = super()._venus_client().control(
+            did=device_mac,
+            type=VacuumDeviceControlRequestType.GLOBAL_SWEEPING,
+            value=VacuumDeviceControlRequestValue.PAUSE,
+        )
+        super()._venus_client()._create_event(
+            did=device_mac,
+            type=VacuumDeviceControlRequestType.GLOBAL_SWEEPING,
+            value=VacuumDeviceControlRequestValue.PAUSE,
+            args=[VenusDotArg1Message.Vacuum, VenusDotArg2Message.Whole, VenusDotArg3Message.Pause]
+        )
         return response
 
-    def dock(self, *, device_mac: str, device_model: str, **kwargs) -> WyzeResponse:
+    def dock(self, *, device_mac: str, **kwargs) -> WyzeResponse:
         """Docks the vacuum.
 
         :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
-        :param str device_model: The device model. e.g. ``JA_RO2``
+        :param str device_model: The device model. e.g. ``JA_RO2`` DEPRECATED
 
         :rtype: WyzeResponse
+
+        :raises WyzeRequestError: If the device is already docked
         """
-        response = self._set_vacuum_mode(device_mac, device_model, 3, 1)
-        # yes, when canceling cleaning, the event is still WRV_CLEAN
-        self._create_user_vacuum_event(event_id='WRV_CLEAN', event_type=1)
+        device = self.info(device_mac=device_mac)
+
+        if device.status == VacuumStatus.DOCKED:
+            raise WyzeRequestError("Device is already docked")
+
+        response = super()._venus_client().control(
+            did=device_mac,
+            type=VacuumDeviceControlRequestType.RETURN_TO_CHARGING,
+            value=VacuumDeviceControlRequestValue.START,
+        )
+        super()._venus_client()._create_event(
+            did=device_mac,
+            type=VacuumDeviceControlRequestType.RETURN_TO_CHARGING,
+            value=VacuumDeviceControlRequestValue.START,
+            args=[VenusDotArg3Message.Start, VenusDotArg2Message.ManualRecharge]
+        )
+        return response
+
+    def stop(self, *, device_mac: str, **kwargs) -> WyzeResponse:
+        """Stops or cancels the vacuum's current cleaning action.
+
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+
+        :rtype: WyzeResponse
+
+        :raises WyzeRequestError: If the device is not in a stoppable state
+        """
+        device = self.info(device_mac=device_mac)
+
+        event_type = VacuumDeviceControlRequestType.RETURN_TO_CHARGING
+        event_value = VacuumDeviceControlRequestValue.STOP
+        event_args = None
+
+        if device.mode == VacuumMode.RETURNING_TO_CHARGE:
+            event_args = [event_value.description, VenusDotArg2Message.ManualRecharge]
+        elif device.mode == VacuumMode.FINISHED_RETURNING_TO_CHARGE:
+            event_args = [event_value.description, VenusDotArg2Message.FinishRecharge]
+        elif device.mode == VacuumMode.DOCKED_NOT_COMPLETE:
+            event_args = [event_value.description, VenusDotArg2Message.BreakCharging if device.is_charging else VenusDotArg2Message.BreakRecharge]
+        else:
+            raise WyzeRequestError(f"Device cleaning cannot be stopped when in {device.mode}. Docking may be possible.")
+
+        response = super()._venus_client().control(
+            did=device_mac,
+            type=event_type,
+            value=event_value,
+        )
+        super()._venus_client()._create_event(
+            did=device_mac,
+            type=event_type,
+            value=event_value,
+            args=event_args
+        )
         return response
 
     def get_sweep_records(self, *, device_mac: str, limit: int = 20, since: datetime, **kwargs) -> Sequence[VacuumSweepRecord]:
@@ -153,7 +231,12 @@ class VacuumsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
-        return super()._venus_client().sweep_rooms(did=device_mac, rooms=room_ids)
+        return super()._venus_client().control(
+            did=device_mac,
+            type=VacuumDeviceControlRequestType.GLOBAL_SWEEPING,
+            value=VacuumDeviceControlRequestValue.START,
+            rooms=room_ids
+        )
 
     def _set_vacuum_preference(
             self,
