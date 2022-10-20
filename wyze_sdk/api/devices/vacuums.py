@@ -90,7 +90,14 @@ class VacuumsClient(BaseClient):
         :param str device_model: The device model. e.g. ``JA_RO2`` DEPRECATED
 
         :rtype: WyzeResponse
+
+        :raises WyzeRequestError: If the device is already idle.
         """
+        device = self.info(device_mac=device_mac)
+
+        if device.status == VacuumStatus.DOCKED or device.status == VacuumStatus.PAUSED or device.status == VacuumStatus.STANDBY:
+            raise WyzeRequestError("Device is already idle.")
+
         response = super()._venus_client().control(
             did=device_mac,
             type=VacuumDeviceControlRequestType.GLOBAL_SWEEPING,
@@ -117,7 +124,7 @@ class VacuumsClient(BaseClient):
         device = self.info(device_mac=device_mac)
 
         if device.status == VacuumStatus.DOCKED:
-            raise WyzeRequestError("Device is already docked")
+            raise WyzeRequestError("Device is already docked.")
 
         response = super()._venus_client().control(
             did=device_mac,
@@ -133,7 +140,7 @@ class VacuumsClient(BaseClient):
         return response
 
     def stop(self, *, device_mac: str, **kwargs) -> WyzeResponse:
-        """Stops or cancels the vacuum's current cleaning action.
+        """Stops the vacuum on its way to the charging dock.
 
         :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
 
@@ -151,10 +158,8 @@ class VacuumsClient(BaseClient):
             event_args = [event_value.description, VenusDotArg2Message.ManualRecharge]
         elif device.mode == VacuumMode.FINISHED_RETURNING_TO_CHARGE:
             event_args = [event_value.description, VenusDotArg2Message.FinishRecharge]
-        elif device.mode == VacuumMode.DOCKED_NOT_COMPLETE:
-            event_args = [event_value.description, VenusDotArg2Message.BreakCharging if device.is_charging else VenusDotArg2Message.BreakRecharge]
         else:
-            raise WyzeRequestError(f"Device cleaning cannot be stopped when in {device.mode}. Docking may be possible.")
+            raise WyzeRequestError(f"Device cannot be stopped when in {device.mode}. Docking or canceling may be possible.")
 
         response = super()._venus_client().control(
             did=device_mac,
@@ -166,6 +171,38 @@ class VacuumsClient(BaseClient):
             type=event_type,
             value=event_value,
             args=event_args
+        )
+        return response
+
+    def cancel(self, *, device_mac: str, **kwargs) -> WyzeResponse:
+        """Prevents the vacuum from resuming an unfishished cleaning action after charging.
+
+        :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
+
+        :rtype: WyzeResponse
+
+        :raises WyzeRequestError: If the device is not in a cancelable state
+        """
+        device = self.info(device_mac=device_mac)
+
+        if device.mode != VacuumMode.DOCKED_NOT_COMPLETE:
+            message = f"Device cleaning cannot be canceled when in {device.mode}."
+            if device.mode == VacuumMode.IDLE:
+                message = "Device does not have an in-progress cleaning action that can be canceled."
+            if device.status != VacuumStatus.DOCKED:
+                message = message + " Docking may be possible."
+            raise WyzeRequestError(message)
+
+        response = super()._venus_client().control(
+            did=device_mac,
+            type=VacuumDeviceControlRequestType.RETURN_TO_CHARGING,
+            value=VacuumDeviceControlRequestValue.STOP,
+        )
+        super()._venus_client()._create_event(
+            did=device_mac,
+            type=VacuumDeviceControlRequestType.RETURN_TO_CHARGING,
+            value=VacuumDeviceControlRequestValue.STOP,
+            args=[VacuumDeviceControlRequestValue.STOP.description, VenusDotArg2Message.BreakCharging if device.is_charging else VenusDotArg2Message.BreakRecharge]
         )
         return response
 
