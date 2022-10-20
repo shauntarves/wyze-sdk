@@ -184,7 +184,7 @@ class VacuumsClient(BaseClient):
         return response
 
     def cancel(self, *, device_mac: str, **kwargs) -> WyzeResponse:
-        """Prevents the vacuum from resuming an unfishished cleaning action after charging.
+        """Prevents the vacuum from resuming an unfinished cleaning action after charging.
 
         :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
 
