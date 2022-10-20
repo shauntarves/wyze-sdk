@@ -63,13 +63,22 @@ class VacuumsClient(BaseClient):
         return Vacuum(**vacuum)
 
     def clean(self, *, device_mac: str, **kwargs) -> WyzeResponse:
-        """Starts cleaning.
+        """Starts a new cleaning action or resumes a paused cleaning.
 
         :param str device_mac: The device mac. e.g. ``JA_RO2_ABCDEF1234567890``
         :param str device_model: The device model. e.g. ``JA_RO2`` DEPRECATED
 
         :rtype: WyzeResponse
         """
+        device = self.info(device_mac=device_mac)
+
+        event_args = [VenusDotArg1Message.Vacuum, VenusDotArg2Message.Whole]
+
+        if device.status == VacuumStatus.PAUSED or device.mode == VacuumMode.PAUSED:
+            event_args.append(VenusDotArg3Message.Resume)
+        else:
+            event_args.append(VenusDotArg3Message.Start)
+
         response = super()._venus_client().control(
             did=device_mac,
             type=VacuumDeviceControlRequestType.GLOBAL_SWEEPING,
@@ -79,7 +88,7 @@ class VacuumsClient(BaseClient):
             did=device_mac,
             type=VacuumDeviceControlRequestType.GLOBAL_SWEEPING,
             value=VacuumDeviceControlRequestValue.START,
-            args=[VenusDotArg1Message.Vacuum, VenusDotArg2Message.Whole, VenusDotArg3Message.Start]
+            args=event_args
         )
         return response
 
