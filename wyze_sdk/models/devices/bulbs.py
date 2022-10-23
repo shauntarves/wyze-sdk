@@ -5,7 +5,7 @@ from typing import Optional, Set, Union
 from wyze_sdk.models import PropDef, show_unknown_key_warning
 from wyze_sdk.models.devices import (DeviceProp, DeviceModels,
                                      LightProps, Light)
-from wyze_sdk.models.devices.lights import LightControlMode
+from wyze_sdk.models.devices.lights import LightControlMode, LightVisualEffectModel, LightVisualEffectRunType
 
 
 class BulbProps(object):
@@ -135,84 +135,6 @@ class MeshBulb(BaseBulb):
         self._color = value
 
 
-class LightStripProps(LightProps):
-    """
-    :meta private:
-    """
-
-    @classmethod
-    def something1(cls) -> PropDef:
-        return PropDef("P1511", str)
-
-    @classmethod
-    def subsection(cls) -> PropDef:
-        # 15 14 13 12
-        #  8  9 10 11
-        #  7  6  5  4
-        #  0  1  2  3
-        return PropDef("P1515", str)
-
-    @classmethod
-    def lamp_with_music_rhythm(cls) -> PropDef:
-        # appears to be 0 if not in group, and group id if in group
-        # and this seems to set ipPort/aes key
-        # see: com.hualai.wyze.lslight.device.f.L
-        return PropDef("P1516", str)
-
-    @classmethod
-    def lamp_with_music_mode(cls) -> PropDef:
-        # sceneRunModelId
-        return PropDef("P1522", int)
-
-    @classmethod
-    def lamp_with_music_type(cls) -> PropDef:
-        # sceneRunTypeId
-        return PropDef("P1523", int)
-
-    @classmethod
-    def lamp_with_music_music(cls) -> PropDef:
-        # light strip sensitivity (0-100)
-        return PropDef("P1524", int)
-
-    @classmethod
-    def lamp_with_music_auto_color(cls) -> PropDef:
-        # lampWithMusicAutoColor
-        return PropDef("P1525", bool, int, [0, 1])
-
-    @classmethod
-    def lamp_with_music_color(cls) -> PropDef:
-        # join?
-        # this is the color palette under music -> auto-color
-        return PropDef("P1526", str)
-
-    @classmethod
-    def color_palette(cls) -> PropDef:
-        # this is the swatch list
-        return PropDef("P1527", bool, int, [0, 1])
-
-    @classmethod
-    def supports_music(cls) -> PropDef:
-        return PropDef("P1532", bool, int, [0, 1])
-
-    @classmethod
-    def music_port(cls) -> PropDef:
-        return PropDef("P1533", str)
-
-    @classmethod
-    def music_aes_key(cls) -> PropDef:
-        return PropDef("P1534", str)
-
-    @classmethod
-    def music_mode(cls) -> PropDef:
-        # musicMode
-        return PropDef("P1535", str)
-
-    @classmethod
-    def light_strip_speed(cls) -> PropDef:
-        # (1-10)
-        return PropDef("P1536", str)
-
-
 class LightStrip(BaseBulb):
 
     type = "LightStrip"
@@ -222,19 +144,17 @@ class LightStrip(BaseBulb):
         return super().attributes.union({
             "color",
             "subsection",
-            "lamp_with_music_rhythm",
-            "lamp_with_music_mode",
-            "lamp_with_music_type",
-            "lamp_with_music_music",
-            "lamp_with_music_auto_color",
-            "lamp_with_music_color",
-            "color_palette",
             "supports_music",
+            "lamp_with_music_rhythm",
+            "effect_model",
+            "music_mode",
+            "sensitivity",
+            "speed",
+            "auto_color",
+            "color_palette",
+            "effect_run_type",
             "music_port",
             "music_aes_key",
-            "music_mode",
-            "light_strip_speed",
-            "something1",
         })
 
     def __init__(
@@ -242,200 +162,20 @@ class LightStrip(BaseBulb):
         **others: dict,
     ):
         super().__init__(type=self.type, **others)
-        self.color = super()._extract_property(LightStripProps.color(), others)
-        self.subsection = super()._extract_property(LightStripProps.subsection(), others)
-        self.lamp_with_music_rhythm = super()._extract_property(LightStripProps.lamp_with_music_rhythm(), others)
-        self.lamp_with_music_mode = super()._extract_property(LightStripProps.lamp_with_music_mode(), others)
-        self.lamp_with_music_type = super()._extract_property(LightStripProps.lamp_with_music_type(), others)
-        self.lamp_with_music_music = super()._extract_property(LightStripProps.lamp_with_music_music(), others)
-        self.lamp_with_music_auto_color = super()._extract_property(LightStripProps.lamp_with_music_auto_color(), others)
-        self.lamp_with_music_color = super()._extract_property(LightStripProps.lamp_with_music_color(), others)
-        self.color_palette = super()._extract_property(LightStripProps.color_palette(), others)
-        self.supports_music = super()._extract_property(LightStripProps.supports_music(), others)
-        self.music_port = super()._extract_property(LightStripProps.music_port(), others)
-        self.music_aes_key = super()._extract_property(LightStripProps.music_aes_key(), others)
-        self.music_mode = super()._extract_property(LightStripProps.music_mode(), others)
-        self.light_strip_speed = super()._extract_property(LightStripProps.light_strip_speed(), others)
-        self.something1 = super()._extract_property(LightStripProps.something1(), others)
+        self.color = super()._extract_property(LightProps.color(), others)
+        self.subsection = super()._extract_property(LightProps.subsection(), others)
+        self.supports_music = super()._extract_property(LightProps.supports_music(), others)
+        self.lamp_with_music_rhythm = super()._extract_property(LightProps.lamp_with_music_rhythm(), others)
+        self.effect_model = super()._extract_property(LightProps.lamp_with_music_mode(), others)
+        self.music_mode = super()._extract_property(LightProps.music_mode(), others)
+        self.sensitivity = super()._extract_property(LightProps.lamp_with_music_music(), others)
+        self.speed = super()._extract_property(LightProps.light_strip_speed(), others)
+        self.auto_color = super()._extract_property(LightProps.lamp_with_music_auto_color(), others)
+        self.color_palette = super()._extract_property(LightProps.lamp_with_music_color(), others)
+        self.effect_run_type = super()._extract_property(LightProps.lamp_with_music_type(), others)
+        self.music_port = super()._extract_property(LightProps.music_port(), others)
+        self.music_aes_key = super()._extract_property(LightProps.music_aes_key(), others)
         show_unknown_key_warning(self, others)
-        # selecting a scene makes individual calls to:
-        #  set color/temperature and mode
-        #  set brightness
-
-        # choosing water effect
-        		# 		"plist": [{
-				# 	"pvalue": "6",
-				# 	"pid": "P1522"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1535"
-				# }, {
-				# 	"pvalue": "5",
-				# 	"pid": "P1536"
-				# }, {
-				# 	"pvalue": "100",
-				# 	"pid": "P1524"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1525"
-				# }, {
-				# 	"pvalue": "2961AF,B5267A,91FF6A",
-				# 	"pid": "P1526"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1523"
-				# }, {
-				# 	"pid": "P1508",
-				# 	"pvalue": "3"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1516"
-				# }]
-        # setting speed
-        		# 		"plist": [{
-				# 	"pid": "P1522",
-				# 	"pvalue": "6"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1535"
-				# }, {
-				# 	"pid": "P1536",
-				# 	"pvalue": "8"
-				# }, {
-				# 	"pid": "P1524",
-				# 	"pvalue": "100"
-				# }, {
-				# 	"pid": "P1525",
-				# 	"pvalue": "0"
-				# }, {
-				# 	"pvalue": "2961AF,B5267A,91FF6A",
-				# 	"pid": "P1526"
-				# }, {
-				# 	"pid": "P1523",
-				# 	"pvalue": "0"
-				# }, {
-				# 	"pid": "P1508",
-				# 	"pvalue": "3"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1516"
-				# }]
-        # setting auto color
-        		# 		"plist": [{
-				# 	"pvalue": "6",
-				# 	"pid": "P1522"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1535"
-				# }, {
-				# 	"pid": "P1536",
-				# 	"pvalue": "8"
-				# }, {
-				# 	"pvalue": "100",
-				# 	"pid": "P1524"
-				# }, {
-				# 	"pvalue": "1",
-				# 	"pid": "P1525"
-				# }, {
-				# 	"pvalue": "2961AF,B5267A,91FF6A",
-				# 	"pid": "P1526"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1523"
-				# }, {
-				# 	"pvalue": "3",
-				# 	"pid": "P1508"
-				# }, {
-				# 	"pid": "P1516",
-				# 	"pvalue": "0"
-				# }]
-        # setting direction
-        		# 		"plist": [{
-				# 	"pvalue": "6",
-				# 	"pid": "P1522"
-				# }, {
-				# 	"pid": "P1535",
-				# 	"pvalue": "0"
-				# }, {
-				# 	"pvalue": "8",
-				# 	"pid": "P1536"
-				# }, {
-				# 	"pid": "P1524",
-				# 	"pvalue": "100"
-				# }, {
-				# 	"pvalue": "1",
-				# 	"pid": "P1525"
-				# }, {
-				# 	"pid": "P1526",
-				# 	"pvalue": "2961AF,B5267A,91FF6A"
-				# }, {
-				# 	"pvalue": "2",
-				# 	"pid": "P1523"
-				# }, {
-				# 	"pvalue": "3",
-				# 	"pid": "P1508"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1516"
-				# }]
-        # setting music mode
-        		# 		"plist": [{
-				# 	"pid": "P1522",
-				# 	"pvalue": "6"
-				# }, {
-				# 	"pid": "P1535",
-				# 	"pvalue": "1"
-				# }, {
-				# 	"pvalue": "8",
-				# 	"pid": "P1536"
-				# }, {
-				# 	"pvalue": "100",
-				# 	"pid": "P1524"
-				# }, {
-				# 	"pid": "P1525",
-				# 	"pvalue": "1"
-				# }, {
-				# 	"pvalue": "2961AF,B5267A,91FF6A",
-				# 	"pid": "P1526"
-				# }, {
-				# 	"pid": "P1523",
-				# 	"pvalue": "2"
-				# }, {
-				# 	"pid": "P1508",
-				# 	"pvalue": "3"
-				# }, {
-				# 	"pvalue": "0",
-				# 	"pid": "P1516"
-				# }]
-        # setting effect "leap"
-        		# 		"plist": [{
-				# 	"pvalue": "2",
-				# 	"pid": "P1522"
-				# }, {
-				# 	"pid": "P1535",
-				# 	"pvalue": "1"
-				# }, {
-				# 	"pvalue": "8",
-				# 	"pid": "P1536"
-				# }, {
-				# 	"pvalue": "100",
-				# 	"pid": "P1524"
-				# }, {
-				# 	"pid": "P1525",
-				# 	"pvalue": "1"
-				# }, {
-				# 	"pvalue": "2961AF,B5267A,91FF6A",
-				# 	"pid": "P1526"
-				# }, {
-				# 	"pid": "P1523",
-				# 	"pvalue": "0"
-				# }, {
-				# 	"pid": "P1508",
-				# 	"pvalue": "3"
-				# }, {
-				# 	"pid": "P1516",
-				# 	"pvalue": "0"
-				# }],
 
     @property
     def color(self) -> str:
@@ -446,3 +186,113 @@ class LightStrip(BaseBulb):
         if isinstance(value, str):
             value = DeviceProp(definition=LightProps.color(), value=value)
         self._color = value
+
+    @property
+    def subsection(self) -> str:
+        return None if self._subsection is None else self._subsection.value
+
+    @subsection.setter
+    def subsection(self, value: Union[str, DeviceProp]):
+        if isinstance(value, LightProps.subsection().type):
+            value = DeviceProp(definition=LightProps.subsection(), value=value)
+        self._subsection = value
+
+    @property
+    def sensitivity(self) -> int:
+        return None if self._sensitivity is None else self._sensitivity.value
+
+    @sensitivity.setter
+    def sensitivity(self, value: Union[int, DeviceProp]):
+        if isinstance(value, LightProps.lamp_with_music_music().type):
+            value = DeviceProp(definition=LightProps.lamp_with_music_music(), value=value)
+        self._sensitivity = value
+
+    @property
+    def speed(self) -> int:
+        return None if self._speed is None else self._speed.value
+
+    @speed.setter
+    def speed(self, value: Union[int, DeviceProp]):
+        if isinstance(value, LightProps.light_strip_speed().type):
+            value = DeviceProp(definition=LightProps.light_strip_speed(), value=value)
+        self._speed = value
+
+    @property
+    def supports_music(self) -> bool:
+        return None if self._supports_music is None else self._supports_music.value
+
+    @supports_music.setter
+    def supports_music(self, value: Union[bool, DeviceProp]):
+        if isinstance(value, LightProps.supports_music().type):
+            value = DeviceProp(definition=LightProps.supports_music(), value=value)
+        self._supports_music = value
+
+    @property
+    def effect_model(self) -> LightVisualEffectModel:
+        return None if self._effect_model is None else LightVisualEffectModel.parse(str(self._effect_model.value))
+
+    @effect_model.setter
+    def effect_model(self, value: Union[LightVisualEffectModel, DeviceProp]):
+        if isinstance(value, LightVisualEffectModel):
+            value = DeviceProp(definition=LightProps.lamp_with_music_mode(), value=value.id)
+        self._effect_model = value
+
+    @property
+    def effect_run_type(self) -> LightVisualEffectRunType:
+        return None if self._effect_run_type is None else LightVisualEffectRunType.parse(str(self._effect_run_type.value))
+
+    @effect_run_type.setter
+    def effect_run_type(self, value: Union[LightVisualEffectRunType, DeviceProp]):
+        if isinstance(value, LightVisualEffectRunType):
+            value = DeviceProp(definition=LightProps.lamp_with_music_type(), value=value.id)
+        self._effect_run_type = value
+
+    @property
+    def music_mode(self) -> bool:
+        return None if self._music_mode is None else self._music_mode.value
+
+    @music_mode.setter
+    def music_mode(self, value: Union[bool, DeviceProp]):
+        if isinstance(value, LightProps.music_mode().type):
+            value = DeviceProp(definition=LightProps.music_mode(), value=value)
+        self._music_mode = value
+
+    @property
+    def auto_color(self) -> bool:
+        return None if self._auto_color is None else self._auto_color.value
+
+    @auto_color.setter
+    def auto_color(self, value: Union[bool, DeviceProp]):
+        if isinstance(value, LightProps.lamp_with_music_auto_color().type):
+            value = DeviceProp(definition=LightProps.lamp_with_music_auto_color(), value=value)
+        self._auto_color = value
+
+    @property
+    def color_palette(self) -> str:
+        return None if self._color_palette is None else self._color_palette.value
+
+    @color_palette.setter
+    def color_palette(self, value: Union[str, DeviceProp]):
+        if isinstance(value, LightProps.lamp_with_music_color().type):
+            value = DeviceProp(definition=LightProps.lamp_with_music_color(), value=value)
+        self._color_palette = value
+
+    @property
+    def music_port(self) -> str:
+        return None if self._music_port is None else self._music_port.value
+
+    @music_port.setter
+    def music_port(self, value: Union[str, DeviceProp]):
+        if isinstance(value, LightProps.music_port().type):
+            value = DeviceProp(definition=LightProps.music_port(), value=value)
+        self._music_port = value
+
+    @property
+    def music_aes_key(self) -> str:
+        return None if self._music_aes_key is None else self._music_aes_key.value
+
+    @music_aes_key.setter
+    def music_aes_key(self, value: Union[str, DeviceProp]):
+        if isinstance(value, LightProps.music_aes_key().type):
+            value = DeviceProp(definition=LightProps.music_aes_key(), value=value)
+        self._music_aes_key = value

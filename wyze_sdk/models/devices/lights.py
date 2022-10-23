@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Set, Union, Optional
+from typing import Sequence, Set, Tuple, Union, Optional
 
-from wyze_sdk.models import PropDef
+from wyze_sdk.models import JsonObject, PropDef
 from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
                                      DeviceProp, DeviceProps, SwitchableMixin)
 
@@ -26,9 +26,9 @@ class LightControlMode(Enum):
 
     @classmethod
     def parse(cls, code: int) -> Optional["LightControlMode"]:
-        for mode in list(LightControlMode):
-            if code == mode.code:
-                return mode
+        for item in list(LightControlMode):
+            if code == item.code:
+                return item
 
 
 class LightPowerLossRecoveryMode(Enum):
@@ -45,9 +45,91 @@ class LightPowerLossRecoveryMode(Enum):
 
     @classmethod
     def parse(cls, code: int) -> Optional["LightPowerLossRecoveryMode"]:
-        for mode in list(LightPowerLossRecoveryMode):
-            if code == mode.code:
-                return mode
+        for item in list(LightPowerLossRecoveryMode):
+            if code == item.code:
+                return item
+
+
+class LightVisualEffectRunType(Enum):
+    """
+    Additional visual effect run instructions for lights.
+
+    See: com.wyze.commonlight.strip.model.DynamicTypeBean
+    """
+
+    DIRECTION_LEFT = ('0', 'Left [ -> ]')
+    DIRECTION_DISPERSIVE = ('1', 'Dispersive [<-->]')
+    DIRECTION_GATHERED = ('2', 'Gathered [-><-]')
+
+    def __init__(
+        self,
+        id: str,
+        description: str,
+    ):
+        self.id = id
+        self.description = description
+
+    def describe(self):
+        return self.description
+
+    def to_json(self):
+        return self.id
+
+    @classmethod
+    def parse(cls, id: str) -> Optional[LightVisualEffectRunType]:
+        for item in list(LightVisualEffectRunType):
+            if id == item.id:
+                return item
+
+    @classmethod
+    def directions(cls) -> Sequence[LightVisualEffectRunType]:
+        return [
+            LightVisualEffectRunType.DIRECTION_LEFT,
+            LightVisualEffectRunType.DIRECTION_DISPERSIVE,
+            LightVisualEffectRunType.DIRECTION_GATHERED,
+        ]
+
+
+class LightVisualEffectModel(Enum):
+    """
+    A preset light/sound effect model for lights.
+
+    See: com.wyze.commonlight.strip.model.DynamicModelBean
+    """
+
+    GRADUAL_CHANGE = ('1', 'Shadow')
+    JUMP = ('2', 'Leap')
+    TWINKLE = ('3', 'Flicker')
+    MARQUEE = ('4', 'Marquee', LightVisualEffectRunType.directions())
+    COLORFUL = ('5', 'Color Focus', LightVisualEffectRunType.directions())
+    RUNNING_WATER = ('6', 'Water', LightVisualEffectRunType.directions())
+    SEA_WAVE = ('7', 'Sea Wave', LightVisualEffectRunType.directions())
+    METEOR = ('8', 'Shooting Star', LightVisualEffectRunType.directions())
+    STARSHINE = ('9', 'Starlight', LightVisualEffectRunType.directions())
+
+    def __init__(
+        self,
+        id: str,
+        description: str,
+        run_types: Union[LightVisualEffectRunType, Sequence[LightVisualEffectRunType]] = None
+    ):
+        self.id = id
+        self.description = description
+        if run_types is None and not isinstance(run_types, (list, Tuple)):
+            run_types = [run_types]
+        self.run_types = run_types
+
+    def describe(self):
+        return self.description
+
+    def to_json(self):
+        return self.id
+
+    @classmethod
+    def parse(cls, id: str) -> Optional[LightVisualEffectModel]:
+        for item in list(LightVisualEffectModel):
+            if id == item.id:
+                return item
 
 
 class LightProps(object):
@@ -89,7 +171,7 @@ class LightProps(object):
 
     @classmethod
     def control_light(cls) -> PropDef:
-        return PropDef("P1508", int, acceptable_values=[1, 2])
+        return PropDef("P1508", int, acceptable_values=[1, 2, 3])
 
     @classmethod
     def power_loss_recovery(cls) -> PropDef:
@@ -114,6 +196,138 @@ class LightProps(object):
     @classmethod
     def supports_timer(cls) -> PropDef:
         return PropDef("P1531", bool, int, [0, 1])
+
+    # @classmethod
+    # def something1(cls) -> PropDef:
+    #     return PropDef("P1511", str)  # UNUSED?
+
+    @classmethod
+    def subsection(cls) -> PropDef:
+        # 15 14 13 12
+        #  8  9 10 11
+        #  7  6  5  4
+        #  0  1  2  3
+        return PropDef("P1515", str)
+
+    @classmethod
+    def lamp_with_music_rhythm(cls) -> PropDef:
+        # appears to be 0 if not in group, and group id if in group
+        # and this seems to set ipPort/aes key
+        # see: com.hualai.wyze.lslight.device.f.L
+        return PropDef("P1516", str)
+
+    @classmethod
+    def lamp_with_music_mode(cls) -> PropDef:
+        # sceneRunModelId
+        return PropDef("P1522", int, str)
+
+    @classmethod
+    def lamp_with_music_type(cls) -> PropDef:
+        # sceneRunTypeId
+        return PropDef("P1523", int, str)
+
+    @classmethod
+    def lamp_with_music_music(cls) -> PropDef:
+        # light strip sensitivity (0-100)
+        return PropDef("P1524", int, str, acceptable_values=range(0, 101))
+
+    @classmethod
+    def lamp_with_music_auto_color(cls) -> PropDef:
+        # lampWithMusicAutoColor
+        return PropDef("P1525", bool, str, ['0', '1'])
+
+    @classmethod
+    def lamp_with_music_color(cls) -> PropDef:
+        # this is the color palette under music -> auto-color
+        return PropDef("P1526", str)
+
+    # @classmethod
+    # def color_palette(cls) -> PropDef:
+    #     return PropDef("P1527", bool, int, [0, 1])  # UNUSED?
+
+    @classmethod
+    def supports_music(cls) -> PropDef:
+        return PropDef("P1532", bool, int, [0, 1])
+
+    @classmethod
+    def music_port(cls) -> PropDef:
+        return PropDef("P1533", str)
+
+    @classmethod
+    def music_aes_key(cls) -> PropDef:
+        return PropDef("P1534", str)
+
+    @classmethod
+    def music_mode(cls) -> PropDef:
+        # musicMode
+        return PropDef("P1535", bool, str, ['0', '1'])
+
+    @classmethod
+    def light_strip_speed(cls) -> PropDef:
+        # (1-10)
+        return PropDef("P1536", str, acceptable_values=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"])
+
+
+class LightVisualEffect(JsonObject):
+    """
+    A customizable visual/sound effect for lights.
+
+    Visual effects comprise the pre-defined scene model, optional scene run
+    instructions, and additional configurable properties.
+
+    An example of this is the water effect, which has a fixed model, a single
+    scene run type for the "direction" of the effect, and options like auto-
+    color, music mode, etc.
+    """
+
+    attributes = {
+        "model",
+        "rhythm",
+        "sensitivity",
+        "auto_color",
+        "color_palette",
+        "mode",
+        "speed",
+        "run_type",
+    }
+
+    def __init__(
+        self,
+        *,
+        model: LightVisualEffectModel,
+        rhythm: str = '0',
+        music_mode: bool = False,
+        sensitivity: int = 100,
+        speed: int = 8,
+        auto_color: bool = False,
+        color_palette: str = '2961AF,B5267A,91FF6A',
+        run_type: LightVisualEffectRunType = None,
+    ):
+        self.model = model
+        self.rhythm = rhythm
+        self.music_mode = music_mode
+        self.sensitivity = sensitivity
+        self.speed = speed
+        self.auto_color = auto_color
+        self.color_palette = color_palette
+        self.run_type = run_type
+
+    def to_json(self):
+        return map(lambda prop: prop.to_json(), self.to_plist())
+
+    def to_plist(self) -> Sequence[DeviceProp]:
+        to_return = [
+            DeviceProp(definition=LightProps.lamp_with_music_mode(), value=self.model.id),
+            DeviceProp(definition=LightProps.music_mode(), value=self.music_mode),
+            DeviceProp(definition=LightProps.light_strip_speed(), value=self.speed),
+            DeviceProp(definition=LightProps.lamp_with_music_music(), value=self.sensitivity),
+            DeviceProp(definition=LightProps.lamp_with_music_rhythm(), value=self.rhythm),
+            DeviceProp(definition=LightProps.lamp_with_music_auto_color(), value=self.auto_color),
+            DeviceProp(definition=LightProps.lamp_with_music_color(), value=self.color_palette),
+        ]
+        if self.run_type is not None:
+            to_return.append(DeviceProp(definition=LightProps.lamp_with_music_type(), value=self.run_type.id))
+        return to_return
 
 
 class Light(SwitchableMixin, AbstractWirelessNetworkedDevice):

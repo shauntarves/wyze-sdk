@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import distutils.util
+import json
 import logging
 from abc import ABCMeta
 from datetime import datetime
@@ -190,6 +191,15 @@ class DeviceProp(object):
 
     def __str__(self):
         return f"Property {self.definition.pid}: {self.value} [API value: {self.api_value}]"
+
+    def to_json(self):
+        to_return = {
+            'pid': self.definition.pid,
+            'pvalue': json.dumps(self.api_value),
+        }
+        if self.ts is not None:
+            to_return['ts'] = str(int(self.ts.replace(microsecond=0).timestamp()))
+        return to_return
 
 
 class DeviceProps(object):

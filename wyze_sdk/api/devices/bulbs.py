@@ -6,7 +6,7 @@ from wyze_sdk.errors import WyzeFeatureNotSupportedError
 from wyze_sdk.models.devices import (Bulb, BulbProps, DeviceModels, DeviceProp,
                                      DeviceProps, MeshBulb, PropDef)
 from wyze_sdk.models.devices.bulbs import BaseBulb
-from wyze_sdk.models.devices.lights import LightProps
+from wyze_sdk.models.devices.lights import LightControlMode, LightProps, LightVisualEffect
 from wyze_sdk.service import WyzeResponse, api_service
 
 
@@ -149,13 +149,18 @@ class BulbsClient(BaseClient):
         """
 
         if device_model in DeviceModels.MESH_BULB:
-            prop_def = BulbProps.color_temp_mesh()
-            prop_def.validate(color_temp)
+            _prop_def = BulbProps.color_temp_mesh()
+            _prop_def.validate(color_temp)
+
+            _prop = DeviceProp(definition=PropDef(_prop_def.pid, str), value=str(color_temp))
+            if device_model in DeviceModels.LIGHT_STRIP:
+                _prop = [_prop]
+                _prop.append(DeviceProp(definition=LightProps.control_light(), value=LightControlMode.TEMPERATURE.code))
 
             return super()._api_client().run_action_list(
                 actions={
                     "key": "set_mesh_property",
-                    "prop": DeviceProp(definition=PropDef(prop_def.pid, str), value=str(color_temp)),
+                    "prop": _prop,
                     "device_mac": device_mac,
                     "provider_key": device_model,
                 }
@@ -182,13 +187,18 @@ class BulbsClient(BaseClient):
         if device_model not in DeviceModels.MESH_BULB:
             raise WyzeFeatureNotSupportedError("set_color")
 
-        prop_def = BulbProps.color()
-        prop_def.validate(color)
+        _prop_def = BulbProps.color()
+        _prop_def.validate(color)
+
+        _prop = DeviceProp(definition=PropDef(_prop_def.pid, str), value=str(color))
+        if device_model in DeviceModels.LIGHT_STRIP:
+            _prop = [_prop]
+            _prop.append(DeviceProp(definition=LightProps.control_light(), value=LightControlMode.COLOR.code))
 
         return super()._api_client().run_action_list(
             actions={
                 "key": "set_mesh_property",
-                "prop": DeviceProp(definition=prop_def, value=color),
+                "prop": _prop,
                 "device_mac": device_mac,
                 "provider_key": device_model,
             }
@@ -258,3 +268,30 @@ class BulbsClient(BaseClient):
             )
         return super()._api_client().set_device_property(
             mac=device_mac, model=device_model, pid=prop_def.pid, value="0")
+
+    def set_effect(self, *, device_mac: str, device_model: str, effect: LightVisualEffect, **kwargs) -> WyzeResponse:
+        """Sets the visual/sound effect for a light.
+
+        Args:
+            :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+            :param str device_model: The device model. e.g. ``WLPA19``
+            :param str LightVisualEffect: The new visual effect definition.
+
+        :rtype: WyzeResponse
+
+        :raises WyzeFeatureNotSupportedError: If the light doesn't support effects
+        """
+        if device_model not in DeviceModels.LIGHT_STRIP:
+            raise WyzeFeatureNotSupportedError("set_effect")
+
+        _prop = effect.to_plist()
+        _prop.append(DeviceProp(definition=LightProps.control_light(), value=LightControlMode.FRAGMENTED.code))
+
+        return super()._api_client().run_action_list(
+            actions={
+                "key": "set_mesh_property",
+                "prop": _prop,
+                "device_mac": device_mac,
+                "provider_key": device_model,
+            }
+        )

@@ -272,24 +272,28 @@ class ApiServiceClient(BaseServiceClient):
         if not isinstance(actions, (list, Tuple)):
             actions = [actions]
         for action in actions:
-            kwargs["action_list"].append({
+            _action = {
                 "action_key": action["key"],
                 "action_params": {
                     "list": [
                         {
                             "mac": action["device_mac"],
-                            "plist": [
-                                {
-                                    "pid": action["prop"].definition.pid,
-                                    "pvalue": str(action["prop"].api_value),
-                                }
-                            ]
+                            "plist": []
                         }
                     ]
                 },
                 "instance_id": action["device_mac"],
                 "provider_key": action["provider_key"],
-            })
+            }
+            if 'prop' in action:
+                if not isinstance(action['prop'], (list, Tuple)):
+                    action['prop'] = [action['prop']]
+                for prop in action['prop']:
+                    _action["action_params"]["list"][0]["plist"].append({
+                        "pid": prop.definition.pid,
+                        "pvalue": str(prop.api_value),
+                    })
+            kwargs["action_list"].append(_action)
         if custom_string is not None:
             kwargs.update({"custom_string": custom_string})
         return self.api_call('/app/v2/auto/run_action_list', json=kwargs)
