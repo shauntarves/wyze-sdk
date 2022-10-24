@@ -1,8 +1,8 @@
 from datetime import timedelta
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Tuple, Union
 
 from wyze_sdk.api.base import BaseClient
-from wyze_sdk.errors import WyzeFeatureNotSupportedError
+from wyze_sdk.errors import WyzeFeatureNotSupportedError, WyzeRequestError
 from wyze_sdk.models.devices import (Bulb, BulbProps, DeviceModels, DeviceProp,
                                      DeviceProps, MeshBulb, PropDef)
 from wyze_sdk.models.devices.bulbs import BaseBulb
@@ -13,6 +13,8 @@ from wyze_sdk.service import WyzeResponse, api_service
 class BulbsClient(BaseClient):
     """A Client that services Wyze bulbs/lights.
     """
+
+    LIGHT_STRIP_PRO_SUBSECTION_COUNT = 16
 
     def _list_bulbs(self) -> Sequence[dict]:
         return [device for device in super()._list_devices(
@@ -172,28 +174,61 @@ class BulbsClient(BaseClient):
         return super()._api_client().set_device_property_list(
             mac=device_mac, model=device_model, props=DeviceProp(definition=PropDef(prop_def.pid, str), value=str(color_temp)))
 
-    def set_color(self, *, device_mac: str, device_model: str, color: str, **kwargs) -> WyzeResponse:
+    def set_color(self, *, device_mac: str, device_model: str, color: Union[str, Sequence[str]], **kwargs) -> WyzeResponse:
         """Sets the color of a bulb.
+
+        For Light Strip Pro devices, this color can be a list of 16 colors that will
+        be used to set the value for each subsection of the light strip. The list is
+        ordered like:
+        ``
+        15 14 13 12
+         8  9 10 11
+         7  6  5  4
+         0  1  2  3
+        ``
 
         Args:
             :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
             :param str device_model: The device model. e.g. ``WLPA19``
-            :param str color: The new color temperature. e.g. ``ff0000``
+            :param color: The new color(s). e.g. ``ff0000`` or ``['ff0000', '00ff00', ...]``
+            :type color: Union[str, Sequence[str]]
 
         :rtype: WyzeResponse
 
         :raises WyzeFeatureNotSupportedError: If the bulb doesn't support color
+            or color is a list and the bulb doesn't support color sections
         """
         if device_model not in DeviceModels.MESH_BULB:
             raise WyzeFeatureNotSupportedError("set_color")
 
-        _prop_def = BulbProps.color()
-        _prop_def.validate(color)
+        _color_prop_def = BulbProps.color()
+        _color_prop = None
 
-        _prop = DeviceProp(definition=PropDef(_prop_def.pid, str), value=str(color))
+        if isinstance(color, (list, Tuple)):
+            if device_model not in DeviceModels.LIGHT_STRIP_PRO:
+                raise WyzeFeatureNotSupportedError("The target device type does not support color sections.")
+            if len(color) != self.LIGHT_STRIP_PRO_SUBSECTION_COUNT:
+                raise WyzeRequestError(f"Color must specify values for all {self.LIGHT_STRIP_PRO_SUBSECTION_COUNT} subsections.")
+
+            color = list(map(lambda _color: _color.upper(), color))
+            for _color in color:
+                _color_prop_def.validate(_color)
+        else:
+            color = color.upper()
+            _color_prop_def.validate(color)
+            _color_prop = DeviceProp(definition=PropDef(_color_prop_def.pid, str), value=str(color))
+
+        _prop = _color_prop
+
+        # if we're dealing with a light strip, we need to set the color control mode
         if device_model in DeviceModels.LIGHT_STRIP:
-            _prop = [_prop]
-            _prop.append(DeviceProp(definition=LightProps.control_light(), value=LightControlMode.COLOR.code))
+            _prop = [DeviceProp(definition=LightProps.control_light(), value=LightControlMode.COLOR.code)]
+            # Pro light strips also need their subsection property updated
+            if device_model in DeviceModels.LIGHT_STRIP_PRO:
+                if isinstance(color, str):
+                    # turn this into a list of subsections for joining
+                    color = [color] * self.LIGHT_STRIP_PRO_SUBSECTION_COUNT
+                _prop.append(DeviceProp(definition=LightProps.subsection(), value="00" + "#00".join(color)))
 
         return super()._api_client().run_action_list(
             actions={

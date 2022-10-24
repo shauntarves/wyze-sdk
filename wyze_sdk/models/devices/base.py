@@ -40,7 +40,8 @@ class DeviceModels(object):
 
     BULB_WHITE = ['WLPA19']
     BULB_WHITE_V2 = ['HL_HWB2']
-    LIGHT_STRIP = ['HL_LSL', 'HL_LSLP']
+    LIGHT_STRIP_PRO = ['HL_LSLP']
+    LIGHT_STRIP = ['HL_LSL'] + LIGHT_STRIP_PRO
     MESH_BULB = ['WLPA19C'] + LIGHT_STRIP
 
     BULB = BULB_WHITE + BULB_WHITE_V2 + MESH_BULB
