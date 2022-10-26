@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, Set, Union
+from typing import Optional, Sequence, Set, Union
 
 from wyze_sdk.models import PropDef, show_unknown_key_warning
 from wyze_sdk.models.devices import (DeviceProp, DeviceModels,
@@ -188,8 +188,10 @@ class LightStrip(BaseBulb):
         self._color = value
 
     @property
-    def subsection(self) -> str:
-        return None if self._subsection is None else self._subsection.value
+    def subsection(self) -> Optional[Sequence[str]]:
+        if self._subsection is None or self._subsection.value.strip() == '':
+            return None
+        return list(map(lambda color: color[-6:], self._subsection.value.strip().split('#')))
 
     @subsection.setter
     def subsection(self, value: Union[str, DeviceProp]):
