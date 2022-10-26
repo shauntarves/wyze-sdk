@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import distutils.util
+import json
 import logging
 from abc import ABCMeta
 from datetime import datetime
@@ -39,7 +40,9 @@ class DeviceModels(object):
 
     BULB_WHITE = ['WLPA19']
     BULB_WHITE_V2 = ['HL_HWB2']
-    MESH_BULB = ['WLPA19C']
+    LIGHT_STRIP_PRO = ['HL_LSLP']
+    LIGHT_STRIP = ['HL_LSL'] + LIGHT_STRIP_PRO
+    MESH_BULB = ['WLPA19C'] + LIGHT_STRIP
 
     BULB = BULB_WHITE + BULB_WHITE_V2 + MESH_BULB
 
@@ -174,10 +177,10 @@ class DeviceProp(object):
         if self.definition.type == bool:
             if self.definition.api_type == int:
                 self.logger.debug(f"returning boolean value {self.value} as int")
-                return int(self.value)
+                return int(self.value if self.value else False)
             elif self.definition.api_type == str:
                 self.logger.debug(f"returning boolean value {self.value} as str")
-                return str(int(self.value))
+                return str(int(self.value if self.value else False))
         if isinstance(self.value, self.definition.api_type):
             self.logger.debug(f"value {self.value} is already of configured api type {self.definition.api_type}, returning unchanged")
             return self.value
@@ -186,6 +189,18 @@ class DeviceProp(object):
             return self.definition.api_type(self.value)
         except ValueError:
             self.logger.warning(f"could not cast value `{self.value}` into expected api type {self.definition.api_type}")
+
+    def __str__(self):
+        return f"Property {self.definition.pid}: {self.value} [API value: {self.api_value}]"
+
+    def to_json(self):
+        to_return = {
+            'pid': self.definition.pid,
+            'pvalue': json.dumps(self.api_value),
+        }
+        if self.ts is not None:
+            to_return['ts'] = str(int(self.ts.replace(microsecond=0).timestamp()))
+        return to_return
 
 
 class DeviceProps(object):
