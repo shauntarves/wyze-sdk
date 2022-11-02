@@ -39,21 +39,39 @@ class EarthServiceClient(ExServiceClient):
             nonce=nonce,
         )
 
-    def get_device_info(self, *, did: str, keys: Union[str, Sequence[str]], **kwargs) -> WyzeResponse:
+    def get_device_info(self, *, did: Union[str, Sequence[str]], parent_did: str = None, model: str = None, keys: Union[str, Sequence[str]], **kwargs) -> WyzeResponse:
         if isinstance(keys, (list, Tuple)):
             kwargs.update({"keys": ",".join(keys)})
         else:
             kwargs.update({"keys": keys})
-        kwargs.update({'device_id': did})
+        if isinstance(did, (list, Tuple)):
+            kwargs.update({
+                "device_id": ",".join(did),
+                'parent_device_id': parent_did,
+                'model': model,
+            })
+            return self.api_call('/plugin/earth/device_info/batch', http_verb="GET", params=kwargs)
+        kwargs.update({"device_id": did})
         return self.api_call('/plugin/earth/device_info', http_verb="GET", params=kwargs)
 
-    def get_iot_prop(self, *, did: str, keys: Union[str, Sequence[str]], **kwargs) -> WyzeResponse:
+    def get_iot_prop(self, *, did: Union[str, Sequence[str]], parent_did: str = None, model: str = None, keys: Union[str, Sequence[str]], **kwargs) -> WyzeResponse:
         if isinstance(keys, (list, Tuple)):
             kwargs.update({"keys": ",".join(keys)})
         else:
             kwargs.update({"keys": keys})
-        kwargs.update({'did': did})
+        if isinstance(did, (list, Tuple)):
+            kwargs.update({
+                "did": ",".join(did),
+                'parent_did': parent_did,
+                'model': model,
+            })
+            return self.api_call('/plugin/earth/get_iot_prop/batch', http_verb="GET", params=kwargs)
+        kwargs.update({"did": did})
         return self.api_call('/plugin/earth/get_iot_prop', http_verb="GET", params=kwargs)
+
+    def get_sub_device(self, *, did: str, **kwargs) -> WyzeResponse:
+        kwargs.update({'device_id': did})
+        return self.api_call('/plugin/earth/get_sub_device', http_verb="GET", params=kwargs)
 
     def set_iot_prop(self, *, did: str, model: str, key: str, value: str, is_sub_device: bool = False, **kwargs) -> WyzeResponse:
         # This method is only used for updating the schedule and the resetting the filter(s) - basically
