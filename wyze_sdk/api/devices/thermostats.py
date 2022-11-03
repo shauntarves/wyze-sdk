@@ -201,7 +201,7 @@ class ThermostatsClient(BaseClient):
             props = [props]
         the_props = {}
         for prop in props:
-            the_props[prop.definition.pid] = str(prop.value)
+            the_props[prop.definition.pid] = str(prop.api_value)
         return super()._earth_client().set_iot_prop_by_topic(
             did=device_mac, model=device_model, props=the_props)
 
@@ -233,7 +233,7 @@ class ThermostatsClient(BaseClient):
             DeviceProp(definition=Thermostat.props()["device_hold_time"], value=until.timestamp()),
         ])
 
-    def set_lock(self, *, device_mac: str, device_model: str, locked: int, **kwargs) -> WyzeResponse:
+    def set_lock(self, *, device_mac: str, device_model: str, locked: Union[bool, int], **kwargs) -> WyzeResponse:
         """Sets the device lock for a thermostat.
 
         If set, the thermostat can only be updated via the app and not by using the physical controls.
@@ -244,6 +244,8 @@ class ThermostatsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
+        if not isinstance(locked, bool):
+            locked = True if locked == 1 else False
         return self._set_thermostat_properties(device_mac, device_model, DeviceProp(definition=Thermostat.props()["locked"], value=locked))
 
     def set_behavior(self, *, device_mac: str, device_model: str, behavior: int, **kwargs) -> WyzeResponse:

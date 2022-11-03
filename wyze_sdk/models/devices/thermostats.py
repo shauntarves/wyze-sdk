@@ -726,7 +726,6 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
         self.auto_comfort = super()._extract_property(ThermostatProps.auto_comfort(), others)
         # self.setup_is_have_cadapter =
         show_unknown_key_warning(self, others)
-        print(others)
 
     @property
     def temperature_unit(self) -> str:
@@ -791,3 +790,9 @@ class Thermostat(ClimateMixin, LockableMixin, AbstractWirelessNetworkedDevice):
         if isinstance(value, DeviceProp):
             value = value.value
         self._comfort_balance = ThermostatComfortBalanceMode.parse(value)
+
+    @property
+    def is_locked(self) -> bool:
+        if super().lock_state is None:
+            return False
+        return super().lock_state.value
