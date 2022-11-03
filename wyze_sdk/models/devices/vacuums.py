@@ -15,6 +15,9 @@ from wyze_sdk.models.devices import (AbstractWirelessNetworkedDevice,
 class VacuumProps(object):
     """
     :meta private:
+
+    clean_preference not used
+    boxType indicates dust/mop/vacuum
     """
 
     @classmethod
@@ -39,13 +42,30 @@ class VacuumProps(object):
 
 
 class VacuumMode(Enum):
+    """
+    See: com.wyze.sweeprobot.activity.VenusHomeActivity and f0.c
+    """
 
-    BREAK_POINT = ('break point', [11, 33, 39])
+    CLEANING = ('Cleaning', [1, 30, 1101, 1201, 1301, 1401])  # f0.c.w(i10)
+    PAUSED = ('Paused', [4, 31, 1102, 1202, 1302, 1402])  # f0.c.t(i10)
+    FINISHED_RETURNING_TO_CHARGE = ('Cleaning completed. Returning to charge', [10, 32, 1103, 1203, 1303, 1403])  # f0.c.l(i10)
+    RETURNING_TO_CHARGE = ('Returning to charge', 5)  # f0.c.v(i10)
+    DOCKED_NOT_COMPLETE = ('Cleaning will resume after charging', [11, 33, 1104, 1204, 1304, 1404])  # f0.c.k(i10)
+    QUICK_MAPPING_MAPPING = ('Mapping', 45)  # f0.c.y(i10)
+    QUICK_MAPPING_PAUSED = ('Mapping paused', 46)  # f0.c.A(i10)
+    QUICK_MAPPING_COMPLETED_RETURNING_TO_CHARGE = ('Mapping completed. Returning to charge', 47)  # f0.c.z(i10)
+    QUICK_MAPPING_DOCKED_NOT_COMPLETE = ('Mapping will resume after charging', 48)  # f0.c.u(i10)
+
+    BREAK_POINT = ('break point', 39)
     IDLE = ('idle', [0, 14, 29, 35, 40])
-    PAUSE = ('pause', [4, 9, 27, 31, 37])
-    SWEEPING = ('sweeping', [1, 7, 25, 30, 36])
-    ON_WAY_CHARGE = ('on way charge', 5)
-    FULL_FINISH_SWEEPING_ON_WAY_CHARGE = ('full finish sweeping on way charge', [10, 12, 26, 32, 38])
+    PAUSE = ('Paused', [9, 27, 37])
+    SWEEPING = ('sweeping', [7, 25, 36])
+    ON_WAY_CHARGE = RETURNING_TO_CHARGE
+    FULL_FINISH_SWEEPING_ON_WAY_CHARGE = ('full finish sweeping on way charge', [12, 26, 38])
+
+    # MOP_STUFF = ('mopping', [1301, 1302, 1303, 1304, 1401, 1402, 1403, 1404])
+    # CLEAN_STUFF = ('cleaning', [1101, 1102, 1103, 1104, 1201, 1202, 1203, 1204])
+    # VACUUM_STUFF = ('vacuuming', [1, 4, 11, 10, 30, 31, 32, 33])
 
     def __init__(self, description: str, codes: Union[int, Sequence[int]]):
         self.description = description
@@ -62,6 +82,227 @@ class VacuumMode(Enum):
         for mode in list(VacuumMode):
             if code in mode.codes:
                 return mode
+
+
+class VacuumStatus(Enum):
+
+    STANDBY = ('Standby', 1)
+    CLEANING = ('Cleaning', 2)
+    RETURNING_TO_CHARGE = ('Returning to charge', 3)
+    DOCKED = ('Docked', 4)
+    MAPPING = ('Mapping', 5)
+    PAUSED = ('Paused', 6)
+    ERROR = ('Error', 7)
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self) -> str:
+        return self.description
+
+    @classmethod
+    def parse(cls, code: Union[str, int]) -> Optional["VacuumStatus"]:
+        if isinstance(code, str):
+            try:
+                code = int(code)
+            except TypeError:
+                return None
+        for item in list(VacuumStatus):
+            if code == item.code:
+                return item
+
+
+class VacuumFaultCode(Enum):
+    """
+    See: com.wyze.sweeprobot.common.constant.VenusErrorCode
+    """
+
+    RADAR_OUT_OF_TIME = ('Lidar sensor blocked', 500)
+    WHEEL_LIFT_UP = ('Vacuum not on ground', 501)
+    DUST_BOX_NO_EXIST = ('Dustbin not installed', 503)
+    RELOCATE_FAILED = ('Relocation failed', 507)
+    SLOPE_START = ('Vacuum not on flat ground', 508)
+    COLLISION_EXCEPTION = ('Vacuum stuck', 510)
+    GO_CHARGE_FAILED = ('Failed to return to the charging station.', 511)
+    STOP_POINT_GO_CHARGE_FAILED = ('Failed to return to the charging station.', 512)
+    NAVIGATION_FAILED = ('Mapping failed.', 513)
+    GET_OUT_OF_TROUBLE_FAILED = ('Wheels stuck', 514)
+    ROBOT_NO_WATER = ('Water tank not installed', 521)
+    ROBOT_NO_MOP = ('Mop not installed', 522)
+    ROBOT_NO_DUSTANDWATER_MOP = ('Water tank and mop not installed', 529)
+    ROBOT_NO_DUSTANDWATER_HURRI = ('2-in-1 dustbin with water tank and mop not installed', 530)
+    ROBOT_NO_WATER_HURRI = ('2-in-1 dustbin with water tank not installed', 531)
+    ROBOT_IN_VIRTUALWALL = ('Vacuum stuck in no-go zone', 567)
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self) -> str:
+        return self.description
+
+    @classmethod
+    def parse(cls, code: Union[str, int]) -> Optional["VacuumFaultCode"]:
+        if isinstance(code, str):
+            try:
+                code = int(code)
+            except TypeError:
+                return None
+        for item in list(VacuumFaultCode):
+            if code == item.code:
+                return item
+
+
+class VacuumWorkMode(Enum):
+    """
+    See: com.wyze.sweeprobot.common.constant.VenusDeviceModeByAssembly.VenusWorkModeModel
+    """
+
+    VACUUM = ('Vacuum', 1)
+    MOP = ('Mop', 2)
+    HURRICANE = ('Vacuum+Mop', 3)
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self) -> str:
+        return self.description
+
+    @classmethod
+    def parse(cls, code: Union[str, int]) -> Optional["VacuumWorkMode"]:
+        if isinstance(code, str):
+            try:
+                code = int(code)
+            except TypeError:
+                return None
+        for item in list(VacuumWorkMode):
+            if code == item.code:
+                return item
+
+
+class VacuumBoxType(Enum):
+    """
+    See: com.wyze.sweeprobot.common.constant.VenusDeviceModeByAssembly.VenusBoxType
+    """
+
+    DUST_BOX = ('Dust', 1)
+    WATER_BOX = ('Water', 2)
+    DUST_WATER_BOX = ('Dust+Water', 3)
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self) -> str:
+        return self.description
+
+    @classmethod
+    def parse(cls, code: Union[str, int]) -> Optional["VacuumBoxType"]:
+        if isinstance(code, str):
+            try:
+                code = int(code)
+            except TypeError:
+                return None
+        for item in list(VacuumBoxType):
+            if code == item.code:
+                return item
+
+
+class VacuumDeviceControlRequestType(Enum):
+    """
+    See: com.wyze.sweeprobot.common.entity.model.request.VenusDeviceControlRequest
+
+    AREA_CLEAN (known as spot cleaning, area cleaning, or virtual room cleaning) is
+    only available in beta firmware (1.6.173) and requires the passing of x,y map
+    points when issuing requests.
+    """
+
+    GLOBAL_SWEEPING = ('Clean', 0)
+    RETURN_TO_CHARGING = ('Recharge', 3)
+    AREA_CLEAN = ('Area Clean', 6)
+    QUICK_MAPPING = ('Quick Mapping', 7)
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self) -> str:
+        return self.description
+
+    @classmethod
+    def parse(cls, code: Union[str, int]) -> Optional["VacuumDeviceControlRequestType"]:
+        if isinstance(code, str):
+            try:
+                code = int(code)
+            except TypeError:
+                return None
+        for item in list(VacuumDeviceControlRequestType):
+            if code == item.code:
+                return item
+
+
+class VacuumDeviceControlRequestValue(Enum):
+    """
+    See: com.wyze.sweeprobot.common.entity.model.request.VenusDeviceControlRequest
+    """
+
+    STOP = ('Stop', 0)
+    START = ('Start', 1)
+    PAUSE = ('Pause', 2)
+    FALSE_PAUSE = ('False Pause', 3)  # RETURN_TO_CHARGING unused - doesn't get called
+
+    def __init__(self, description: str, code: int):
+        self.description = description
+        self.code = code
+
+    def describe(self) -> str:
+        return self.description
+
+    @classmethod
+    def parse(cls, code: Union[str, int]) -> Optional["VacuumDeviceControlRequestValue"]:
+        if isinstance(code, str):
+            try:
+                code = int(code)
+            except TypeError:
+                return None
+        for item in list(VacuumDeviceControlRequestValue):
+            if code == item.code:
+                return item
+
+
+class VenusDotArg1Message(object):
+    """
+    See: com.wyze.sweeprobot.common.constant.VenusDotMessage.VenusDotArg1Message
+    """
+
+    Vacuum = 'Vacuum'
+
+
+class VenusDotArg2Message(object):
+    """
+    See: com.wyze.sweeprobot.common.constant.VenusDotMessage.VenusDotArg2Message
+    """
+
+    BreakCharging = 'BreakCharging'
+    BreakRecharge = 'BreakRecharge'
+    FinishRecharge = 'FinishRecharge'
+    ManualRecharge = "ManualRecharge"
+    SelectRooms = "SelectRooms"
+    Spot = 'Spot'
+    Whole = 'Whole'
+
+
+class VenusDotArg3Message(object):
+    """
+    See: com.wyze.sweeprobot.common.constant.VenusDotMessage.VenusDotArg3Message
+    """
+
+    FalsePause = "FalsePause"
+    Pause = "Pause"
+    Resume = "Resume"
+    Start = "Start"
 
 
 class VacuumSuctionLevel(Enum):
@@ -805,7 +1046,7 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
             "iot_state": PropDef("iot_state", str),
             "battery": VacuumProps.battery(),
             "mode": VacuumProps.mode(),
-            "charge_state": PropDef("chargeState", int),
+            "charge_state": PropDef("chargeState", bool, int),
             "clean_size": PropDef("cleanSize", int),
             "clean_time": PropDef("cleanTime", int),
             "fault_type": PropDef("fault_type", str),
@@ -836,7 +1077,10 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
     ):
         super().__init__(type=self.type, **others)
         self.voltage = super()._extract_property(VacuumProps.battery(), others)
-        self.mode = super()._extract_attribute('mode' if "mode" in others else VacuumProps.mode().pid, others)
+        self.mode = super()._extract_attribute(VacuumProps.mode().pid, others)
+        self.status = VacuumStatus.parse(super()._extract_attribute('vacuum_work_status', others))
+        self.fault_code = VacuumFaultCode.parse(super()._extract_attribute('fault_code', others))
+        self.charge_state = super()._extract_property(Vacuum.props().get('charge_state'), others)
         self.clean_level = super()._extract_attribute('clean_level' if "clean_level" in others else VacuumProps.clean_level().pid, others)
         self._supplies = VacuumSupplies(**others)
         self._current_map = VacuumMap(**super()._extract_attribute('current_map', others)) if "current_map" in others else None
@@ -892,3 +1136,7 @@ class Vacuum(VoltageMixin, AbstractWirelessNetworkedDevice):
         if isinstance(value, (str, int)):
             value = DeviceProp(definition=VacuumProps.clean_level(), value=value)
         self._clean_level = VacuumSuctionLevel.parse(code=value.value)
+
+    @property
+    def is_charging(self) -> bool:
+        return self.charge_state.value if self.charge_state is not None else False
