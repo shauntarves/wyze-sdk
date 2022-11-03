@@ -30,6 +30,7 @@ class DeviceModels(object):
     LOCK = ['YD.LO1']
     LOCK_GATEWAY = ['YD.GW1']
     THERMOSTAT = ['CO_EA1']
+    THERMOSTAT_ROOM_SENSOR = ['CO_TH1']
     CONTACT_SENSOR = ['DWS3U', 'DWS2U']
     MOTION_SENSOR = ['PIR3U', 'PIR2U']
     VACUUM = ['JA_RO2']
@@ -135,7 +136,12 @@ class DeviceProp(object):
                 value = None
             else:
                 try:
-                    value = bool(distutils.util.strtobool(str(value))) if self._definition.type == bool else self._definition._type(value)
+                    if self._definition.type == bool:
+                        value = bool(distutils.util.strtobool(str(value)))
+                    elif self._definition.type == dict:
+                        value = json.loads(value)
+                    else:
+                        value = self._definition._type(value)
                 except ValueError:
                     self.logger.warning(f"def {self._definition.pid}")
                     self.logger.warning(f"could not cast value `{value}` into expected type {self._definition.type}")

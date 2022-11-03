@@ -1,10 +1,14 @@
+from collections import defaultdict
+from collections.abc import MutableMapping
 from datetime import datetime
+import itertools
+import json
 from typing import Optional, Sequence, Tuple, Union
 
 from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import DeviceModels, DeviceProp, Thermostat
-from wyze_sdk.models.devices.thermostats import (ThermostatFanMode,
-                                                 ThermostatScenarioType,
+from wyze_sdk.models.devices.thermostats import (ThermostatFanMode, ThermostatProps,
+                                                 ThermostatScenarioType, RoomSensor, RoomSensorProps,
                                                  ThermostatSystemMode)
 from wyze_sdk.service import WyzeResponse
 
@@ -46,6 +50,59 @@ class ThermostatsClient(BaseClient):
             thermostat.update(device_info.data["data"]["settings"])
 
         return Thermostat(**thermostat)
+
+    def get_sensors(self, *, device_mac: str, device_model: str, **kwargs) -> Sequence[RoomSensor]:
+        """Retrieves room sensors associated with a thermostat.
+
+        Args:
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+        :param str device_model: The device model. e.g. ``CO_EA1``
+
+        :rtype: Sequence[RoomSensor]
+        """
+        # reading through the code in `com.wyze.earth.activity.home.EarthSensorsActivity`,
+        # the data flow seems to be:
+        #   initView() sets up a refresh handler
+        #       when the view needs refreshing, call getSensors()
+        #           * triggers call to /get_sub_device
+        #               * gathers the sub-device (sensor) IDs
+        #               * calls mergeDate()
+        #                   * parses the properties into a coherent format (SensorEntity)
+        #                   * calls requestDeviceInfo()
+        #                       triggers call to /device_info/batch with did of all sensors and key device_name
+        #                   * calls getTempData()
+        #                       triggers call to /get_iot_prop/batch with did of all sensors and keys temperature,humidity,temperature_unit,battery
+        #           * triggers call to /get_iot_prop with keys sensor_state,sensor_using,sensor_template,sensor_weight,threshold_temper
+        #               * calls mergeDate()
+        #           * triggers call to getThermostat()
+        #               calls /get_iot_prop on thermostat with keys temperature,humidity,iot_state,auto_comfort
+        _sensors = [_sub_device for _sub_device in super()._earth_client().get_sub_device(did=device_mac).data["data"]]
+        if len(_sensors) == 0:
+            return None
+
+        _dids = list(map(lambda _sensor: _sensor['device_id'], _sensors))
+
+        _device_info_batch = super()._earth_client().get_device_info(did=_dids, parent_did=device_mac, model=device_model, keys=[prop_def.pid for prop_def in RoomSensor.device_info_props()])
+        _iot_prop_batch = super()._earth_client().get_iot_prop(did=_dids, parent_did=device_mac, model=device_model, keys=[prop_def.pid for prop_def in RoomSensor.props()])
+        _iot_prop = super()._earth_client().get_iot_prop(did=device_mac, keys=[prop_def.pid for prop_def in Thermostat.sensor_props().values()])
+
+        for _sensor in _sensors:
+            if "data" in _device_info_batch.data:
+                _sensor_device_info = next(filter(lambda _data: _data['deviceId'] == _sensor['device_id'], _device_info_batch["data"]))
+                if "settings" in _sensor_device_info:
+                    _sensor.update(**{"device_setting": _sensor_device_info["settings"]})
+            if "data" in _iot_prop_batch.data:
+                _sensor_iot_prop = next(filter(lambda _data: _data['did'] == _sensor['device_id'], _iot_prop_batch["data"]))
+                if "props" in _sensor_iot_prop:
+                    _sensor.update(**{"device_params": _sensor_iot_prop["props"]})
+            if "data" in _iot_prop.data and "props" in _iot_prop.data["data"]:
+                for _prop, _sensor_list in dict(_iot_prop.data["data"]["props"]).items():
+                    _sensor_list = json.loads(_sensor_list)
+                    if isinstance(_sensor_list, MutableMapping):
+                        if _sensor['device_id'] in _sensor_list.keys():
+                            _sensor.update({_prop: _sensor_list.get(_sensor['device_id'])})
+
+        return [RoomSensor(**_sensor) for _sensor in _sensors]
 
     def set_system_mode(self, *, device_mac: str, device_model: str, system_mode: ThermostatSystemMode, **kwargs) -> WyzeResponse:
         """Sets the system mode of the thermostat.
@@ -144,7 +201,7 @@ class ThermostatsClient(BaseClient):
             props = [props]
         the_props = {}
         for prop in props:
-            the_props[prop.definition.pid] = str(prop.value)
+            the_props[prop.definition.pid] = str(prop.api_value)
         return super()._earth_client().set_iot_prop_by_topic(
             did=device_mac, model=device_model, props=the_props)
 
@@ -176,7 +233,7 @@ class ThermostatsClient(BaseClient):
             DeviceProp(definition=Thermostat.props()["device_hold_time"], value=until.timestamp()),
         ])
 
-    def set_lock(self, *, device_mac: str, device_model: str, locked: int, **kwargs) -> WyzeResponse:
+    def set_lock(self, *, device_mac: str, device_model: str, locked: Union[bool, int], **kwargs) -> WyzeResponse:
         """Sets the device lock for a thermostat.
 
         If set, the thermostat can only be updated via the app and not by using the physical controls.
@@ -187,6 +244,8 @@ class ThermostatsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
+        if not isinstance(locked, bool):
+            locked = True if locked == 1 else False
         return self._set_thermostat_properties(device_mac, device_model, DeviceProp(definition=Thermostat.props()["locked"], value=locked))
 
     def set_behavior(self, *, device_mac: str, device_model: str, behavior: int, **kwargs) -> WyzeResponse:
