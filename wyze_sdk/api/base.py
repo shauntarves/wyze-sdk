@@ -5,8 +5,8 @@ from typing import Optional, Sequence
 from wyze_sdk.errors import WyzeClientConfigurationError
 from wyze_sdk.service import (ApiServiceClient, EarthServiceClient,
                               GeneralApiServiceClient, PlatformServiceClient,
-                              ScaleServiceClient, VenusServiceClient,
-                              WyzeResponse)
+                              ScaleServiceClient, SiriusServiceClient,
+                              VenusServiceClient, WyzeResponse)
 
 
 class BaseClient(object, metaclass=ABCMeta):
@@ -62,6 +62,9 @@ class BaseClient(object, metaclass=ABCMeta):
 
     def _scale_client(self) -> ScaleServiceClient:
         return BaseClient._service_client(ScaleServiceClient, token=self._token, base_url=self._base_url)
+
+    def _sirius_client(self) -> EarthServiceClient:
+        return BaseClient._service_client(SiriusServiceClient, token=self._token, base_url=self._base_url)
 
     def _venus_client(self) -> VenusServiceClient:
         return BaseClient._service_client(VenusServiceClient, token=self._token, base_url=self._base_url)

@@ -6,7 +6,7 @@ from wyze_sdk.api.devices import (BulbsClient, CamerasClient,
                                   ContactSensorsClient, LocksClient,
                                   MotionSensorsClient, PlugsClient,
                                   ScalesClient, ThermostatsClient,
-                                  VacuumsClient)
+                                  SwitchesClient, VacuumsClient)
 from wyze_sdk.api.events import EventsClient
 from wyze_sdk.errors import WyzeClientConfigurationError
 from wyze_sdk.models.devices import Device, DeviceParser
@@ -93,6 +93,10 @@ class Client(object):
     @property
     def scales(self) -> ScalesClient:
         return ScalesClient(token=self._token, user_id=self._user_id, base_url=self._base_url)
+
+    @property
+    def switches(self) -> SwitchesClient:
+        return SwitchesClient(token=self._token, base_url=self._base_url)
 
     @property
     def events(self) -> EventsClient:

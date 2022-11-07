@@ -13,6 +13,7 @@ from .locks import (Lock, LockEventType, LockGateway, LockProps,  # noqa
 from .plugs import OutdoorPlug, Plug, PlugProps  # noqa
 from .scales import Scale, ScaleProps, ScaleRecord, UserGoalWeight  # noqa
 from .sensors import ContactSensor, MotionSensor, Sensor, SensorProps  # noqa
+from .switches import Switch, SwitchProps  # noqa
 from .thermostats import (Thermostat, ThermostatFanMode,  # noqa
                           ThermostatProps, ThermostatScenarioType,
                           ThermostatSystemMode)
@@ -31,40 +32,42 @@ class DeviceParser(object):
     def parse(cls, device: Union[dict, "Device"]) -> Optional["Device"]:
         if device is None:
             return None
-        elif isinstance(device, Device):
+        if isinstance(device, Device):
             return device
-        else:
-            if "product_type" in device:
-                type = device["product_type"]
-                if type == BaseStation.type:
-                    return BaseStation(**device)
-                elif type == Bulb.type:
-                    return Bulb(**device)
-                elif type == Camera.type:
-                    return Camera(**device)
-                elif type == ContactSensor.type:
-                    return ContactSensor(**device)
-                elif type == Lock.type:
-                    return Lock(**device)
-                elif type == LockGateway.type:
-                    return LockGateway(**device)
-                elif type == MeshBulb.type:
-                    return MeshBulb(**device)
-                elif type == MotionSensor.type:
-                    return MotionSensor(**device)
-                elif type == OutdoorPlug.type:
-                    return OutdoorPlug(**device)
-                elif type == Plug.type:
-                    return Plug(**device)
-                elif type == Scale.type or type in DeviceModels.SCALE:
-                    return Scale(**device)
-                elif type == Thermostat.type or type in DeviceModels.THERMOSTAT:
-                    return Thermostat(**device)
-                elif type == Vacuum.type or type in DeviceModels.VACUUM:
-                    return Vacuum(**device)
-                else:
-                    cls._logger.warning(f"Unknown device type detected ({device})")
-                    return Device(**device)
+        if "product_type" in device:
+            type = device["product_type"]
+            if type == BaseStation.type:
+                return BaseStation(**device)
+            elif type == Bulb.type:
+                return Bulb(**device)
+            elif type == Camera.type:
+                return Camera(**device)
+            elif type == ContactSensor.type:
+                return ContactSensor(**device)
+            elif type == Lock.type:
+                return Lock(**device)
+            elif type == LockGateway.type:
+                return LockGateway(**device)
+            elif type == MeshBulb.type:
+                return MeshBulb(**device)
+            elif type == MotionSensor.type:
+                return MotionSensor(**device)
+            elif type == OutdoorPlug.type:
+                return OutdoorPlug(**device)
+            elif type == Plug.type:
+                return Plug(**device)
+            elif type == Scale.type or type in DeviceModels.SCALE:
+                return Scale(**device)
+            elif type == Thermostat.type or type in DeviceModels.THERMOSTAT:
+                return Thermostat(**device)
+            elif type == Vacuum.type or type in DeviceModels.VACUUM:
+                return Vacuum(**device)
+        if "product_model" in device:
+            model = device["product_model"]
+            if model in DeviceModels.SWITCH:
+                return Switch(**device)
             else:
-                cls._logger.warning(f"Unknown device detected and skipped ({device})")
-                return None
+                cls._logger.warning(f"Unknown device type detected ({device})")
+                return Device(**device)
+        cls._logger.warning(f"Unknown device detected and skipped ({device})")
+        return None
