@@ -1,5 +1,6 @@
 from __future__ import annotations
-from datetime import datetime
+from abc import ABCMeta
+from datetime import datetime, timedelta
 import json
 import logging
 
@@ -34,14 +35,14 @@ class PlugProps(object):
 
 class PlugUsageRecord(JsonObject):
     """
-    A plug usage record.
+    A plug usage record that assumes data represents duration of usage.
     """
 
     @property
     def attributes(self) -> Set[str]:
         return {
-            "date",
             "hourly_data",
+            "total_usage",
         }
 
     logger = logging.getLogger(__name__)
@@ -49,41 +50,60 @@ class PlugUsageRecord(JsonObject):
     def __init__(
         self,
         *,
-        date: datetime = None,
-        hourly_data: Sequence[int] = None,
+        hourly_data: dict[datetime, int] = None,
         **others: dict
     ):
-        if date is None:
-            date = self._extract_attribute('date_ts', others)
-        if isinstance(date, int):
-            date = epoch_to_datetime(date, ms=True)
-        self.date = date
         if hourly_data is not None:
             self.hourly_data = hourly_data
         else:
+            _start_datetime = self._extract_attribute('date_ts', others)
+            if isinstance(_start_datetime, int):
+                _start_datetime = epoch_to_datetime(_start_datetime, ms=True)
             hourly_data = self._extract_attribute('data', others)
             if isinstance(hourly_data, str):
                 hourly_data = json.loads(hourly_data)
             if not isinstance(hourly_data, (list, Tuple)):
                 hourly_data = list(hourly_data)
-            self.hourly_data = []
-            for _data in hourly_data:
+            self.hourly_data = {}
+            for index, _data in enumerate(hourly_data):
+                _hour = _start_datetime + timedelta(hours=index)
                 if isinstance(_data, int):
-                    self.hourly_data.append(_data)
+                    self.hourly_data[_hour] = _data
                 else:
                     try:
-                        self.hourly_data.append(int(_data))
+                        self.hourly_data[_hour] = int(_data)
                     except ValueError:
                         self.logger.warning(f"invalid usage record data '{_data}'")
-                        self.hourly_data.append(0)
+                        self.hourly_data[_hour] = 0
         show_unknown_key_warning(self, others)
 
     @property
     def total_usage(self) -> Optional[float]:
         """
-        Return the total usage, in kWh, for the day.
+        Return the total duration of usage, in minutes.
         """
-        return None if self.hourly_data is None else sum(self.hourly_data) / 1000.0
+        return None if self.hourly_data is None else sum(self.hourly_data.values()) * 1.0
+
+
+class PlugElectricityConsumptionRecord(PlugUsageRecord):
+    """
+    A plug usage record that assumes data represents electricity consumption in watt-hours.
+    """
+
+    def __init__(
+        self,
+        *,
+        hourly_data: dict[datetime, int] = None,
+        **others: dict
+    ):
+        super().__init__(hourly_data=hourly_data, **others)
+
+    @property
+    def total_usage(self) -> Optional[float]:
+        """
+        Return the total usage, in kWh.
+        """
+        return None if super().total_usage is None else super().total_usage / 1000.0
 
 
 class Plug(SwitchableMixin, AbstractWirelessNetworkedDevice):
