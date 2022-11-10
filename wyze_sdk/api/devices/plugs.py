@@ -1,8 +1,9 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 from typing import Optional, Sequence
 
 from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import DeviceModels, DeviceProps, Plug, PlugProps
+from wyze_sdk.models.devices.plugs import PlugElectricityConsumptionRecord, PlugUsageRecord
 from wyze_sdk.service import WyzeResponse, api_service
 
 
@@ -104,3 +105,20 @@ class PlugsClient(BaseClient):
                 provider_key=device_model,
             )
         return super()._api_client().set_device_property(mac=device_mac, model=device_model, pid=prop_def.pid, value="0")
+
+    def get_usage_records(self, *, device_mac: str, device_model: str, start_time: datetime, end_time: Optional[datetime] = datetime.now(), **kwargs) -> Sequence[PlugUsageRecord]:
+        """Gets usage records for a plug.
+
+        Note: For outdoor or multi-socket plugs, you must use the parent (combined) device id.
+
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+        :param str device_model: The device model. e.g. ``WLPP1``
+        :param datetime start_time: The ending datetime of the query i.e., the oldest allowed datetime for returned records
+        :param datetime end_time: The starting datetime of the query i.e., the most recent datetime for returned records. This parameter is optional and defaults to ``None``
+
+        :rtype: WyzeResponse
+        """
+        _records = super()._api_client().get_plug_usage_record_list(mac=device_mac, start_time=start_time, end_time=end_time)
+        if "data" in _records.data and "usage_record_list" in _records.data["data"]:
+            return [PlugElectricityConsumptionRecord(**record) if device_model in DeviceModels.OUTDOOR_PLUG else PlugUsageRecord(**record) for record in _records.data["data"]["usage_record_list"]]
+        return []

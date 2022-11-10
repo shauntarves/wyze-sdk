@@ -193,6 +193,17 @@ class ApiServiceClient(BaseServiceClient):
         kwargs.update({"device_mac": mac, "action_type": action_type, "sv": SV_CANCEL_DEVICE_TIMER})
         return self.api_call('/app/v2/device/timer/cancel', json=kwargs)
 
+    def get_plug_usage_record_list(self, *, mac: str, start_time: datetime, end_time: datetime, **kwargs) -> WyzeResponse:
+        SV_GET_PLUG_USAGE_RECORD_LIST = '17eff072fba0469a800502cab514412e'
+
+        kwargs.update({
+            "device_mac": mac,
+            "date_begin": datetime_to_epoch(start_time),
+            "date_end": datetime_to_epoch(end_time),
+            "sv": SV_GET_PLUG_USAGE_RECORD_LIST
+        })
+        return self.api_call('/app/v2/plug/usage_record_list', json=kwargs)
+
     def get_smoke_event_list(self, *, device_ids: Sequence[str] = [], begin: Optional[datetime] = None, end: Optional[datetime] = None, limit: Optional[int] = 20, order_by: Optional[int] = 2, **kwargs) -> WyzeResponse:
         return self.get_event_list(device_ids=device_ids, event_values=EventAlarmType.SMOKE, begin=begin, end=end, limit=limit, order_by=order_by)
 

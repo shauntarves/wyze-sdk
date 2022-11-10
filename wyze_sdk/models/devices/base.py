@@ -47,7 +47,7 @@ class DeviceModels(object):
 
     BULB = BULB_WHITE + BULB_WHITE_V2 + MESH_BULB
 
-    OUTDOOR_PLUG = ['WLPPO-SUB']
+    OUTDOOR_PLUG = ['WLPPO', 'WLPPO-SUB']
     PLUG = ['WLPP1', 'WLPP1CFH'] + OUTDOOR_PLUG
 
 
