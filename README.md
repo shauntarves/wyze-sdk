@@ -10,15 +10,16 @@ Whether you're building a custom app, or integrating into a third-party service 
 
 The **Python Wyze SDK** allows interaction with:
 
-- `wyze_sdk.client.bulbs`: for controlling Wyze Bulb and Wyze Bulb Color
+- `wyze_sdk.client.bulbs`: for controlling Wyze Bulb, Wyze Bulb Color, Wyze Bulb White, and Wyze Light Strip
 - `wyze_sdk.client.entry_sensors`: for interacting with Wyze Entry Sensor
 - `wyze_sdk.client.cameras`: for interacting with Wyze Cameras
 - `wyze_sdk.client.events`: for managing Wyze alarm events
-- `wyze_sdk.client.locks`: for interacting with Wyze Lock
+- `wyze_sdk.client.locks`: for interacting with Wyze Lock and Wyze Lock Keypad
 - `wyze_sdk.client.motion_sensors`: for interacting with Wyze Motion Sensor
 - `wyze_sdk.client.plugs`: for controlling Wyze Plug and Wyze Plug Outdoor
 - `wyze_sdk.client.scales`: for controlling Wyze Scale
-- `wyze_sdk.client.thermostats`: for controlling Wyze Thermostat
+- `wyze_sdk.client.switches`: for controlling Wyze Switch
+- `wyze_sdk.client.thermostats`: for controlling Wyze Thermostat and Wyze Room Sensor
 - `wyze_sdk.client.vacuums`: for controlling Wyze Robot Vacuum
 
 **Disclaimer: This repository is for non-destructive use only. WyzeLabs is a wonderful company providing excellent devices at a reasonable price. I ask that you do no harm and be civilized.**

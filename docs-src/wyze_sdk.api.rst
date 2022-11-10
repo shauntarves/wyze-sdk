@@ -64,6 +64,14 @@ Entry Sensors
    :inherited-members:
    :show-inheritance:
 
+Switches
+===========
+.. autoclass:: wyze_sdk.api.devices.switches.SwitchesClient
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :show-inheritance:
+
 Thermostats
 ===========
 .. autoclass:: wyze_sdk.api.devices.thermostats.ThermostatsClient
