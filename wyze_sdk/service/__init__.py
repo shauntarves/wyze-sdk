@@ -4,6 +4,7 @@ from .earth_service import EarthServiceClient  # noqa
 from .ford_service import FordServiceClient  # noqa
 from .general_api_service import GeneralApiServiceClient  # noqa
 from .platform_service import PlatformServiceClient  # noqa
+from .pluto_service import PlutoServiceClient  # noqa
 from .scale_service import ScaleServiceClient  # noqa
 from .sirius_service import SiriusServiceClient  # noqa
 from .venus_service import VenusServiceClient  # noqa

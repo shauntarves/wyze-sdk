@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional, Sequence, Union
 
 from wyze_sdk.api.base import BaseClient
-from wyze_sdk.errors import WyzeRequestError
+from wyze_sdk.errors import WyzeFeatureNotSupportedError, WyzeRequestError
 from wyze_sdk.models.devices import DeviceModels, Scale, ScaleRecord, UserGoalWeight
 from wyze_sdk.service import WyzeResponse
 
@@ -28,6 +28,8 @@ class ScalesClient(BaseClient):
         :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
 
         :rtype: Optional[Scale]
+
+        :raises WyzeFeatureNotSupportedError: If the scale model isn't supported
         """
         scales = [_scale for _scale in self._list_scales() if _scale['mac'] == device_mac]
         if len(scales) == 0:
@@ -35,43 +37,52 @@ class ScalesClient(BaseClient):
 
         scale = scales[0]
 
-        device_setting = super()._scale_client().get_device_setting(did=device_mac)
-        if "data" in device_setting.data:
-            scale.update(device_setting.data["data"])
+        if scale['product_model'] in DeviceModels.SCALE_S:
+            device_info = super()._pluto_client().get_device_info(did=device_mac)
+            if "data" in device_info.data:
+                scale.update(device_info.data["data"])
+            print(scale)
+            exit(1)
+        elif scale['product_model'] in DeviceModels.SCALE_X:
+            raise WyzeFeatureNotSupportedError('Scale Series X')
+        else:
+            device_setting = super()._scale_client().get_device_setting(did=device_mac)
+            if "data" in device_setting.data:
+                scale.update(device_setting.data["data"])
 
-        device_member = super()._scale_client().get_device_member(did=device_mac)
-        if "data" in device_member.data and device_member.data['data'] is not None:
-            scale.update({"device_members": device_member.data["data"]})
+            device_member = super()._scale_client().get_device_member(did=device_mac)
+            if "data" in device_member.data and device_member.data['data'] is not None:
+                scale.update({"device_members": device_member.data["data"]})
 
-        family_member = super()._scale_client().get_family_member(did=device_mac)
-        if "data" in family_member.data and family_member.data['data'] is not None:
-            scale.update({"family_members": family_member.data["data"]})
+            family_member = super()._scale_client().get_family_member(did=device_mac)
+            if "data" in family_member.data and family_member.data['data'] is not None:
+                scale.update({"family_members": family_member.data["data"]})
 
-        user_preference = super()._scale_client().get_user_preference(did=device_mac)
-        if "data" in user_preference.data and user_preference.data['data'] is not None:
-            scale.update({"user_preferences": user_preference.data["data"]})
+            user_preference = super()._scale_client().get_user_preference(did=device_mac)
+            if "data" in user_preference.data and user_preference.data['data'] is not None:
+                scale.update({"user_preferences": user_preference.data["data"]})
 
-        token = super()._scale_client().get_token(did=device_mac)
-        if "data" in token.data and token.data['data'] is not None:
-            scale.update(token.data["data"])
+            token = super()._scale_client().get_token(did=device_mac)
+            if "data" in token.data and token.data['data'] is not None:
+                scale.update(token.data["data"])
 
-        if self._user_id is not None:
-            user_device_relation = super()._scale_client().get_user_device_relation(did=device_mac, user_id=self._user_id)
-            if "data" in user_device_relation.data and user_device_relation.data['data'] is not None:
-                scale.update({"device_relation": user_device_relation.data["data"]})
+            if self._user_id is not None:
+                user_device_relation = super()._scale_client().get_user_device_relation(did=device_mac, user_id=self._user_id)
+                if "data" in user_device_relation.data and user_device_relation.data['data'] is not None:
+                    scale.update({"device_relation": user_device_relation.data["data"]})
 
-            user_goal_weight = super()._scale_client().get_goal_weight(user_id=self._user_id)
-            if "data" in user_goal_weight.data and user_goal_weight.data['data'] is not None:
-                scale.update({"goal_weight": user_goal_weight.data["data"]})
+                user_goal_weight = super()._scale_client().get_goal_weight(user_id=self._user_id)
+                if "data" in user_goal_weight.data and user_goal_weight.data['data'] is not None:
+                    scale.update({"goal_weight": user_goal_weight.data["data"]})
 
-        # com.wyze.ihealth.d.e
-        user_profile = super()._platform_client().get_user_profile(appid='nHtOAABMsnTbOmg74g3zBsFuHx4iVi5G')
-        if "data" in user_profile.data and user_profile.data['data'] is not None:
-            scale.update({"user_profile": user_profile.data["data"]})
+            # com.wyze.ihealth.d.e
+            user_profile = super()._platform_client().get_user_profile(appid='nHtOAABMsnTbOmg74g3zBsFuHx4iVi5G')
+            if "data" in user_profile.data and user_profile.data['data'] is not None:
+                scale.update({"user_profile": user_profile.data["data"]})
 
-        latest_records = super()._scale_client().get_latest_records()
-        if "data" in latest_records.data and latest_records.data['data'] is not None:
-            scale.update({"latest_records": latest_records.data["data"]})
+            latest_records = super()._scale_client().get_latest_records()
+            if "data" in latest_records.data and latest_records.data['data'] is not None:
+                scale.update({"latest_records": latest_records.data["data"]})
 
         return Scale(**scale)
 
