@@ -209,6 +209,7 @@ class Scale(AbstractWirelessNetworkedDevice):
         self.unit = unit if unit else super()._extract_property(ScaleProps.unit(), others)
         self._broadcast = super()._extract_attribute('broadcast', others)
         self.goal_weight = goal_weight
+        self._latest_records = []
         latest_records = latest_records if latest_records is not None else super()._extract_attribute('latest_records', others)
         if latest_records is not None:
             self._latest_records = [latest_record if isinstance(latest_record, ScaleRecord) else ScaleRecord(**latest_record) for latest_record in latest_records]
