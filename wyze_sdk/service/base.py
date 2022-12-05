@@ -79,7 +79,7 @@ class BaseServiceClient(metaclass=ABCMeta):
             self,
             session: requests.Session,
             request: requests.Request) -> WyzeResponse:
-        with suppress(requests.exceptions.HTTPError, requests.exceptions.RequestException, ValueError):
+        try:
             self._logger.info(f"requesting {request.method} to {request.url}")
             self._logger.debug(f"headers: {request.headers}")
             self._logger.debug(f"body: {request.body}")
@@ -90,6 +90,8 @@ class BaseServiceClient(metaclass=ABCMeta):
 
             response = session.send(request, **settings)
 
+            response.raise_for_status()
+
             return WyzeResponse(
                 client=self,
                 http_verb=request.method,
@@ -99,6 +101,12 @@ class BaseServiceClient(metaclass=ABCMeta):
                 headers=response.headers,
                 status_code=response.status_code,
             ).validate()
+        except requests.exceptions.HTTPError as err:
+            # this is a placeholder for future retry logic - for now, raise the err
+            raise err
+        except Exception as e:
+            self._logger.debug(f"Failed to send a request to server: {e}")
+            raise e
 
     def do_post(self, url: str, headers: dict, payload: dict, params: Optional[dict] = None) -> WyzeResponse:
         with requests.Session() as client:

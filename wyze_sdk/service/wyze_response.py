@@ -130,9 +130,9 @@ class WyzeResponse:
                 message = "The username or password is incorrect. Please check your credentials and try again."
         elif response_code in [1001, 1004]:
             message = "Parameters passed to Wyze Service do not fit the endpoint"
-        elif response_code == [1003, 2001]:
+        elif response_code in [1003]:
             message = "Unknown request error"  # FIXME what do I mean?
-        elif msg == 'AccessTokenError':
+        elif response_code in [2001] or msg == 'AccessTokenError':
             message = "The access token has expired. Please refresh the token and try again."
         elif msg == 'UserIsLocked':
             message = "The user account is locked. Please resolve this issue and try again."

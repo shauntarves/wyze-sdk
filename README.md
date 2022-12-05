@@ -55,6 +55,46 @@ $ pip install wyze-sdk
 
 Wyze does not provide a Web API that gives you the ability to build applications that interact with Wyze devices. This Development Kit is a reverse-engineered, module-based wrapper that makes interaction with that API possible. We have a few basic examples here with some of the more common uses but you are encouraged to [explore the full range of methods](https://wyze-sdk.readthedocs.io/en/latest/wyze_sdk.api.devices.html) available to you.
 
+#### Authenticating
+
+When performing user "authentication" with an email and password in the Wyze app, the credentials are exchanged for an access token and a refrsh token. These are long strings of the form `lvtx.XXXX`. When using this library, be aware that there are two method for handling authentiation:
+
+##### Obtaining the Token and Storing it for Later Use (Preferred)
+
+It is preferred that users first create an empty `Client` object and use the `login()` method to perform the token exchange.
+
+```python
+import os
+from wyze_sdk import Client
+
+response = Client().login(email=os.environ['WYZE_EMAIL'], password=os.environ['WYZE_PASSWORD'])
+print(f"access token: {response['access_token']}")
+print(f"refresh token: {response['refresh_token']}")
+```
+
+The returned values can be stored on disk or as environment variables for use in subsequent calls.
+
+```python
+import os
+from wyze_sdk import Client
+
+client = Client(token=os.environ['WYZE_ACCESS_TOKEN'])
+...
+```
+
+##### (Deprecated) Automatically Authenticate Every New Client
+
+This method has been deprecated due to issues with authentication rate limiting. While it is still a perfectly usable approach for testing or performing infrequent client actions, it **is not recommended** if you are scripting with this client library.
+
+```python
+import os
+from wyze_sdk import Client
+from wyze_sdk.errors import WyzeApiError
+
+client = Client(email=os.environ['WYZE_EMAIL'], password=os.environ['WYZE_PASSWORD'])
+...
+```
+
 #### Listing devices in your Wyze account
 
 One of the most common use-cases is querying device state from Wyze. If you want to access devices you own, or devices shared to you, this method will do both.
@@ -64,7 +104,7 @@ import os
 from wyze_sdk import Client
 from wyze_sdk.errors import WyzeApiError
 
-client = Client(email=os.environ['WYZE_EMAIL'], password=os.environ['WYZE_PASSWORD'])
+client = Client(token=os.environ['WYZE_ACCESS_TOKEN'])
 
 try:
     response = client.devices_list()
@@ -88,7 +128,7 @@ from datetime import timedelta
 from wyze_sdk import Client
 from wyze_sdk.errors import WyzeApiError
 
-client = Client(email=os.environ['WYZE_EMAIL'], password=os.environ['WYZE_PASSWORD'])
+client = Client(token=os.environ['WYZE_ACCESS_TOKEN'])
 
 try:
   plug = client.plugs.info(device_mac='ABCDEF1234567890')
@@ -116,7 +156,7 @@ import os
 from wyze_sdk import Client
 from wyze_sdk.errors import WyzeApiError
 
-client = Client(email=os.environ['WYZE_EMAIL'], password=os.environ['WYZE_PASSWORD'])
+client = Client(token=os.environ['WYZE_ACCESS_TOKEN'])
 
 try:
   bulb = client.bulbs.info(device_mac='ABCDEF1234567890')
@@ -152,7 +192,7 @@ import wyze_sdk
 from wyze_sdk import Client
 from wyze_sdk.errors import WyzeApiError
 
-client = Client(email=os.environ['WYZE_EMAIL'], password=os.environ['WYZE_PASSWORD'])
+client = Client(token=os.environ['WYZE_ACCESS_TOKEN'])
 
 try:
   lock = client.locks.info(device_mac='YD.LO1.abcdefg0123456789abcdefg0123456789')
