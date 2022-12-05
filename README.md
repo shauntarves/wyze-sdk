@@ -95,6 +95,32 @@ client = Client(email=os.environ['WYZE_EMAIL'], password=os.environ['WYZE_PASSWO
 ...
 ```
 
+##### Multi-Factor Authentication (2FA) Support
+
+If your Wyze account has multi-factor authentication (2FA) enabled, you may be prompted for your 2FA code when authenticating via either supported method described above. If you wish to automate the MFA interaction, both the `Client` constructor and the `login()` method accept `totp_key` as input. If the TOTP key is provided, the MFA prompt should not appear.
+
+```python
+import os
+from wyze_sdk import Client
+
+response = Client().login(
+  email=os.environ['WYZE_EMAIL'],
+  password=os.environ['WYZE_PASSWORD'],
+  totp_key=os.environ['WYZE_TOTP_KEY']
+)
+
+OR
+
+client = Client(
+  email=os.environ['WYZE_EMAIL'],
+  password=os.environ['WYZE_PASSWORD'],
+  totp_key=os.environ['WYZE_TOTP_KEY']
+)
+...
+```
+
+**Note: This does not work with SMS or email-based MFA.**
+
 #### Listing devices in your Wyze account
 
 One of the most common use-cases is querying device state from Wyze. If you want to access devices you own, or devices shared to you, this method will do both.
