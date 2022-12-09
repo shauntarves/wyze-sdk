@@ -39,24 +39,31 @@ class Client(object):
 
     def __init__(
         self,
+        token: Optional[str] = None,
+        refresh_token: Optional[str] = None,
         email: Optional[str] = None,
         password: Optional[str] = None,
         totp_key: Optional[str] = None,
         base_url: Optional[str] = None,
         timeout: int = 30,
     ):
+        #: A string used for API-based requests
+        self._token = None if token is None else token.strip()
+        #: A string that can be used to rotate the authentication token
+        self._refresh_token = None if refresh_token is None else refresh_token.strip()
         #: A string specifying the account email address.
-        self._email = email
+        self._email = None if email is None else email.strip()
         #: An unencrypted string specifying the account password.
-        self._password = password
+        self._password = None if password is None else password.strip()
         #: An unencrypted string specifying the TOTP Key for automatic TOTP 2FA verification code generation.
-        self._totp_key = totp_key
+        self._totp_key = None if totp_key is None else totp_key.strip()
         #: An optional string representing the API base URL. **This should not be used except for when running tests.**
         self._base_url = base_url
         #: The maximum number of seconds the client will wait to connect and receive a response from Wyze. Defaults to 30
         self.timeout = timeout
 
-        self.login()
+        if self._token is None and self._email is not None:
+            self.login()
 
     @property
     def vacuums(self) -> VacuumsClient:
@@ -125,7 +132,12 @@ class Client(object):
             self._user_id = user_id
             self._logger.debug("wyze user : %s", self._user_id)
 
-    def login(self) -> WyzeResponse:
+    def login(
+        self,
+        email: str = None,
+        password: str = None,
+        totp_key: Optional[str] = None,
+        ) -> WyzeResponse:
         """
         Exchanges email and password for an ``access_token`` and a ``refresh_token``, which
         are stored in this client. The tokens will be used for all subsequent requests
@@ -133,10 +145,19 @@ class Client(object):
 
         :rtype: WyzeResponse
 
-        :raises WyzeClientConfigurationError: If ``access_point`` is already set or both ``email`` and ``password`` are not set.
+        :raises WyzeClientConfigurationError: If ``access_token`` is already set or both ``email`` and ``password`` are not set.
         """
         if self._token is not None:
             raise WyzeClientConfigurationError("already logged in")
+
+        # if an email/password is provided, use them. Otherwise, use the ones
+        # provided when constructing the client.
+        if email is not None:
+            self._email = email.strip()
+        if password is not None:
+            self._password = password.strip()
+        if totp_key is not None:
+            self._totp_key = totp_key.strip()
         if self._email is None or self._password is None:
             raise WyzeClientConfigurationError("must provide email and password")
         self._logger.debug(f"access token not provided, attempting to login as {self._email}")
