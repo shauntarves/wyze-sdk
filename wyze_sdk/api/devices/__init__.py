@@ -4,5 +4,6 @@ from .locks import LocksClient  # noqa
 from .plugs import PlugsClient  # noqa
 from .scales import ScalesClient  # noqa
 from .sensors import ContactSensorsClient, MotionSensorsClient  # noqa
+from .switches import SwitchesClient  # noqa
 from .thermostats import ThermostatsClient  # noqa
 from .vacuums import VacuumsClient  # noqa

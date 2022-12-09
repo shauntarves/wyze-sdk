@@ -20,7 +20,7 @@ Whether you're building a custom app, or integrating into a third-party service 
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
 | Web Client                     | Send data to or query data from Wyze using a variety of device-specific sub-clients.          | ``wyze_sdk.client``                |
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
-| Bulb Client                    | Control Wyze Bulb and Wyze Bulb Color                                                         | ``wyze_sdk.client.bulbs``          |
+| Bulb Client                    | Control Wyze Bulb, Wyze Bulb Color, Wyze Bulb White, and Wyze Light Strip                     | ``wyze_sdk.client.bulbs``          |
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
 | Entry Sensor Client            | Interact with Wyze Sense Entry Sensors                                                        | ``wyze_sdk.client.entry_sensors``  |
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
@@ -28,7 +28,7 @@ Whether you're building a custom app, or integrating into a third-party service 
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
 | Event Client                   | Manage Wyze alarm events                                                                      | ``wyze_sdk.client.events``         |
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
-| Lock Client                    | Control Wyze Lock                                                                             | ``wyze_sdk.client.locks``          |
+| Lock Client                    | Control Wyze Lock and Wyze Lock Keypad                                                        | ``wyze_sdk.client.locks``          |
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
 | Motion Sensor Client           | Interact with Wyze Sense Motion Sensors                                                       | ``wyze_sdk.client.motion_sensors`` |
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
@@ -36,7 +36,9 @@ Whether you're building a custom app, or integrating into a third-party service 
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
 | Scale Client                   | Control Wyze Scale                                                                            | ``wyze_sdk.client.scales``         |
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
-| Thermostat Client              | Control Wyze Thermostat                                                                       | ``wyze_sdk.client.thermostats``    |
+| Switch Client                  | Control Wyze Switch                                                                           | ``wyze_sdk.client.switches``       |
++--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
+| Thermostat Client              | Control Wyze Thermostat and Wyze Room Sensor                                                  | ``wyze_sdk.client.thermostats``    |
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+
 | Vacuum Client                  | Control Wyze Robot Vacuum                                                                     | ``wyze_sdk.client.vacuums``        |
 +--------------------------------+-----------------------------------------------------------------------------------------------+------------------------------------+

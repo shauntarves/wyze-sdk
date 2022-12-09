@@ -50,6 +50,8 @@ class DeviceModels(object):
     OUTDOOR_PLUG = ['WLPPO', 'WLPPO-SUB']
     PLUG = ['WLPP1', 'WLPP1CFH'] + OUTDOOR_PLUG
 
+    SWITCH = ['LD_SS1']
+
 
 class Product(object):
     """

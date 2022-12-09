@@ -34,6 +34,14 @@ wyze\_sdk.models.devices.cameras
    :undoc-members:
    :inherited-members:
 
+wyze\_sdk.models.devices.lights
+------------------------------
+
+.. automodule:: wyze_sdk.models.devices.lights
+   :members:
+   :undoc-members:
+   :inherited-members:
+
 wyze\_sdk.models.devices.locks
 ------------------------------
 
@@ -62,6 +70,14 @@ wyze\_sdk.models.devices.sensors
 --------------------------------
 
 .. automodule:: wyze_sdk.models.devices.sensors
+   :members:
+   :undoc-members:
+   :inherited-members:
+
+wyze\_sdk.models.devices.switches
+------------------------------------
+
+.. automodule:: wyze_sdk.models.devices.switches
    :members:
    :undoc-members:
    :inherited-members:

@@ -68,6 +68,14 @@ wyze\_sdk.service.scale\_service module
    :undoc-members:
    :show-inheritance:
 
+wyze\_sdk.service.sirius\_service module
+---------------------------------------
+
+.. automodule:: wyze_sdk.service.sirius_service
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 wyze\_sdk.service.venus\_service module
 ---------------------------------------
 
