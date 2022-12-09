@@ -66,6 +66,8 @@ class DeviceParser(object):
             model = device["product_model"]
             if model in DeviceModels.SWITCH:
                 return Switch(**device)
+            elif model in DeviceModels.SCALE:
+                return Scale(**device)
             else:
                 cls._logger.warning(f"Unknown device type detected ({device})")
                 return Device(**device)
