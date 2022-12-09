@@ -25,7 +25,6 @@ class DeviceModels(object):
     CAMERA_V1 = ['WYZEC1']
     CAMERA_V2 = ['WYZEC1-JZ']
     CAMERA_V3 = ['WYZE_CAKP2JFUS']
-    CAMERA_FLOODLIGHT = CAMERA_V3
     CAMERA_OUTDOOR = ['WVOD1']
 
     LOCK = ['YD.LO1']
