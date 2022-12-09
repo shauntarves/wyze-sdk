@@ -66,13 +66,11 @@ class BaseClient(object, metaclass=ABCMeta):
         return BaseClient._service_client(
             ScaleServiceClient if device_model in DeviceModels.SCALE_ else PlutoServiceClient, token=self._token, base_url=self._base_url)
 
-<<<<<<< HEAD
     def _sirius_client(self) -> EarthServiceClient:
         return BaseClient._service_client(SiriusServiceClient, token=self._token, base_url=self._base_url)
-=======
+
     def _pluto_client(self) -> PlutoServiceClient:
         return BaseClient._service_client(PlutoServiceClient, token=self._token, base_url=self._base_url)
->>>>>>> 0a4c2fd (Initial series s support)
 
     def _venus_client(self) -> VenusServiceClient:
         return BaseClient._service_client(VenusServiceClient, token=self._token, base_url=self._base_url)
