@@ -3,10 +3,12 @@ from abc import ABCMeta
 from typing import Optional, Sequence
 
 from wyze_sdk.errors import WyzeClientConfigurationError
+from wyze_sdk.models.devices.base import DeviceModels
 from wyze_sdk.service import (ApiServiceClient, EarthServiceClient,
                               GeneralApiServiceClient, PlatformServiceClient,
                               ScaleServiceClient, SiriusServiceClient,
-                              VenusServiceClient, WyzeResponse)
+                              PlutoServiceClient, VenusServiceClient,
+                              WyzeResponse)
 
 
 class BaseClient(object, metaclass=ABCMeta):
@@ -60,11 +62,15 @@ class BaseClient(object, metaclass=ABCMeta):
             user_id=self._user_id,
         )
 
-    def _scale_client(self) -> ScaleServiceClient:
-        return BaseClient._service_client(ScaleServiceClient, token=self._token, base_url=self._base_url)
+    def _scale_client(self, device_model: str = DeviceModels.SCALE_[0]) -> ScaleServiceClient:
+        return BaseClient._service_client(
+            ScaleServiceClient if device_model in DeviceModels.SCALE_ else PlutoServiceClient, token=self._token, base_url=self._base_url)
 
     def _sirius_client(self) -> EarthServiceClient:
         return BaseClient._service_client(SiriusServiceClient, token=self._token, base_url=self._base_url)
+
+    def _pluto_client(self) -> PlutoServiceClient:
+        return BaseClient._service_client(PlutoServiceClient, token=self._token, base_url=self._base_url)
 
     def _venus_client(self) -> VenusServiceClient:
         return BaseClient._service_client(VenusServiceClient, token=self._token, base_url=self._base_url)

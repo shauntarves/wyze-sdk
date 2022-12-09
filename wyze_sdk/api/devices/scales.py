@@ -1,8 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, Sequence, Union
 
 from wyze_sdk.api.base import BaseClient
-from wyze_sdk.errors import WyzeRequestError
+from wyze_sdk.errors import WyzeFeatureNotSupportedError, WyzeRequestError
 from wyze_sdk.models.devices import DeviceModels, Scale, ScaleRecord, UserGoalWeight
 from wyze_sdk.service import WyzeResponse
 
@@ -28,6 +28,8 @@ class ScalesClient(BaseClient):
         :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
 
         :rtype: Optional[Scale]
+
+        :raises WyzeFeatureNotSupportedError: If the scale model isn't supported
         """
         scales = [_scale for _scale in self._list_scales() if _scale['mac'] == device_mac]
         if len(scales) == 0:
@@ -35,28 +37,24 @@ class ScalesClient(BaseClient):
 
         scale = scales[0]
 
-        device_setting = super()._scale_client().get_device_setting(did=device_mac)
+        device_setting = super()._scale_client(scale['product_model']).get_device_setting(did=device_mac)
         if "data" in device_setting.data:
             scale.update(device_setting.data["data"])
 
-        device_member = super()._scale_client().get_device_member(did=device_mac)
+        device_member = super()._scale_client(scale['product_model']).get_device_member(did=device_mac)
         if "data" in device_member.data and device_member.data['data'] is not None:
             scale.update({"device_members": device_member.data["data"]})
 
-        family_member = super()._scale_client().get_family_member(did=device_mac)
+        family_member = super()._scale_client(scale['product_model']).get_family_member(did=device_mac)
         if "data" in family_member.data and family_member.data['data'] is not None:
             scale.update({"family_members": family_member.data["data"]})
 
-        user_preference = super()._scale_client().get_user_preference(did=device_mac)
+        user_preference = super()._scale_client(scale['product_model']).get_user_preference(did=device_mac)
         if "data" in user_preference.data and user_preference.data['data'] is not None:
             scale.update({"user_preferences": user_preference.data["data"]})
 
-        token = super()._scale_client().get_token(did=device_mac)
-        if "data" in token.data and token.data['data'] is not None:
-            scale.update(token.data["data"])
-
         if self._user_id is not None:
-            user_device_relation = super()._scale_client().get_user_device_relation(did=device_mac, user_id=self._user_id)
+            user_device_relation = super()._scale_client(scale['product_model']).get_user_device_relation(did=device_mac, user_id=self._user_id)
             if "data" in user_device_relation.data and user_device_relation.data['data'] is not None:
                 scale.update({"device_relation": user_device_relation.data["data"]})
 
@@ -64,18 +62,37 @@ class ScalesClient(BaseClient):
             if "data" in user_goal_weight.data and user_goal_weight.data['data'] is not None:
                 scale.update({"goal_weight": user_goal_weight.data["data"]})
 
-        # com.wyze.ihealth.d.e
-        user_profile = super()._platform_client().get_user_profile(appid='nHtOAABMsnTbOmg74g3zBsFuHx4iVi5G')
-        if "data" in user_profile.data and user_profile.data['data'] is not None:
-            scale.update({"user_profile": user_profile.data["data"]})
+        if scale['product_model'] in DeviceModels.SCALE_S:
 
-        latest_records = super()._scale_client().get_latest_records()
-        if "data" in latest_records.data and latest_records.data['data'] is not None:
-            scale.update({"latest_records": latest_records.data["data"]})
+            # // this returns the same data as above
+            # device_info = super()._scale_client(scale['product_model']).get_device_info(did=device_mac)
+            # if "data" in device_info.data:
+            #     scale.update(device_info.data["data"])
+
+            if self._user_id is not None:
+                now = datetime.now()
+                latest_records = super()._scale_client(scale['product_model']).get_records(user_id=self._user_id, start_time=now-timedelta(days=5), end_time=now)
+                if "data" in latest_records.data and latest_records.data['data'] is not None:
+                    scale.update({"latest_records": latest_records.data["data"]})
+        elif scale['product_model'] in DeviceModels.SCALE_X:
+            raise WyzeFeatureNotSupportedError('Scale Series X')
+        else:
+            token = super()._scale_client().get_token(did=device_mac)
+            if "data" in token.data and token.data['data'] is not None:
+                scale.update(token.data["data"])
+
+            # com.wyze.ihealth.d.e
+            user_profile = super()._platform_client().get_user_profile(appid='nHtOAABMsnTbOmg74g3zBsFuHx4iVi5G')
+            if "data" in user_profile.data and user_profile.data['data'] is not None:
+                scale.update({"user_profile": user_profile.data["data"]})
+
+            latest_records = super()._scale_client().get_latest_records()
+            if "data" in latest_records.data and latest_records.data['data'] is not None:
+                scale.update({"latest_records": latest_records.data["data"]})
 
         return Scale(**scale)
 
-    def get_records(self, *, user_id: Optional[str] = None, start_time: datetime, end_time: Optional[datetime] = datetime.now(), **kwargs) -> Sequence[ScaleRecord]:
+    def get_records(self, *, device_model: Optional[str] = DeviceModels.SCALE_[0], user_id: Optional[str] = None, start_time: datetime, end_time: Optional[datetime] = datetime.now(), **kwargs) -> Sequence[ScaleRecord]:
         """Retrieves a user's scale event history records.
 
         .. note:: The results are queried and returned in reverse-chronological order
@@ -86,17 +103,17 @@ class ScalesClient(BaseClient):
 
         :rtype: Sequence[ScaleRecord]
         """
-        return [ScaleRecord(**record) for record in super()._scale_client().get_records(user_id=user_id if user_id is not None else self._user_id, start_time=start_time, end_time=end_time)["data"]]
+        return [ScaleRecord(**record) for record in super()._scale_client(device_model=device_model).get_records(user_id=user_id if user_id is not None else self._user_id, start_time=start_time, end_time=end_time)["data"]]
 
-    def get_goal_weight(self, *, user_id: Optional[str] = None, **kwargs) -> UserGoalWeight:
+    def get_goal_weight(self, *, device_model: Optional[str] = DeviceModels.SCALE_[0], user_id: Optional[str] = None, **kwargs) -> UserGoalWeight:
         """Retrieves a user's goal weight.
 
         :param str user_id: The user id. e.g. ``abcdef1234567890abcdef1234567890``
 
         :rtype: WyzeResponse
         """
-        response = super()._scale_client().get_goal_weight(user_id=user_id if user_id is not None else self._user_id)
-        return UserGoalWeight(**response["data"])
+        response = super()._scale_client(device_model=device_model).get_goal_weight(user_id=user_id if user_id is not None else self._user_id)
+        return None if response["data"] is None else UserGoalWeight(**response["data"])
 
     def delete_goal_weight(self, *, user_id: Optional[str] = None, **kwargs) -> WyzeResponse:
         """Deletes a user's goal weight, if one exists.
@@ -163,16 +180,16 @@ class ScalesClient(BaseClient):
         if unit not in ['kg', 'lb']:
             raise WyzeRequestError(f"{unit} must be one of {['kg', 'lb']}")
 
-        response = self._set_scale_setting(device_mac, device_model, firmware_ver, mac, unit, broadcast)
+        response = self._set_scale_setting(device_mac, device_model, unit, firmware_ver, mac, broadcast)
         return response
 
     def _set_scale_setting(
         self,
         device_mac: str,
         device_model: str,
+        unit: str,
         firmware_ver: str,
         mac: str,
-        unit: str,
         broadcast: int
     ) -> WyzeResponse:
         return super()._scale_client().update_device_setting(did=device_mac, model=device_model, firmware_ver=firmware_ver, mac=mac, unit=unit, broadcast=broadcast)
