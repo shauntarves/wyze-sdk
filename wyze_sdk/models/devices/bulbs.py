@@ -93,6 +93,7 @@ class Bulb(BaseBulb):
     ):
         super().__init__(type=type, **others)
         self._control_mode = LightControlMode.TEMPERATURE
+        self.switch_state = super()._extract_property(LightProps.switch_state(), others)
         show_unknown_key_warning(self, others)
 
 
@@ -103,6 +104,7 @@ class WhiteBulb(Bulb):
         **others: dict,
     ):
         super().__init__(type=self.type, **others)
+        self.switch_state = super()._extract_property(LightProps.switch_state(), others)
         show_unknown_key_warning(self, others)
 
 
@@ -122,6 +124,7 @@ class MeshBulb(BaseBulb):
     ):
         super().__init__(type=self.type, **others)
         self.color = super()._extract_property(LightProps.color(), others)
+        self.switch_state = super()._extract_property(LightProps.switch_state(), others)
         show_unknown_key_warning(self, others)
 
     @property

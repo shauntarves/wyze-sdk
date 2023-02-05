@@ -146,6 +146,10 @@ class LightProps(object):
     # "": PropDef("P1521", ""), # not used
 
     @classmethod
+    def switch_state(cls) -> PropDef:
+        return PropDef("switch_state", bool, int)
+
+    @classmethod
     def brightness(cls) -> PropDef:
         return PropDef("P1501", int, acceptable_values=range(0, 100 + 1))
 
