@@ -69,11 +69,10 @@ class ScalesClient(BaseClient):
             # if "data" in device_info.data:
             #     scale.update(device_info.data["data"])
 
-            if self._user_id is not None:
-                now = datetime.now()
-                latest_records = super()._scale_client(scale['product_model']).get_records(user_id=self._user_id, start_time=now-timedelta(days=5), end_time=now)
-                if "data" in latest_records.data and latest_records.data['data'] is not None:
-                    scale.update({"latest_records": latest_records.data["data"]})
+            now = datetime.now()
+            latest_records = super()._scale_client(scale['product_model']).get_records(user_id=self._user_id, start_time=now-timedelta(days=5), end_time=now)
+            if "data" in latest_records.data and latest_records.data['data'] is not None:
+                scale.update({"latest_records": latest_records.data["data"]})
         elif scale['product_model'] in DeviceModels.SCALE_X:
             raise WyzeFeatureNotSupportedError('Scale Series X')
         else:
