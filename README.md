@@ -96,6 +96,23 @@ client = Client(email=os.environ['WYZE_EMAIL'], password=os.environ['WYZE_PASSWO
 ...
 ```
 
+##### Wyze API Key/ID Support
+
+Visit the Wyze developer API portal to generate an API ID/KEY: https://developer-api-console.wyze.com/#/apikey/view
+
+```python
+import os
+from wyze_sdk import Client
+
+response = Client().login(
+    email=os.environ['WYZE_EMAIL'],
+    password=os.environ['WYZE_PASSWORD'],
+    key_id=os.environ['WYZE_KEY_ID'],
+    api_key=os.environ['WYZE_API_KEY']
+)
+...
+```
+
 ##### Multi-Factor Authentication (2FA) Support
 
 If your Wyze account has multi-factor authentication (2FA) enabled, you may be prompted for your 2FA code when authenticating via either supported method described above. If you wish to automate the MFA interaction, both the `Client` constructor and the `login()` method accept `totp_key` as input. If the TOTP key is provided, the MFA prompt should not appear.
