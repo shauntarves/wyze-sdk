@@ -79,19 +79,14 @@ class AuthServiceClient(ExServiceClient):
             self.request_verifier.md5_string(self.request_verifier.md5_string(password))
         )
         kwargs.update({"nonce": str(nonce), "email": email, "password": password})
-        api_endpoint = "/user/login"
-        api_headers = {}
-
-        if key_id and api_key:
-            api_endpoint = "/api/user/login"
-            api_headers = {
-                "keyid": key_id,
-                "apikey": api_key,
-                "user-agent": f"wyze-sdk-{version.__version__}",
-            }
+        api_headers = {
+            "keyid": key_id,
+            "apikey": api_key,
+            "user-agent": f"wyze-sdk-{version.__version__}",
+        }
 
         response = self.api_call(
-            api_endpoint, json=kwargs, request_specific_headers=api_headers, nonce=nonce
+            '/api/user/login', json=kwargs, request_specific_headers=api_headers, nonce=nonce
         )
 
         if response["access_token"]:

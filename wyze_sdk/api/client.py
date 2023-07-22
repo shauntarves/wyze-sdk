@@ -142,8 +142,8 @@ class Client(object):
         self,
         email: str = None,
         password: str = None,
-        key_id: Optional[str] = None,
-        api_key: Optional[str] = None,
+        key_id: str = None,
+        api_key: str = None,
         totp_key: Optional[str] = None,
     ) -> WyzeResponse:
         """
@@ -172,6 +172,12 @@ class Client(object):
             self._totp_key = totp_key.strip()
         if self._email is None or self._password is None:
             raise WyzeClientConfigurationError("must provide email and password")
+        if self._key_id is None or self._api_key is None:
+            raise WyzeClientConfigurationError(
+                "Must provide a Wyze API key and id.\n\n" +
+                "As of July 2023, users must provide an api key and key id to create an access token. " +
+                "For more information, please visit https://support.wyze.com/hc/en-us/articles/16129834216731."
+            )
         self._logger.debug(
             f"access token not provided, attempting to login as {self._email}"
         )
