@@ -3,6 +3,8 @@ from __future__ import annotations
 from typing import Dict, Optional
 
 from mintotp import totp
+
+from wyze_sdk import version
 from wyze_sdk.signature import RequestVerifier
 
 from .base import ExServiceClient, WyzeResponse
@@ -62,18 +64,32 @@ class AuthServiceClient(ExServiceClient):
             nonce=nonce,
         )
 
-    def user_login(self, *, email: str, password: str, totp_key: Optional[str] = None, **kwargs) -> WyzeResponse:
+    def user_login(
+        self,
+        *,
+        email: str,
+        password: str,
+        key_id: Optional[str] = None,
+        api_key: Optional[str] = None,
+        totp_key: Optional[str] = None,
+        **kwargs,
+    ) -> WyzeResponse:
         nonce = self.request_verifier.clock.nonce()
         password = self.request_verifier.md5_string(
             self.request_verifier.md5_string(self.request_verifier.md5_string(password))
         )
-        kwargs.update({
-            'nonce': str(nonce),
-            'email': email,
-            'password': password
-        })
-        response = self.api_call('/user/login', json=kwargs, nonce=nonce)
-        if response['access_token']:
+        kwargs.update({"nonce": str(nonce), "email": email, "password": password})
+        api_headers = {
+            "keyid": key_id,
+            "apikey": api_key,
+            "user-agent": f"wyze-sdk-{version.__version__}",
+        }
+
+        response = self.api_call(
+            '/api/user/login', json=kwargs, request_specific_headers=api_headers, nonce=nonce
+        )
+
+        if response["access_token"]:
             return response
 
         if 'TotpVerificationCode' in response.get('mfa_options'):

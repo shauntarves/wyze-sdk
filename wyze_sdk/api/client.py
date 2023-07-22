@@ -43,6 +43,8 @@ class Client(object):
         refresh_token: Optional[str] = None,
         email: Optional[str] = None,
         password: Optional[str] = None,
+        key_id: Optional[str] = None,
+        api_key: Optional[str] = None,
         totp_key: Optional[str] = None,
         base_url: Optional[str] = None,
         timeout: int = 30,
@@ -55,6 +57,10 @@ class Client(object):
         self._email = None if email is None else email.strip()
         #: An unencrypted string specifying the account password.
         self._password = None if password is None else password.strip()
+        # A string used for API-based requests
+        self._key_id = key_id.strip() if key_id else None
+        # A string used for API-based requests
+        self._api_key = api_key.strip() if api_key else None
         #: An unencrypted string specifying the TOTP Key for automatic TOTP 2FA verification code generation.
         self._totp_key = None if totp_key is None else totp_key.strip()
         #: An optional string representing the API base URL. **This should not be used except for when running tests.**
@@ -136,8 +142,10 @@ class Client(object):
         self,
         email: str = None,
         password: str = None,
+        key_id: str = None,
+        api_key: str = None,
         totp_key: Optional[str] = None,
-        ) -> WyzeResponse:
+    ) -> WyzeResponse:
         """
         Exchanges email and password for an ``access_token`` and a ``refresh_token``, which
         are stored in this client. The tokens will be used for all subsequent requests
@@ -156,13 +164,35 @@ class Client(object):
             self._email = email.strip()
         if password is not None:
             self._password = password.strip()
+        if key_id is not None:
+            self._key_id = key_id.strip()
+        if api_key is not None:
+            self._api_key = api_key.strip()
         if totp_key is not None:
             self._totp_key = totp_key.strip()
         if self._email is None or self._password is None:
             raise WyzeClientConfigurationError("must provide email and password")
-        self._logger.debug(f"access token not provided, attempting to login as {self._email}")
-        response = self._auth_client().user_login(email=self._email, password=self._password, totp_key=self._totp_key)
-        self._update_session(access_token=response["access_token"], refresh_token=response["refresh_token"], user_id=response["user_id"])
+        if self._key_id is None or self._api_key is None:
+            raise WyzeClientConfigurationError(
+                "Must provide a Wyze API key and id.\n\n" +
+                "As of July 2023, users must provide an api key and key id to create an access token. " +
+                "For more information, please visit https://support.wyze.com/hc/en-us/articles/16129834216731."
+            )
+        self._logger.debug(
+            f"access token not provided, attempting to login as {self._email}"
+        )
+        response = self._auth_client().user_login(
+            email=self._email,
+            password=self._password,
+            key_id=self._key_id,
+            api_key=self._api_key,
+            totp_key=self._totp_key,
+        )
+        self._update_session(
+            access_token=response["access_token"],
+            refresh_token=response["refresh_token"],
+            user_id=response["user_id"],
+        )
         return response
 
     def refresh_token(self) -> WyzeResponse:
