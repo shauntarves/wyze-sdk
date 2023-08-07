@@ -115,7 +115,7 @@ response = Client().login(
 
 ##### Multi-Factor Authentication (2FA) Support
 
-If your Wyze account has multi-factor authentication (2FA) enabled, you may be prompted for your 2FA code when authenticating via either supported method described above. If you wish to automate the MFA interaction, both the `Client` constructor and the `login()` method accept `totp_key` as input. If the TOTP key is provided, the MFA prompt should not appear.
+If your Wyze account has multi-factor authentication (2FA) enabled, you may be prompted for your 2FA code when authenticating via either supported method described above. If you wish to automate the MFA interaction, both the `Client` constructor and the `login()` method accept `totp_key` as input. If the TOTP key is provided, the MFA prompt should not appear. Your TOTP key can be obtained during the Wyze 2FA setup process and is the same code that you would typically input into an authenticator app during 2FA setup.
 
 ```python
 import os
