@@ -224,6 +224,11 @@ class DeviceProps(object):
     def power_state(cls) -> PropDef:
         return PropDef("P3", bool, int, [0, 1])
 
+    # list_devices returns plug status in device_params.switch_state, but it's set with P3 above.
+    @classmethod
+    def switch_state(cls) -> PropDef:        
+        return PropDef("switch_state", bool, int, [0, 1])
+
     @classmethod
     def online_state(cls) -> PropDef:
         return PropDef("P5", bool, int, [0, 1])
