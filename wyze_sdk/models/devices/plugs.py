@@ -122,7 +122,7 @@ class Plug(SwitchableMixin, AbstractWirelessNetworkedDevice):
         **others: dict,
     ):
         super().__init__(type=type, **others)
-        self.switch_state = self._extract_property(DeviceProps.power_state(), others)
+        self._switch_state = self._extract_property(DeviceProps.power_state(), others)
         self._switch_state_timer = super()._extract_attribute("switch_state_timer", others)
         self.status_light = self._extract_property(PlugProps.status_light(), others)
         self.away_mode = self._extract_property(PlugProps.away_mode(), others)
