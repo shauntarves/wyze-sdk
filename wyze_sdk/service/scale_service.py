@@ -183,7 +183,7 @@ class ScaleServiceClient(ExServiceClient):
         See: com.wyze.ihealth.d.b.p
         """
         kwargs.update({'device_id': did, 'family_member_id': user_id, 'measure_ts': measure_ts, 'heart_rate': str(heart_rate)})
-        return self.api_call('/plugin/scale/get_latest_record', json=kwargs)
+        return self.api_call('/plugin/scale/add_heart_rate_record', json=kwargs)
 
     def add_weight_record(self, *, did: str, mac: str, user_id: str, measure_ts: int, measure_type: int = 1, weight: float, **kwargs) -> WyzeResponse:
         """
@@ -192,7 +192,7 @@ class ScaleServiceClient(ExServiceClient):
         See: com.wyze.ihealth.d.b.k
         """
         kwargs.update({'device_id': did, 'mac': mac, 'family_member_id': user_id, 'measure_ts': measure_ts, 'measure_type': measure_type, 'weight': weight})
-        return self.api_call('/plugin/scale/get_latest_record', json=kwargs)
+        return self.api_call('/plugin/scale/add_record', json=kwargs)
 
     def delete_record(self, *, data_id=Union[int, Sequence[int]], **kwargs) -> WyzeResponse:
         """
