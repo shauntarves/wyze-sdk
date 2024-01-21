@@ -8,10 +8,11 @@ from wyze_sdk.api.devices import (BulbsClient, CamerasClient,
                                   ScalesClient, ThermostatsClient,
                                   SwitchesClient, VacuumsClient)
 from wyze_sdk.api.events import EventsClient
-from wyze_sdk.errors import WyzeClientConfigurationError
+from wyze_sdk.errors import WyzeClientConfigurationError, WyzeRequestError
 from wyze_sdk.models.devices import Device, DeviceParser
 from wyze_sdk.service import (ApiServiceClient, AuthServiceClient,
                               PlatformServiceClient, WyzeResponse)
+from wyze_sdk.signature import MD5Hasher
 
 
 class Client(object):
@@ -216,6 +217,33 @@ class Client(object):
         :rtype: WyzeResponse
         """
         return self._api_client().get_user_info()
+
+    def logout(self) -> WyzeResponse:
+        """
+        Destroys the current user's session.
+
+        :rtype: WyzeResponse
+        """
+        return self._api_client().logout()
+
+    def change_password(self, *, new_password: str, old_password: Optional[str], **kwargs) -> WyzeResponse:
+        """
+        Changes the current user's password.
+
+        :rtype: WyzeResponse
+        """
+        if old_password is None:
+            old_password = self._password
+        if old_password is None:
+            raise WyzeRequestError("Must specify old (current) password")
+
+        if new_password == old_password:
+            raise WyzeRequestError("Old and new passwords must be different")
+
+        return self._api_client().change_password(
+            old_password=MD5Hasher().hex(MD5Hasher().hex(old_password)),
+            new_password=MD5Hasher().hex(MD5Hasher().hex(new_password)),
+        )
 
     def devices_list(self, **kwargs) -> Sequence[Device]:
         """List the devices available to the current user
