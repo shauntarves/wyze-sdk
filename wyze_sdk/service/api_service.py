@@ -130,6 +130,12 @@ class ApiServiceClient(BaseServiceClient):
         kwargs.update({"sv": SV_LOGOUT})
         return self.api_call('/app/user/logout', json=kwargs)
 
+    def change_password(self, **kwargs) -> WyzeResponse:
+        SV_CHANGE_PASSWORD = '172431db943a4448a8d818c035df0404'
+
+        kwargs.update({"sv": SV_CHANGE_PASSWORD})
+        return self.api_call('/app/user/change_password', json=kwargs)
+
     def get_device_info(self, *, mac: str, model: str, **kwargs) -> WyzeResponse:
         SV_GET_DEVICE_INFO = '81d1abc794ba45a39fdd21233d621e84'
 
