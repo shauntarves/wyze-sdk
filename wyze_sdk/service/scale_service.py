@@ -163,7 +163,7 @@ class ScaleServiceClient(ExServiceClient):
         """
         if user_id:
             kwargs.update({'family_member_id': user_id})
-        kwargs.update({'start_time': str(0), 'end_time': str(datetime_to_epoch(end_time))})
+        kwargs.update({'start_time': str(datetime_to_epoch(start_time)), 'end_time': str(datetime_to_epoch(end_time))})
         return self.api_call('/plugin/scale/get_record_range', http_verb="GET", params=kwargs)
 
     def delete_goal_weight(self, *, user_id: Optional[str] = None, **kwargs) -> WyzeResponse:
