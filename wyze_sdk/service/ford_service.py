@@ -102,7 +102,7 @@ class FordServiceClient(BaseServiceClient):
     ) -> WyzeResponse:
         nonce = self.request_verifier.clock.nonce()
 
-        if http_verb == "POST":
+        if http_verb == "POST" or http_verb == "PATCH" or http_verb == "PUT":
             if json is None:
                 json = {}
             # this must be done here so that it will be included in the signing
@@ -114,7 +114,7 @@ class FordServiceClient(BaseServiceClient):
                 "timestamp": str(nonce),
             })
             json.update({
-                "sign": self.generate_dynamic_signature(path=api_method, method="post", body=super().get_sorted_params(sorted(json.items()))),
+                "sign": self.generate_dynamic_signature(path=api_method, method=http_verb.lower(), body=super().get_sorted_params(sorted(json.items()))),
             })
         elif http_verb == "GET":
             if params is None:
@@ -233,3 +233,11 @@ class FordServiceClient(BaseServiceClient):
             'passwordid': password_id,
         })
         return self.api_call('/openapi/lock/v1/pwd/operations/delete', http_verb="POST", json=kwargs)
+
+    def set_nickname(self, *, uuid: str, password_id: str, nickname: str, **kwargs) -> FordResponse:
+        kwargs.update({
+            'uuid': uuid,
+            'passwordid': password_id,
+            'nickname': nickname,
+        })
+        return self.api_call('/openapi/lock/v1/pwd/nickname', http_verb="PUT", json=kwargs)
