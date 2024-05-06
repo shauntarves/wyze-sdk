@@ -183,7 +183,7 @@ class LocksClient(BaseLockClient):
         secret = self._ford_client().get_crypt_secret()["secret"]
         return CBCEncryptor(self._ford_client().WYZE_FORD_IV_HEX).encrypt(MD5Hasher().hash(secret), access_code).hex()
 
-    def create_access_code(self, device_mac: str, access_code: str, name: Optional[str], permission: Optional[LockKeyPermission] = None, periodicity: Optional[LockKeyPeriodicity] = None, **kwargs) -> WyzeResponse:
+    def create_access_code(self, device_mac: str, access_code: str, name: Optional[str], permission: Optional[LockKeyPermission] = None, periodicity: Optional[LockKeyPeriodicity] = None, userid: Optional[str] = None, **kwargs) -> WyzeResponse:
         """Creates a guest access code on a lock.
 
         :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
@@ -208,7 +208,7 @@ class LocksClient(BaseLockClient):
             permission = LockKeyPermission(type=LockKeyPermissionType.ALWAYS)
 
         uuid = Lock.parse_uuid(mac=device_mac)
-        return self._ford_client().add_password(uuid=uuid, password=self._encrypt_access_code(access_code=access_code), name=name, permission=permission, periodicity=periodicity, userid=self._user_id)
+        return self._ford_client().add_password(uuid=uuid, password=self._encrypt_access_code(access_code=access_code), name=name, permission=permission, periodicity=periodicity, userid=userid if userid is not None else self._user_id)
 
     def delete_access_code(self, device_mac: str, access_code_id: int, **kwargs) -> WyzeResponse:
         """Deletes an access code from a lock.
@@ -243,6 +243,20 @@ class LocksClient(BaseLockClient):
 
         uuid = Lock.parse_uuid(mac=device_mac)
         return self._ford_client().update_password(uuid=uuid, password_id=str(access_code_id), password=self._encrypt_access_code(access_code=access_code), name=name, permission=permission, periodicity=periodicity)
+
+    def rename_access_code(self, device_mac: str, access_code_id: int, access_code: Optional[str] = None, name: Optional[str] = None, permission: LockKeyPermission = None, periodicity: Optional[LockKeyPeriodicity] = None, **kwargs) -> WyzeResponse:
+        """Renames an existing access code on a lock.
+
+        :param str device_mac: The device mac. e.g. ``ABCDEF1234567890``
+        :param int access_code_id: The id of the access code to reset.
+        :param str name: The new name for the guest access code.
+
+        :rtype: WyzeResponse
+
+        :raises WyzeRequestError: if the new access code is not valid
+        """
+        uuid = Lock.parse_uuid(mac=device_mac)
+        return self._ford_client().set_nickname(uuid=uuid, password_id=str(access_code_id), nickname=name)
 
     @property
     def gateways(self) -> LockGatewaysClient:
