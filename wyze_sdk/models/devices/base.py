@@ -25,6 +25,7 @@ class DeviceModels(object):
     CAMERA_V1 = ['WYZEC1']
     CAMERA_V2 = ['WYZEC1-JZ']
     CAMERA_V3 = ['WYZE_CAKP2JFUS']
+    CAMERA_V4 = ['HL_CAM4']
     CAMERA_OUTDOOR = ['WVOD1']
 
     LOCK = ['YD.LO1']
@@ -34,7 +35,7 @@ class DeviceModels(object):
     CONTACT_SENSOR = ['DWS3U', 'DWS2U']
     MOTION_SENSOR = ['PIR3U', 'PIR2U']
     VACUUM = ['JA_RO2']
-    CAMERA = CAMERA_V1 + CAMERA_V2 + CAMERA_V3 + CAMERA_OUTDOOR
+    CAMERA = CAMERA_V1 + CAMERA_V2 + CAMERA_V3 + CAMERA_V4 + CAMERA_OUTDOOR
     SCALE_ = ['JA.SC', 'JA.SC2']
     SCALE_S = ['WL_SC2']
     SCALE_X = ['WL_SC3']
