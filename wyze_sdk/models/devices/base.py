@@ -38,7 +38,8 @@ class DeviceModels(object):
     SCALE_ = ['JA.SC', 'JA.SC2']
     SCALE_S = ['WL_SC2']
     SCALE_X = ['WL_SC3']
-    SCALE = SCALE_ + SCALE_S + SCALE_X
+    SCALE_U = ['WL_SCU']
+    SCALE = SCALE_ + SCALE_S + SCALE_X + SCALE_U
     WATCH = ['RA.WP1', 'RY.WA1']
     BAND = ['RY.HP1']
 
