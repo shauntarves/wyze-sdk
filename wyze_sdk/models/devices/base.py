@@ -41,7 +41,7 @@ class DeviceModels(object):
     CAMERA = CAMERA_V1 + CAMERA_V2 + CAMERA_V3 + CAMERA_OUTDOOR + CAMERA_OUTDOOR_V2 + CAMERA_PAN + CAMERA_BELL + CAMERA_V4
     SCALE_ = ['JA.SC', 'JA.SC2']
     SCALE_S = ['WL_SC2']
-    SCALE_X = ['WL_SC22135']  # placeholder
+    SCALE_X = ['WL_SC3']
     SCALE = SCALE_ + SCALE_S + SCALE_X
     WATCH = ['RA.WP1', 'RY.WA1']
     BAND = ['RY.HP1']
