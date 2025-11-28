@@ -723,7 +723,26 @@ class LockKeypad(VoltageMixin, Device):
         self._is_online = self._extract_property(prop_def=LockProps.onoff_line(), others=others)
         show_unknown_key_warning(self, others)
 
+"""
+Locks are funny objects...
 
+The access codes that are set on locks are referred to as "passwords"
+throughout the lock infrastructure. When a new code/password is created,
+it is assigned some non-obivous fields:
+ * description: this is not actually a description, but rather used to
+    shuttle around a "status" or "state" of the lock in case there was
+    some kind of error
+ * name: not to be confused with the nickname or "usename", this field
+    is IMMUTABLE and remains stuck to the "Guest name" provided when the
+    code/password was created
+ * username: also called a "nickname", this field is the descriptive
+    "guest code name" that can be changed
+
+All of this seems to be further complicated by different endpoints using
+these field names differently. For example, the GET `.../lock/v1/auth`
+endpoint puts the username value in a field called name. However, the
+`.../lock/v1/pwd` calls to actually control the codes/passwords does not.
+"""
 class Lock(LockableMixin, ContactMixin, VoltageMixin, Device):
 
     type = "Lock"

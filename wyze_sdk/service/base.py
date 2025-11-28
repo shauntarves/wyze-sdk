@@ -8,7 +8,7 @@ import uuid
 from abc import ABCMeta
 from contextlib import suppress
 from json import dumps
-from typing import Dict, Optional, Union
+from typing import Any, Dict, Optional, Union
 from urllib.parse import urljoin
 
 import requests
@@ -108,7 +108,7 @@ class BaseServiceClient(metaclass=ABCMeta):
             self._logger.debug(f"Failed to send a request to server: {e}")
             raise e
 
-    def do_post(self, url: str, headers: dict, payload: dict, params: Optional[dict] = None) -> WyzeResponse:
+    def do_post(self, url: str, headers: dict, payload: dict, params: Optional[dict] = None, method: Optional[Any] = 'POST') -> WyzeResponse:
         with requests.Session() as client:
             if headers is not None:
                 # add the request-specific headers
@@ -118,7 +118,7 @@ class BaseServiceClient(metaclass=ABCMeta):
             # we have to use a prepared request because the requests module
             # doesn't allow us to specify the separators in our json dumping
             # and the server expects no extra whitespace
-            req = client.prepare_request(requests.Request('POST', url, json=payload, params=params))
+            req = client.prepare_request(requests.Request(method, url, json=payload, params=params))
 
             self._logger.debug('unmodified prepared request')
             self._logger.debug(req)
@@ -192,7 +192,7 @@ class BaseServiceClient(metaclass=ABCMeta):
                 POST requests.
         """
         has_json = json is not None
-        if has_json and http_verb != "POST":
+        if has_json and http_verb != "POST" and http_verb != "PATCH" and http_verb != "PUT":
             msg = "JSON data can only be submitted as POST requests. GET requests should use the 'params' argument."
             raise WyzeRequestError(msg)
 
@@ -200,8 +200,8 @@ class BaseServiceClient(metaclass=ABCMeta):
         headers = headers or {}
         headers.update(self.headers)
 
-        if http_verb == "POST":
-            return self.do_post(url=api_url, headers=headers, payload=json, params=params)
+        if http_verb == "POST" or http_verb == "PATCH" or http_verb == "PUT":
+            return self.do_post(url=api_url, headers=headers, payload=json, params=params, method=http_verb)
         elif http_verb == "GET":
             return self.do_get(url=api_url, headers=headers, payload=params)
 
