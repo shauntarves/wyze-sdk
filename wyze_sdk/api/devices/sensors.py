@@ -1,5 +1,5 @@
 from abc import ABCMeta
-from typing import Optional, Sequence, Union
+from typing import Optional, Sequence
 
 from wyze_sdk.api.base import BaseClient
 from wyze_sdk.models.devices import (ContactSensor, DeviceModels, MotionSensor,
@@ -12,12 +12,15 @@ class SensorsClient(BaseClient, metaclass=ABCMeta):
         return [device for device in super()._list_devices(
         ) if device['product_model'] in models]
 
-    def _get_sensor(self, device_mac: str, sensors: Union[Sensor, Sequence[Sensor]]) -> Optional[dict]:
-        if isinstance(sensors, Sensor):
-            if device_mac != sensors['mac']:
-                return None
-            sensors = [sensors]
+    def _get_sensor(self, device_mac: str, sensors: Sequence[dict]) -> Optional[dict]:
+        """Look up a single sensor by MAC from a pre-fetched list.
 
+        The previous implementation accepted Union[Sensor, Sequence[Sensor]] and
+        had a branch for a single Sensor instance that was never reached in practice
+        (both info() callers always pass a Sequence[dict]). That branch also
+        subscripted the Sensor object like a dict, which would raise TypeError at
+        runtime. Removed in favour of a simple Sequence-only signature.
+        """
         _sensors = [_sensor for _sensor in sensors if _sensor['mac'] == device_mac]
         if len(_sensors) == 0:
             return None
@@ -56,6 +59,7 @@ class ContactSensorsClient(SensorsClient):
         contact_sensor = self._get_sensor(device_mac, self._list_contact_sensors())
         if contact_sensor is not None:
             return ContactSensor(**contact_sensor)
+        return None
 
 
 class MotionSensorsClient(SensorsClient):
@@ -82,3 +86,4 @@ class MotionSensorsClient(SensorsClient):
         motion_sensor = self._get_sensor(device_mac, self._list_motion_sensors())
         if motion_sensor is not None:
             return MotionSensor(**motion_sensor)
+        return None

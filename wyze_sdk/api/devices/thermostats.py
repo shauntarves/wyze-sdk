@@ -78,7 +78,7 @@ class ThermostatsClient(BaseClient):
         #               calls /get_iot_prop on thermostat with keys temperature,humidity,iot_state,auto_comfort
         _sensors = [_sub_device for _sub_device in super()._earth_client().get_sub_device(did=device_mac).data["data"]]
         if len(_sensors) == 0:
-            return None
+            return []
 
         _dids = list(map(lambda _sensor: _sensor['device_id'], _sensors))
 
@@ -152,7 +152,10 @@ class ThermostatsClient(BaseClient):
 
         :rtype: WyzeResponse
         """
-        return self._set_thermostat_property(device_mac, device_model, DeviceProp(definition=Thermostat.props()["current_scenario"], value=scenario.codes))
+        # Fix: was calling _set_thermostat_property (set_iot_prop) — all other setters
+        # use _set_thermostat_properties (set_iot_prop_by_topic). Using the wrong
+        # endpoint causes the command to be silently ignored on most firmware versions.
+        return self._set_thermostat_properties(device_mac, device_model, DeviceProp(definition=Thermostat.props()["current_scenario"], value=scenario.codes))
 
     def set_heating_setpoint(self, *, device_mac: str, device_model: str, heating_setpoint: int, **kwargs) -> WyzeResponse:
         """Sets the heating setpoint of the thermostat.

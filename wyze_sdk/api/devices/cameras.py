@@ -42,16 +42,23 @@ class CamerasClient(BaseClient):
             return None
 
         camera = cameras[0]
-        camera.update(
-            super()._api_client().get_device_info(
-                mac=camera['mac'],
-                model=camera['product_model'])["data"]
-        )
 
-        latest_events = super()._api_client().get_event_list(
-            device_ids=[camera["mac"]], begin=datetime.now() - timedelta(days=1), end=datetime.now())
-        if "data" in latest_events.data and latest_events.data['data'] is not None:
-            camera.update(latest_events.data["data"])
+        try:
+            camera.update(
+                super()._api_client().get_device_info(
+                    mac=camera['mac'],
+                    model=camera['product_model'])["data"]
+            )
+        except Exception:
+            pass
+
+        try:
+            latest_events = super()._api_client().get_event_list(
+                device_ids=[camera["mac"]], begin=datetime.now() - timedelta(days=1), end=datetime.now())
+            if "data" in latest_events.data and latest_events.data['data'] is not None:
+                camera.update(latest_events.data["data"])
+        except Exception:
+            pass
 
         return Camera(**camera)
 
