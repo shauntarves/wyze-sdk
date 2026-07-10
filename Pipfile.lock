@@ -25,10 +25,10 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:0d9c601124e5a6ba9712dbc60d9c53c21e34f5f641fe83002317394311bdce14"
+                "sha256:2227dcbaafe0d2f59279d1762ddddc37783ed4354594f194ffc31d20f41fc3db"
             ],
             "markers": "python_version >= '3.14'",
-            "version": "==2024.7.4"
+            "version": "==2026.6.17"
         },
         "charset-normalizer": {
             "hashes": [
