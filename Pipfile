@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-wyze-sdk = {path = "./wyze_sdk"}
+wyze-sdk = {path = "./"}
 requests = "*"
 blackboxprotobuf = "*"
 mintotp = "*"
