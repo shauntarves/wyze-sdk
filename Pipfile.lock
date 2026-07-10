@@ -5,7 +5,7 @@
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.14.6"
+            "python_version": "3.14.5"
         },
         "sources": [
             {
@@ -157,7 +157,7 @@
             "hashes": [
                 "sha256:a4f57ab599e6a2e3016d7595cfd72eb4661a5106e787a95bcc90c7105b831efc"
             ],
-            "markers": "python_version < '3.10'",
+            "markers": "python_version >= '3.14'",
             "version": "==9.0.0"
         },
         "isort": {
@@ -178,7 +178,7 @@
             "hashes": [
                 "sha256:722695808f4b6457b320fdc131280796bdceb04ab50fe1795cd540799ebe1698"
             ],
-            "markers": "python_version >= '3.7'",
+            "markers": "python_version >= '3.14'",
             "version": "==3.0.3"
         },
         "mccabe": {
