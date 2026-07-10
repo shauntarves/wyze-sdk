@@ -417,7 +417,6 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5' and python_version < '4'",
             "version": "==2.7.0"
-"
         },
         "zipp": {
             "hashes": [
