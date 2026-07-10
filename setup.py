@@ -14,7 +14,7 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as readme:
     long_description = readme.read()
 
 validate_dependencies = [
-    "pytest>=5.4,<6",
+    "pytest>=9.0.3",
     "flake8>=3,<4",
 ]
 
