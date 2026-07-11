@@ -6,8 +6,10 @@ from setuptools import find_packages, setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-__version__ = None
-exec(open(f"{here}/wyze_sdk/version.py").read())
+#__version__ = None
+import wyze_sdk.version
+__version__ = wyze_sdk.version.__version__
+#exec(open(f"{here}/wyze_sdk/version.py").read())
 
 long_description = ""
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as readme:
