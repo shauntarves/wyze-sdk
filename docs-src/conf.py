@@ -24,8 +24,10 @@ copyright = '2021-2022, Shaun Tarves'
 author = 'Shaun Tarves'
 
 # The full version, including alpha/beta/rc tags
-__version__ = None
-exec(open("../wyze_sdk/version.py").read())
+# __version__ = None
+# exec(open("../wyze_sdk/version.py").read())
+from wyze_sdk import version
+__version__ = version.__version__
 release = __version__
 
 
