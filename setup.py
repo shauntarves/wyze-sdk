@@ -1,15 +1,19 @@
 import codecs
 import os
+import re
 import sys
 
 from setuptools import find_packages, setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-#__version__ = None
-import wyze_sdk.version
-__version__ = wyze_sdk.version.__version__
-#exec(open(f"{here}/wyze_sdk/version.py").read())
+def find_version(*file_paths):
+    with codecs.open(os.path.join(here, *file_paths), 'r', 'utf-8') as f:
+        version_file = f.read()
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError("__version__ not defined in version.py")
 
 long_description = ""
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as readme:
@@ -25,14 +29,14 @@ pytest_runner = ["pytest-runner"] if needs_pytest else []
 
 setup(
     name='wyze_sdk',
-    version=__version__,
+    version=find_version("wyze_sdk", "version.py"),
     description='The Wyze Labs API Platform SDK for Python.',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/shauntarves/wyze-sdk",
     author='Shaun Tarves',
     author_email='shaun@tarves.net',
-    python_requires=">=3.14.6",
+    python_requires=">=3.14",
     include_package_data=True,
     license="The Unlicense",
     classifiers=[
@@ -54,7 +58,7 @@ setup(
         ]
     ),
     install_requires=["requests", "blackboxprotobuf", "mintotp", "pycryptodomex"],
-    setup_requires=pytest_runner,
+    setup_requires=["pytest_runner", "pycryptodomex"],
     test_suite="tests",
     tests_require=validate_dependencies,
 )

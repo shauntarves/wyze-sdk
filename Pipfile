@@ -4,16 +4,22 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-wyze-sdk = {path = "./"}
-requests = "*"
 blackboxprotobuf = "*"
+certifi = "*"
+charset-normalizer = "*"
+idna = "*"
 mintotp = "*"
+protobuf = "*"
 pycryptodomex = "*"
+requests = "*"
+six = "*"
+urllib3 = "*"
 
 [dev-packages]
 flake8 = "*"
 isort = "*"
 sphinx = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.14"
