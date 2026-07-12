@@ -4,12 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-blackboxprotobuf = "*"
+bbpb = "*"
+#blackboxprotobuf = "*"
 certifi = "*"
 charset-normalizer = "*"
 idna = "*"
 mintotp = "*"
-protobuf = "*"
+protobuf = ">=5.29.6"
 pycryptodomex = "*"
 requests = "*"
 six = "*"
