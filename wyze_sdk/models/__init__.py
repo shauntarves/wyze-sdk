@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import distutils.util
 import logging
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, time
@@ -10,6 +9,19 @@ from functools import wraps
 from typing import Any, Callable, Iterable, Optional, Sequence, Set, Union
 
 from wyze_sdk.errors import WyzeObjectFormationError, WyzeRequestError, WyzeFeatureNotSupportedError
+
+def strtobool(v):
+    """    Convert a string representation of truth to true (1) or false (0).
+
+    True values are y, yes, t, true, on and 1; false values are n, no, f, false, off and 0. Raises ValueError if val is anything else.
+    """
+    if isinstance(v, str):
+        v = v.lower()
+        if v in ('y', 'yes', 't', 'true', 'on', '1'):
+            return True
+        elif v in ('n', 'no', 'f', 'false', 'off', '0'):
+            return False
+    raise ValueError("Invalid truth value: {!r}".format(v))
 
 
 def datetime_to_epoch(datetime: datetime, ms: bool = True) -> int:
@@ -233,7 +245,7 @@ class PropDef(object):
     def validate(self, value: Any):
         if not isinstance(value, self._type):
             try:
-                value = bool(distutils.util.strtobool(str(value))) if self._type == bool else self._type(value)
+                value = bool(strtobool(str(value))) if self._type == bool else self._type(value)
             except TypeError:
                 logging.debug(f"could not cast value {value} into expected type {self._type}")
                 raise WyzeRequestError(f"{value} must be of type {self._type}")

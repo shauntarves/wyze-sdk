@@ -65,7 +65,7 @@ class SensorProps(object):
 
     @classmethod
     def open_close_state(cls) -> PropDef:
-        return PropDef("P1301", bool, int, [0, 1])
+        return PropDef("open_close_state", bool, int, [0, 1])
 
     @classmethod
     def motion_state(cls) -> PropDef:

@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-import distutils.util
 import json
 import logging
 from abc import ABCMeta
 from datetime import datetime
 from typing import Any, Optional, Sequence, Set, Union
 
-from wyze_sdk.models import JsonObject, PropDef, epoch_to_datetime
+from wyze_sdk.models import JsonObject, PropDef, epoch_to_datetime, strtobool
 
 # -------------------------------------------------
 # Base Classes
@@ -144,7 +143,7 @@ class DeviceProp(object):
             else:
                 try:
                     if self._definition.type == bool:
-                        value = bool(distutils.util.strtobool(str(value)))
+                        value = bool(strtobool(str(value)))
                     elif self._definition.type == dict:
                         value = json.loads(value)
                     else:
