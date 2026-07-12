@@ -48,7 +48,7 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development :: Libraries :: Python Modules',
         "Topic :: Home Automation",
-        'Programming Language :: Python :: 3.14',
+        'Programming Language :: Python :: 3.12',
     ],
     keywords=["wyze", "wyze-labs", "wyze-sdk", "wyze-api", "wyzeapy", "wyze-apy", "smart home", "home automation"],
     packages=find_packages(
