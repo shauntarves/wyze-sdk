@@ -54,11 +54,11 @@ $ pip install wyze-sdk
 
 ---
 
-Wyze does not provide a Web API that gives you the ability to build applications that interact with Wyze devices. This Development Kit is a reverse-engineered, module-based wrapper that makes interaction with that API possible. We have a few basic examples here with some of the more common uses but you are encouraged to [explore the full range of methods](https://wyze-sdk.readthedocs.io/en/latest/wyze_sdk.api.devices.html) available to you.
+Wyze does not provide a Web API that gives you the ability to build applications that interact with Wyze devices. This Development Kit is a reverse-engineered, module-based wrapper that makes interaction with that API possible. We have a few basic examples here with some of the more common uses, but you are encouraged to [explore the full range of methods](https://wyze-sdk.readthedocs.io/en/latest/wyze_sdk.api.devices.html) available to you.
 
 #### Authenticating
 
-When performing user "authentication" with an email and password in the Wyze app, the credentials are exchanged for an access token and a refrsh token. These are long strings of the form `lvtx.XXXX`. When using this library, be aware that there are two method for handling authentiation:
+When performing user "authentication" with an email and password in the Wyze app, the credentials are exchanged for an access token and a refrsh token. These are long strings of the form `lvtx.XXXX`. When using this library, be aware that there are two method for handling authentication:
 
 ##### Obtaining the Token and Storing it for Later Use (Preferred)
 
@@ -115,7 +115,7 @@ response = Client().login(
 
 ##### Multi-Factor Authentication (2FA) Support
 
-If your Wyze account has multi-factor authentication (2FA) enabled, you may be prompted for your 2FA code when authenticating via either supported method described above. If you wish to automate the MFA interaction, both the `Client` constructor and the `login()` method accept `totp_key` as input. If the TOTP key is provided, the MFA prompt should not appear. Your TOTP key can be obtained during the Wyze 2FA setup process and is the same code that you would typically input into an authenticator app during 2FA setup.
+If your Wyze account has multifactor authentication (2FA) enabled, you may be prompted for your 2FA code when authenticating via either supported method described above. If you wish to automate the MFA interaction, both the `Client` constructor and the `login()` method accept `totp_key` as input. If the TOTP key is provided, the MFA prompt should not appear. Your TOTP key can be obtained during the Wyze 2FA setup process and is the same code that you would typically input into an authenticator app during 2FA setup.
 
 ```python
 import os
@@ -126,8 +126,13 @@ response = Client().login(
   password=os.environ['WYZE_PASSWORD'],
   totp_key=os.environ['WYZE_TOTP_KEY']
 )
+```
 
 OR
+
+```python
+import os
+from wyze_sdk import Client
 
 client = Client(
   email=os.environ['WYZE_EMAIL'],
@@ -235,6 +240,8 @@ import os
 import wyze_sdk
 from wyze_sdk import Client
 from wyze_sdk.errors import WyzeApiError
+import logging
+import datetime
 
 client = Client(token=os.environ['WYZE_ACCESS_TOKEN'])
 
@@ -246,7 +253,7 @@ try:
 
     if not lock.is_locked:
       ## let's try to figure out when it was unlocked
-      for record in client.locks.get_records(device_mac='YD.LO1.abcdefg0123456789abcdefg0123456789', since=datetime.now() - timedelta(hours=12)):
+      for record in client.locks.get_records(device_mac='YD.LO1.abcdefg0123456789abcdefg0123456789', since=datetime.now() - datetime.timedelta(hours=12)):
         print(f"lock record time: {record.time}")
         print(f"lock record type: {record.type}")
         print(f"lock record source: {record.details.source}")
