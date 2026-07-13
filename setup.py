@@ -36,7 +36,7 @@ setup(
     url="https://github.com/shauntarves/wyze-sdk",
     author='Shaun Tarves',
     author_email='shaun@tarves.net',
-    python_requires=">=3.14",
+    python_requires=">=3.12",
     include_package_data=True,
     license="The Unlicense",
     classifiers=[
