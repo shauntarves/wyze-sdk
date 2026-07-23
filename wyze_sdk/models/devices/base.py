@@ -25,6 +25,10 @@ class DeviceModels(object):
     CAMERA_V2 = ['WYZEC1-JZ']
     CAMERA_V3 = ['WYZE_CAKP2JFUS']
     CAMERA_OUTDOOR = ['WVOD1']
+    CAMERA_OUTDOOR_V2 = ['GW_GC1']
+    CAMERA_BELL = ['WYZEDB3'] # Doorbell camera
+    CAMERA_PAN = ['WYZECP1_JEF'] # Old pan camera
+    CAMERA_V4 = [ 'HL_CAM4' ]
 
     LOCK = ['YD.LO1']
     LOCK_GATEWAY = ['YD.GW1']
@@ -33,7 +37,7 @@ class DeviceModels(object):
     CONTACT_SENSOR = ['DWS3U', 'DWS2U']
     MOTION_SENSOR = ['PIR3U', 'PIR2U']
     VACUUM = ['JA_RO2']
-    CAMERA = CAMERA_V1 + CAMERA_V2 + CAMERA_V3 + CAMERA_OUTDOOR
+    CAMERA = CAMERA_V1 + CAMERA_V2 + CAMERA_V3 + CAMERA_OUTDOOR + CAMERA_OUTDOOR_V2 + CAMERA_PAN + CAMERA_BELL + CAMERA_V4
     SCALE_ = ['JA.SC', 'JA.SC2']
     SCALE_S = ['WL_SC2']
     SCALE_X = ['WL_SC3']
@@ -47,7 +51,8 @@ class DeviceModels(object):
     BULB_WHITE_V2 = ['HL_HWB2']
     LIGHT_STRIP_PRO = ['HL_LSLP']
     LIGHT_STRIP = ['HL_LSL'] + LIGHT_STRIP_PRO
-    MESH_BULB = ['WLPA19C'] + LIGHT_STRIP
+    BR30_MESH_BULB = ['HL_BR30C'] + LIGHT_STRIP
+    MESH_BULB = ['WLPA19C'] + BR30_MESH_BULB
 
     BULB = BULB_WHITE + BULB_WHITE_V2 + MESH_BULB
 
