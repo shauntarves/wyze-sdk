@@ -378,13 +378,13 @@ class AwayModeGenerator(object):
         return (datetime.now() - datetime.utcnow()).total_seconds()
 
     def _randomize(self, seconds_per_hour: float, seconds_per_minute: float, end_time: float) -> int:
-        import random
+        import secrets
         self._logger.debug(f"_randomize remain_time={self.remain_time}")
         self._logger.debug(f"_randomize cursor_time={self.cursor_time}")
         minutes_remaining = 60.0 if self.remain_time - seconds_per_hour >= 0 else (self.remain_time % seconds_per_hour) / seconds_per_minute
         self._logger.debug(f"_randomize minutes_remaining={minutes_remaining}")
         random = self.cursor_time + (
-            ((random.random() * (minutes_remaining - 5)) + 5.0) * seconds_per_minute
+            ((secrets.SystemRandom().random() * (minutes_remaining - 5)) + 5.0) * seconds_per_minute
         )
         self.cursor_time = random
         self.remain_time = end_time - (random + seconds_per_minute)
