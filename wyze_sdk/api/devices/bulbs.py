@@ -220,15 +220,22 @@ class BulbsClient(BaseClient):
 
         _prop = _color_prop
 
-        # if we're dealing with a light strip, we need to set the color control mode
-        if device_model in DeviceModels.LIGHT_STRIP:
-            _prop = [DeviceProp(definition=LightProps.control_light(), value=LightControlMode.COLOR.code)]
-            # Pro light strips also need their subsection property updated
-            if device_model in DeviceModels.LIGHT_STRIP_PRO:
-                if isinstance(color, str):
-                    # turn this into a list of subsections for joining
-                    color = [color] * self.LIGHT_STRIP_PRO_SUBSECTION_COUNT
-                _prop.append(DeviceProp(definition=LightProps.subsection(), value="00" + "#00".join(color)))
+        # Mesh bulbs need the color control mode set when changing colors
+        if device_model in DeviceModels.MESH_BULB:
+            if device_model in DeviceModels.LIGHT_STRIP:
+                _prop = [DeviceProp(definition=LightProps.control_light(), value=LightControlMode.COLOR.code)]
+                # Pro light strips also need their subsection property updated
+                if device_model in DeviceModels.LIGHT_STRIP_PRO:
+                    if isinstance(color, str):
+                        # turn this into a list of subsections for joining
+                        color = [color] * self.LIGHT_STRIP_PRO_SUBSECTION_COUNT
+                    _prop.append(DeviceProp(definition=LightProps.subsection(), value="00" + "#00".join(color)))
+            else:
+                # Regular mesh bulbs (like HL_A19C2) also need control mode for color changes
+                _prop = [
+                    DeviceProp(definition=LightProps.control_light(), value=LightControlMode.COLOR.code),
+                    _color_prop
+                ]
 
         return super()._api_client().run_action_list(
             actions={
