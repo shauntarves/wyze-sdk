@@ -54,7 +54,7 @@ Whether you're building a custom app, or integrating into a third-party service 
 Installation
 ============
 
-This package supports Python 3.8 and higher. I recommend using `PyPI <https://pypi.python.org/pypi>`_ to install Wyze SDK
+This package supports Python 3.12 and higher. I recommend using `PyPI <https://pypi.python.org/pypi>`_ to install Wyze SDK
 
 .. code-block:: bash
 
