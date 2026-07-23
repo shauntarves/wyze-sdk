@@ -25,7 +25,7 @@ class DeviceModels(object):
     CAMERA_V2 = ['WYZEC1-JZ']
     CAMERA_V3 = ['WYZE_CAKP2JFUS']
     CAMERA_OUTDOOR = ['WVOD1']
-    CAMERA_OUTDOOR_V2 = ['GW_GC1']
+    CAMERA_OUTDOOR_V2 = ['GW_GC1', 'HL_WCO2']
     CAMERA_BELL = ['WYZEDB3'] # Doorbell camera
     CAMERA_PAN = ['WYZECP1_JEF'] # Old pan camera
     CAMERA_V4 = [ 'HL_CAM4' ]
