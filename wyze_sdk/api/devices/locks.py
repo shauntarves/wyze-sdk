@@ -176,7 +176,7 @@ class LocksClient(BaseLockClient):
     def _validate_access_code(self, access_code: str):
         if access_code is None or access_code.strip() == '':
             raise WyzeRequestError("access code must be a numeric code between 4 and 8 digits long")
-        if re.match('\d{4,8}$', access_code) is None:
+        if re.match(r'\d{4,8}$', access_code) is None:
             raise WyzeRequestError(f"{access_code} is not a valid access code")
 
     def _encrypt_access_code(self, access_code: str) -> str:
