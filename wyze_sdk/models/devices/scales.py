@@ -22,11 +22,73 @@ class ScaleProps(object):
         return round(value * 2.20462262185, 2)
 
 
+class ScaleSegmentMeasurement(JsonObject):
+    """
+    Segment body composition from a scale with hand electrodes, such as the
+    Scale Ultra BodyScan. This includes fat and muscle mass in kilograms for
+    each arm and leg and for the trunk/torso. The trunk and limb fat values
+    approximately add up to the record's total body fat mass.
+
+    See: com.wyze.pluto.model.ICAFElectrode
+    """
+
+    @property
+    def attributes(self) -> Set[str]:
+        return {
+            "left_arm_fat_kg",
+            "left_arm_muscle_kg",
+            "left_leg_fat_kg",
+            "left_leg_muscle_kg",
+            "right_arm_fat_kg",
+            "right_arm_muscle_kg",
+            "right_leg_fat_kg",
+            "right_leg_muscle_kg",
+            "trunk_fat_kg",
+            "trunk_muscle_kg",
+        }
+
+    def __init__(
+        self,
+        *,
+        left_arm_fat_kg: float = None,
+        left_arm_muscle_kg: float = None,
+        left_leg_fat_kg: float = None,
+        left_leg_muscle_kg: float = None,
+        right_arm_fat_kg: float = None,
+        right_arm_muscle_kg: float = None,
+        right_leg_fat_kg: float = None,
+        right_leg_muscle_kg: float = None,
+        trunk_fat_kg: float = None,
+        trunk_muscle_kg: float = None,
+        **others: dict
+    ):
+        # The API calls the trunk all_body and leaves "fat" out of the fat
+        # values' names, e.g. left_arm_kg.
+        self.left_arm_fat_kg = left_arm_fat_kg if left_arm_fat_kg else self._extract_attribute('left_arm_kg', others)
+        self.left_arm_muscle_kg = left_arm_muscle_kg if left_arm_muscle_kg else self._extract_attribute('left_arm_muscle_kg', others)
+        self.left_leg_fat_kg = left_leg_fat_kg if left_leg_fat_kg else self._extract_attribute('left_leg_kg', others)
+        self.left_leg_muscle_kg = left_leg_muscle_kg if left_leg_muscle_kg else self._extract_attribute('left_leg_muscle_kg', others)
+        self.right_arm_fat_kg = right_arm_fat_kg if right_arm_fat_kg else self._extract_attribute('right_arm_kg', others)
+        self.right_arm_muscle_kg = right_arm_muscle_kg if right_arm_muscle_kg else self._extract_attribute('right_arm_muscle_kg', others)
+        self.right_leg_fat_kg = right_leg_fat_kg if right_leg_fat_kg else self._extract_attribute('right_leg_kg', others)
+        self.right_leg_muscle_kg = right_leg_muscle_kg if right_leg_muscle_kg else self._extract_attribute('right_leg_muscle_kg', others)
+        self.trunk_fat_kg = trunk_fat_kg if trunk_fat_kg else self._extract_attribute('all_body_kg', others)
+        self.trunk_muscle_kg = trunk_muscle_kg if trunk_muscle_kg else self._extract_attribute('all_body_muscle_kg', others)
+        show_unknown_key_warning(self, others)
+
+
 class ScaleRecord(JsonObject):
     """
     A scale record.
 
-    See: com.wyze.ihealth.bean.GsonHs2sResults.DataBean
+    ``impedance`` holds the raw impedance readings: ten on eight-electrode
+    scales such as the Scale Ultra BodyScan, and four on other scales. When
+    no impedance was measured, readings are usually 0 but can be ``None``.
+    The body composition calculated from them is in the other fields, such
+    as ``body_fat``, ``muscle`` and ``body_segments``.
+
+    See: com.wyze.ihealth.bean.GsonHs2sResults.DataBean and, for scales on the
+    Pluto service, com.wyze.pluto.db.duomain.WplWeight
     """
 
     @property
@@ -37,6 +99,8 @@ class ScaleRecord(JsonObject):
             "bmi",
             "bmr",
             "body_fat",
+            "body_score",
+            "body_segments",
             "body_type",
             "body_vfr",
             "body_water",
@@ -51,8 +115,11 @@ class ScaleRecord(JsonObject):
             "measure_type",
             "metabolic_age",
             "muscle",
+            "muscle_protection_index",
             "occupation",
             "protein",
+            "skeletal_muscle",
+            "subcutaneous_fat",
             "timezone",
             "user_id",
             "weight",
@@ -66,6 +133,8 @@ class ScaleRecord(JsonObject):
         bmi: float = None,
         bmr: float = None,
         body_fat: float = None,
+        body_score: int = None,
+        body_segments: Union[dict, ScaleSegmentMeasurement] = None,
         body_type: int = None,
         body_vfr: float = None,
         body_water: float = None,
@@ -74,14 +143,17 @@ class ScaleRecord(JsonObject):
         family_member_id: str = None,
         gender: int = None,
         height: float = None,
-        impedance: Sequence[int] = None,
+        impedance: Sequence[float] = None,
         mac: str = None,
         measure_ts: int = None,
         measure_type: int = None,
         metabolic_age: int = None,
         muscle: float = None,
+        muscle_protection_index: float = None,
         occupation: int = None,
         protein: float = None,
+        skeletal_muscle: float = None,
+        subcutaneous_fat: float = None,
         timezone: str = None,
         user_id: int = None,
         weight: float = None,
@@ -92,6 +164,10 @@ class ScaleRecord(JsonObject):
         self.bmi = bmi if bmi else self._extract_attribute('bmi', others)
         self.bmr = bmr if bmr else self._extract_attribute('bmr', others)
         self.body_fat = body_fat if body_fat else self._extract_attribute('body_fat', others)
+        self.body_score = body_score if body_score else self._extract_attribute('body_score', others)
+        self.body_segments = body_segments if body_segments else self._extract_attribute('measurement_data', others)
+        if isinstance(self.body_segments, dict):
+            self.body_segments = ScaleSegmentMeasurement(**self.body_segments)
         self.body_type = body_type if body_type else self._extract_attribute('body_type', others)
         self.body_vfr = body_vfr if body_vfr else self._extract_attribute('body_vfr', others)
         self.body_water = body_water if body_water else self._extract_attribute('body_water', others)
@@ -100,19 +176,27 @@ class ScaleRecord(JsonObject):
         self.family_member_id = family_member_id if family_member_id else self._extract_attribute('family_member_id', others)
         self.gender = gender if gender else self._extract_attribute('gender', others)
         self.height = height if height else self._extract_attribute('height', others)
+        # Eight-electrode scales send all ten readings as an impedances list
+        # instead of impedance1 to impedance4.
         self.impedance = impedance if impedance else [
             self._extract_attribute('impedance1', others),
             self._extract_attribute('impedance2', others),
             self._extract_attribute('impedance3', others),
             self._extract_attribute('impedance4', others),
         ]
+        impedances = self._extract_attribute('impedances', others)
+        if impedances and not impedance:
+            self.impedance = impedances
         self.mac = mac if mac else self._extract_attribute('mac', others)
         self.measure_ts = measure_ts if measure_ts else self._extract_attribute('measure_ts', others)
         self.measure_type = measure_type if measure_type else self._extract_attribute('measure_type', others)
         self.metabolic_age = metabolic_age if metabolic_age else self._extract_attribute('metabolic_age', others)
         self.muscle = muscle if muscle else self._extract_attribute('muscle', others)
+        self.muscle_protection_index = muscle_protection_index if muscle_protection_index else self._extract_attribute('muscle_protection_index', others)
         self.occupation = occupation if occupation else self._extract_attribute('occupation', others)
         self.protein = protein if protein else self._extract_attribute('protein', others)
+        self.skeletal_muscle = skeletal_muscle if skeletal_muscle else self._extract_attribute('skeletal_muscle', others)
+        self.subcutaneous_fat = subcutaneous_fat if subcutaneous_fat else self._extract_attribute('subcutaneous_fat', others)
         self.timezone = timezone if timezone else self._extract_attribute('timezone', others)
         self.user_id = user_id if user_id else self._extract_attribute('user_id', others)
         self._weight = weight if weight else self._extract_attribute('weight', others)

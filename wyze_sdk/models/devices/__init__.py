@@ -11,7 +11,8 @@ from .cameras import BaseStation, Camera, CameraProps  # noqa
 from .locks import (Lock, LockEventType, LockGateway, LockProps,  # noqa
                     LockRecord, LockRecordDetail)
 from .plugs import OutdoorPlug, Plug, PlugProps  # noqa
-from .scales import Scale, ScaleProps, ScaleRecord, UserGoalWeight  # noqa
+from .scales import (Scale, ScaleProps, ScaleRecord,  # noqa
+                     ScaleSegmentMeasurement, UserGoalWeight)
 from .sensors import ContactSensor, MotionSensor, Sensor, SensorProps  # noqa
 from .switches import Switch, SwitchProps  # noqa
 from .thermostats import (Thermostat, ThermostatFanMode,  # noqa
